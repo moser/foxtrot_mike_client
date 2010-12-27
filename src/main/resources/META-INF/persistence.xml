@@ -1,0 +1,34 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+     http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+     version="1.0">
+<persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
+     <provider>
+         org.eclipse.persistence.jpa.PersistenceProvider
+     </provider>
+     <exclude-unlisted-classes>true</exclude-unlisted-classes>
+     <class>de.moserei.foxtrotmike.client.models.Plane</class>
+     <class>de.moserei.foxtrotmike.client.models.Person</class>
+     <class>de.moserei.foxtrotmike.client.models.Airfield</class>
+     <class>de.moserei.foxtrotmike.client.models.WireLauncher</class>
+     <class>de.moserei.foxtrotmike.client.models.AbstractFlight</class>
+     <class>de.moserei.foxtrotmike.client.models.Flight</class>
+     <class>de.moserei.foxtrotmike.client.models.TowFlight</class>
+     <class>de.moserei.foxtrotmike.client.models.Launch</class>
+     <class>de.moserei.foxtrotmike.client.models.WireLaunch</class>
+     <class>de.moserei.foxtrotmike.client.models.TowLaunch</class>
+     <properties>
+         <property name="javax.persistence.logging.level" value="INFO"/>
+         <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+<!--         <property name="javax.persistence.jdbc.url" value="jdbc:h2:/home/moser/data"/>-->
+         <property name="javax.persistence.jdbc.password" value=""/>
+         <property name="javax.persistence.jdbc.user" value="sa"/>
+         <property name="eclipselink.ddl-generation" value="create-tables"/>
+         <property name="eclipselink.ddl-generation.output-mode" value="both"/>
+         <property name="eclipselink.application-location" value="./"/>
+         <property name="eclipselink.create-ddl-jdbc-file-name" value="create.sql"/>
+         <property name="eclipselink.drop-ddl-jdbc-file-name" value="drop.sql"/>
+     </properties>
+ </persistence-unit>
+</persistence>
