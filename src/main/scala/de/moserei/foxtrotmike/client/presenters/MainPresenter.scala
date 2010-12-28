@@ -1,8 +1,8 @@
 package de.moserei.foxtrotmike.client.presenters
 
 import de.moserei.foxtrotmike.client.views.MainView
-import de.moserei.foxtrotmike.client.models.Flight
 import scala.swing.event._
+import de.moserei.foxtrotmike.client.models.{DefaultsSingleton, Flight}
 
 class MainPresenter {
   val view = new MainView()
@@ -35,7 +35,7 @@ class MainPresenter {
   
   view.flightPanel.btNew.reactions += {
     case ButtonClicked(_) => {
-      val f = new Flight
+      val f = new Flight(DefaultsSingleton)
       f.save
       view.flightsTable.selection.rows.clear
       view.flightsTable.selection.rows.add(view.flightsTableModel.indexOf(f))

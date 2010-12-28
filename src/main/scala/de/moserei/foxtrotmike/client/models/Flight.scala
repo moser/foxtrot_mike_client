@@ -12,4 +12,12 @@ class Flight extends AbstractFlight {
       FlightsTableModels.insert(this)
     }
   }
+
+  def this(d : Defaults) {
+    this()
+    from = d.airfield
+    to = d.airfield
+    controller = d.controller
+    departureDate = d.date
+  }
 }

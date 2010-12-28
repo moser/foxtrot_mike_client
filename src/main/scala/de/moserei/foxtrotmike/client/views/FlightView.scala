@@ -19,9 +19,9 @@ class FlightView extends MigPanel {
   val planeRenderer = new DefaultItemRenderer[Plane] {
     override def renderForList(o : AutoCompleter.Option[Plane]) = {
       if(o.isInstanceOf[AutoCompleter.RealOption[Plane]]) {
-        "<html>" + o.get.registration + "<br/>" + o.get.id + "</html>"
+        "<html>" + o.get.registration + "<br/><font color=gray><i>" + o.get.make + "</i></font></html>"
       } else {
-        o.toStringForTextfield
+        o.toStringForList
       }
     }
 	}
@@ -29,11 +29,16 @@ class FlightView extends MigPanel {
   val seat1 = new AutoCompleter(new DefaultAutoCompleterModel[Person](AllPeople.all, _.name, Map("allowNil" -> false)))
   val seat2 = new AutoCompleter(new DefaultAutoCompleterModel[Person](AllPeople.all, _.name))
   val airfieldRenderer = new DefaultItemRenderer[Airfield] {
-    override def renderForTextfield(o : AutoCompleter.Option[Airfield]) = {
+    override def renderForList(o : AutoCompleter.Option[Airfield]) = {
       if(o.isInstanceOf[AutoCompleter.RealOption[Airfield]]) {
-        if(o.get.registration == null || o.get.registration.equals("")) o.get.name else o.get.registration
+        if(o.get.registration == null || o.get.registration.equals(""))
+          o.get.name
+        else if(o.get.name == null || o.get.name.equals(""))
+          o.get.registration
+        else
+          "<html>" + o.get.registration + "<br/><font color=gray><i>" + o.get.name + "</i></font></html>"
       } else {
-        o.toStringForTextfield
+        o.toStringForList
       }
     }
 	}

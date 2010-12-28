@@ -18,7 +18,7 @@ class Airfield extends BaseModel with UUIDHelper {
     update(o)
   }
 
-  override def update(o:JsObject) = {
+  override protected def pUpdate(o:JsObject) = {
     name = ('name ?? str)(o).orNull
     registration = ('registration ?? str)(o).orNull
   }
@@ -26,9 +26,7 @@ class Airfield extends BaseModel with UUIDHelper {
   override def toString = {
     if(registration == null || registration.equals(""))
       name
-    else if(name == null || name.equals(""))
-      registration
     else
-      name + "(" + registration + ")"
+      registration
   }
 }

@@ -9,7 +9,8 @@ class Plane extends BaseModel with UUIDHelper {
   @Id
   var id : String = createUUID
 
-  var registration : String = ""
+  var registration  = ""
+  var make = ""
 
   override def toString = registration
 
@@ -19,7 +20,8 @@ class Plane extends BaseModel with UUIDHelper {
     update(o)
   }
 
-  override def update(o:JsObject) = {
+  override protected def pUpdate(o:JsObject) = {
     registration = ('registration ! str)(o)
+    make = ('make ! str)(o)
   }
 }

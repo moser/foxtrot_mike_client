@@ -5,9 +5,9 @@ abstract class BasePresenter[M,V] {
   var model:M
   var view:V
 
-  class Mapping[M, V](mtv: (M,V) => Unit, vtm : (M,V) => Unit) {
-    def updateModel(m:M, v:V) = mtv(m,v)
-    def updateView(m:M, v:V) = vtm(m,v)
+  class Mapping[M, V](vtm: (M,V) => Unit, mtv : (M,V) => Unit) {
+    def updateModel(m:M, v:V) = vtm(m,v)
+    def updateView(m:M, v:V) = mtv(m,v)
   }
 
   def updateModel {
@@ -18,7 +18,7 @@ abstract class BasePresenter[M,V] {
     if(model != null) mappings.map(m => m.updateView(model, view))
   }
 
-  protected def map(mtv : (M,V) => Unit, vtm : (M,V) => Unit) {
-    mappings = (new Mapping[M,V](mtv, vtm))::mappings
+  protected def map(vtm : (M,V) => Unit, mtv : (M,V) => Unit) {
+    mappings = (new Mapping[M,V](vtm, mtv))::mappings
   }
 }

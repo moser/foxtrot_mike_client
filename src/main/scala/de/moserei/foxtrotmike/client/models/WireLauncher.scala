@@ -16,7 +16,9 @@ class WireLauncher extends BaseModel with UUIDHelper {
     update(o)
   }
 
-  override def update(o:JsObject) = {
+  override protected def pUpdate(o:JsObject) = {
     registration = ('registration ! str)(o)
   }
+
+  override def toString = registration
 }

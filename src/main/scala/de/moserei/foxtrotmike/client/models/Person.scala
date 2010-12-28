@@ -21,7 +21,7 @@ class Person extends BaseModel with UUIDHelper {
     update(o)
   }
 
-  override def update(o:JsObject) = {
+  override protected def pUpdate(o:JsObject) = {
     firstname = ('firstname ! str)(o)
     lastname = ('lastname ! str)(o)
   }

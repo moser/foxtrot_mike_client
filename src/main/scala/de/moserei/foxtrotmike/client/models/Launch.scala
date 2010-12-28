@@ -13,5 +13,5 @@ abstract class Launch extends BaseModel with UUIDHelper {
   @JoinColumn(name="flight_id")
   var flight : Flight = _
 
-  override def update(o:JsObject) = {} //launches are not synced down
+  override protected def pUpdate(o:JsObject) = {} //launches are not synced down
 }

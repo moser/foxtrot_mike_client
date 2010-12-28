@@ -19,7 +19,7 @@ class BaseModelSpec extends Spec with ShouldMatchers {
       update(o)
     }
 
-    override def update(o:JsObject) = {
+    override protected def pUpdate(o:JsObject) = {
       name = ('name ! str)(o)
       foo = ('foo ! num)(o).toInt
     }
@@ -28,11 +28,22 @@ class BaseModelSpec extends Spec with ShouldMatchers {
   val o = new JsObject(Map(JsString("id") -> JsString("123.1"), JsString("name") -> JsString("lala"), JsString("foo") -> JsNumber(2)))
 
   describe("BaseModel") {
+    it("should be of local origin when created") {
+      val m = new ConcreteModel
+      m.origin should equal ("local")
+    }
+
     it("should update it's attributes from a JsObject") {
       val m = new ConcreteModel
       m.update(o)
       m.name should equal ("lala")
       m.foo should equal (2)
+    }
+
+    it("should update it's origin") {
+      val m = new ConcreteModel
+      m.update(o)
+      m.origin should equal ("remote")
     }
 
     it("should set the id when constructed from a JsObject") {

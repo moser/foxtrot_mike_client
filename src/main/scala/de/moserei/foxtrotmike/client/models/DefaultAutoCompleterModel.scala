@@ -34,5 +34,7 @@ class DefaultAutoCompleterModel[T >: Null <: AnyRef](collection : Seq[T], extrac
 
   class CreateOption[T >: Null <: AnyRef](filterString : String) extends AutoCompleter.SyntheticOption[T] {
     override def toString = filterString
+    override def toStringForTextfield = filterString
+    override def toStringForList = I18n("create") + " " + filterString
   }
 }

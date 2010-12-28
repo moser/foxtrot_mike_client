@@ -68,5 +68,5 @@ abstract class AbstractFlight extends BaseModel with UUIDHelper {
   }
 
   def durationString = if(duration >= 0) String.format("%d:%02d", (duration / 60).asInstanceOf[AnyRef], (duration % 60).asInstanceOf[AnyRef]) else ""
-  override def update(o:JsObject) = {} //flights are not syncedDown
+  override protected def pUpdate(o:JsObject) = {} //flights are not syncedDown
 }
