@@ -4,6 +4,7 @@ object I18n {
   def t(s:String) : String = {
     s match {
       case "main.title" => "FoxtrotMike Flugeingabe"
+      case "flight" => "Flug"
       case "departure_date" => "Datum"
       case "plane" => "Flugzeug"
       case "seat1" => "Pilot/Schüler"
@@ -31,6 +32,10 @@ object I18n {
       case "sync.down" => "Daten herunterladen"
       case "sync.up" => "Flüge hochladen"
       case "cancel" => "Abbrechen"
+      
+      case "colored" => "farbig"
+      case "flying-only" => "Noch in der Luft"
+      case "with-problems-only" => "Mit Problemen"
       case _ => s
     }
   }

@@ -65,7 +65,7 @@ class FlightView extends MigPanel("") {
     launchPanelWrapper.add(_launchPanel, "grow")
     revalidate
   }
-  launchPanel = new MigPanel("ins 0, fill") { background = Color.blue }
+  launchPanel = new MigPanel("")
   val btNew = new Button("New")
   val btSave = new Button("Save")
   
@@ -73,6 +73,8 @@ class FlightView extends MigPanel("") {
   add(new Label(I18n("plane")))
   add(new Label(I18n("seat1")))
   add(new Label(I18n("seat2")))
+  add(new Label(I18n("from")))
+  add(new Label(I18n("to")))
   add(new Label(I18n("departure_time")))
   add(new Label(I18n("arrival_time")))
   add(new Label(I18n("duration")))
@@ -82,14 +84,14 @@ class FlightView extends MigPanel("") {
   peer.add(plane, "w 80")
   peer.add(seat1, "w 120, sg names")
   peer.add(seat2, "sg names")
+  peer.add(from, "w 80, sg airfields")
+  peer.add(to, "sg airfields")
   add(departureTime, "w 70, sg times")
   add(arrivalTime, "sg times")
   add(duration, "w 60")
   peer.add(controller, "sg names, wrap")
-  peer.add(from, "w 80, sg airfields, skip 4")
-  peer.add(to, "sg airfields, wrap")
   add(launchType)
-  add(launchPanelWrapper, "gap 0, grow, spanx 6, wrap")
+  add(launchPanelWrapper, "gap 0, grow, spanx 8, wrap")
   add(btNew)
   add(btSave)
   
@@ -100,7 +102,6 @@ class FlightView extends MigPanel("") {
     departureDate.enabled = b
     departureTime.enabled = b
     arrivalTime.enabled = b
-    duration.enabled = b
     launchType.enabled = b
     
     plane.setEnabled(b)

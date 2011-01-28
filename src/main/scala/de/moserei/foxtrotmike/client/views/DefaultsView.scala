@@ -14,29 +14,27 @@ class MyComboBox[T](model : ComboBoxModel) extends ComboBox[T](Nil) {
 //TODO should depend on BaseEntityRepository#all (reload often, see DefaultAutoCompleterModel)
 class MyComboBoxModel[T](a : Seq[T]) extends DefaultComboBoxModel(new java.util.Vector(a.asJava))
 
-class DefaultsView extends MigPanel("wrap 1") {
-  add(new Label(I18n("departure_date")))
+class DefaultsView extends MigPanel("") { 
   val date = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
-  add(date, "w 70")
-
-  add(new Label(I18n("airfield")))
   val airfield = new MyComboBox[Airfield](new MyComboBoxModel(AllAirfields.all))
-  add(airfield)
-
-  add(new Label(I18n("tow_plane")))
   val towPlane = new MyComboBox[Plane](new MyComboBoxModel(TowPlanes.all))
-  add(towPlane)
-  add(new Label(I18n("wire_launcher")))
   val wireLauncher = new MyComboBox[WireLauncher](new MyComboBoxModel(AllWireLaunchers.all))
-  add(wireLauncher)
-  
-  add(new Label(I18n("controller")))
   val controller = new MyComboBox[Person](new MyComboBoxModel(AllPeople.all))
-  add(controller)
-  
-  add(new Label(I18n("operator")))
   val operator = new MyComboBox[Person](new MyComboBoxModel(AllPeople.all))
+  
+  add(new Label(I18n("departure_date")))
+  add(new Label(I18n("airfield")))
+  add(new Label(I18n("tow_plane")))
+  add(new Label(I18n("wire_launcher")))
+  add(new Label(I18n("controller")))
+  add(new Label(I18n("operator")), "wrap")
+  
+  add(date, "w 70")
+  add(airfield)
+  add(towPlane)
+  add(wireLauncher)
+  add(controller)
   add(operator)
 }

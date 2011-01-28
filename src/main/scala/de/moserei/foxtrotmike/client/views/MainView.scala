@@ -14,20 +14,23 @@ class MainView extends MainFrame {
     selection.intervalMode = Table.IntervalMode.Single
     selection.elementMode = Table.ElementMode.Row
   }
+  val flightsPanel = new MigPanel("ins 0, fill", "", "[25!][]") {
+    add(new CheckBox(I18n("flying-only")))
+    add(new CheckBox(I18n("with-problems-only")))
+    add(new CheckBox(I18n("colored")), "wrap")
+    add(new ScrollPane(flightsTable), "gap 0, dock south, grow")
+  }
+  
   val flightPanel = new FlightView
   val defaultsPanel = new DefaultsView
+  
+  tabs.pages += new TabbedPane.Page(I18n("flight"), flightPanel)
   tabs.pages += new TabbedPane.Page(I18n("defaults"), defaultsPanel)
+  
   contents = new SplitPane {
     dividerSize = 12
-    oneTouchExpandable = true
-    resizeWeight = 0.9
-    orientation = Orientation.Vertical
-    leftComponent = new SplitPane {
-      dividerSize = 12
-      orientation = Orientation.Horizontal
-      rightComponent = new ScrollPane(flightsTable)
-      leftComponent = flightPanel
-    }
-    rightComponent = tabs
+    orientation = Orientation.Horizontal
+    rightComponent = flightsPanel
+    leftComponent = tabs
   }
 }

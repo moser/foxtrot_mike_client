@@ -3,10 +3,7 @@ package de.moserei.foxtrotmike.client.presenters
 import de.moserei.foxtrotmike.client.views.TowLaunchView
 import de.moserei.foxtrotmike.client.models.TowLaunch
 import scala.swing.event._
-import scala.swing.Component
-import java.util.Date
 import swing.Reactor
-import java.awt.Color
 
 
 class TowLaunchPresenter(view0: TowLaunchView) extends BasePresenter[TowLaunch, TowLaunchView] {
@@ -20,11 +17,14 @@ class TowLaunchPresenter(view0: TowLaunchView) extends BasePresenter[TowLaunch, 
   map((m,v) => m.towFlight.arrivalTime = v.arrivalTime.peer.getValue.asInstanceOf[Int], (m,v) => v.arrivalTime.peer.setValue(m.towFlight.arrivalTime))
   map((m,v) => {}, (m,v) => v.duration.text = m.towFlight.durationString)
   
-  view.arrivalTime.reactions += {
-    case FocusLost(_, _, _) => {
-      println("at fl")
-      updateModel
-      updateView
+  val timeFocus = new Reactor {
+    listenTo(view.arrivalTime)
+    reactions += {
+      case FocusLost(_, _, _) => {
+        println("at fl")
+        updateModel
+        updateView
+      }
     }
   }
 }

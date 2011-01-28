@@ -9,7 +9,7 @@ import de.moserei.foxtrotmike.client.views.AutoCompleter.DefaultItemRenderer
 import java.awt.Color
 
 
-class TowLaunchView extends MigPanel("ins 0", "[80!][120!][120!][80!][80!][60!]") {
+class TowLaunchView extends MigPanel("ins 0", "[80!][120!][120!][80!][80!][70!][70!][60!]") {
   val planeRenderer = new DefaultItemRenderer[Plane] {
     override def renderForList(o : AutoCompleter.Option[Plane]) = {
       if(o.isInstanceOf[AutoCompleter.RealOption[Plane]]) {
@@ -44,7 +44,9 @@ class TowLaunchView extends MigPanel("ins 0", "[80!][120!][120!][80!][80!][60!]"
 
   peer.add(plane, "w 100")
   peer.add(seat1, "w 120")
-  add(arrivalTime, "skip 2, w 70")
+  peer.add(to, "w 80, skip 2")
+  add(arrivalTime, "skip 1, w 70")
   add(duration, "w 60, wrap")
-  peer.add(to, "w 80, skip 4")
+  
+  println(seat1.getWidth)
 }
