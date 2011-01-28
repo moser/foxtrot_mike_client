@@ -31,7 +31,7 @@ class FlightsTableModel extends AbstractTableModel {
   }
   
   override def getColumnName(i: Int) = {
-    cols(i)._1
+    I18n(cols(i)._1)
   }
   
   override def getColumnClass(i: Int) = classOf[String]

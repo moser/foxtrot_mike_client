@@ -16,11 +16,12 @@ class DefaultsPresenter(view0: DefaultsView) extends BasePresenter[Defaults, Def
   map((m,v) => m.date = v.date.peer.getValue.asInstanceOf[Date], (m,v) => v.date.peer.setValue(m.date))
   map((m,v) => m.wireLauncher = v.wireLauncher.selection.item, (m,v) => v.wireLauncher.selection.item = m.wireLauncher)
   map((m,v) => m.airfield = v.airfield.selection.item, (m,v) => v.airfield.selection.item = m.airfield)
+  map((m,v) => m.operator = v.operator.selection.item, (m,v) => v.operator.selection.item = m.operator)
 
   updateView
 
   val focus = new Reactor {
-    listenTo(view.towPlane, view.controller, view.date, view.wireLauncher, view.airfield)
+    listenTo(view.towPlane, view.controller, view.date, view.wireLauncher, view.airfield, view.operator)
     reactions += {
       case FocusLost(_, _, _) => {
         updateModel

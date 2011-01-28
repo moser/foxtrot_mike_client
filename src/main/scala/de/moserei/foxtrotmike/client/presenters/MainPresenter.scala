@@ -9,6 +9,7 @@ class MainPresenter {
   view.visible = true
   var fp = new FlightPresenter(view.flightPanel)
   var dp = new DefaultsPresenter(view.defaultsPanel)
+  val sp = new SyncPresenter
   
   view.flightsTable.selection.reactions += {
     case TableRowsSelected(_, r, false) => {
@@ -43,5 +44,7 @@ class MainPresenter {
     }
   }
 
-  def nop {}
+  def nop {}  
+  
+  sp.view.open
 }

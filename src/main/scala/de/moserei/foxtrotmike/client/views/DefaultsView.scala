@@ -14,25 +14,28 @@ class MyComboBox[T](model : ComboBoxModel) extends ComboBox[T](Nil) {
 class MyComboBoxModel[T](a : Seq[T]) extends DefaultComboBoxModel(new java.util.Vector(a.asJava))
 
 class DefaultsView extends MigPanel("wrap 1") {
-  add(new Label(I18n("defaults.date")))
+  add(new Label(I18n("departure_date")))
   val date = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
   add(date, "w 70")
 
-  add(new Label(I18n("defaults.controller")))
-  val controller = new MyComboBox[Person](new MyComboBoxModel(AllPeople.all))
-  add(controller)
-
-  add(new Label(I18n("defaults.airfield")))
+  add(new Label(I18n("airfield")))
   val airfield = new MyComboBox[Airfield](new MyComboBoxModel(AllAirfields.all))
   add(airfield)
 
-  add(new Label(I18n("defaults.towPlane")))
-  val towPlane = new MyComboBox[Plane](new MyComboBoxModel(AllPlanes.all))
+  add(new Label(I18n("tow_plane")))
+  val towPlane = new MyComboBox[Plane](new MyComboBoxModel(TowPlanes.all))
   add(towPlane)
-  add(new Label(I18n("defaults.wireLauncher")))
+  add(new Label(I18n("wire_launcher")))
   val wireLauncher = new MyComboBox[WireLauncher](new MyComboBoxModel(AllWireLaunchers.all))
   add(wireLauncher)
-
+  
+  add(new Label(I18n("controller")))
+  val controller = new MyComboBox[Person](new MyComboBoxModel(AllPeople.all))
+  add(controller)
+  
+  add(new Label(I18n("operator")))
+  val operator = new MyComboBox[Person](new MyComboBoxModel(AllPeople.all))
+  add(operator)
 }

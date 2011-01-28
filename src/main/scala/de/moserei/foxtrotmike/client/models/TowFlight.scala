@@ -1,7 +1,47 @@
 package de.moserei.foxtrotmike.client.models
 
 import javax.persistence._
+import java.util.Date
+import dispatch.json.JsObject
 
 @Entity
 @DiscriminatorValue("T")
-class TowFlight extends AbstractFlight
+class TowFlight extends AbstractFlight {
+  def this(launch0: TowLaunch) {
+    this()
+    towLaunch = launch0
+  }
+  
+  def this(launch0: TowLaunch, d : Defaults) {
+    this(launch0)
+    plane = d.towPlane
+  }
+
+  @OneToOne(fetch=FetchType.EAGER, mappedBy="towFlight", cascade = Array(CascadeType.ALL))
+  var towLaunch : TowLaunch = _
+  
+  override def departureDate = towLaunch.flight.departureDate
+  override def departureTime = towLaunch.flight.departureTime
+
+  override def departureDate_=(d : Date) {
+    //ignore
+  }
+
+  override def departureTime_=(i : Int) {
+    //ignore
+  }
+
+  override def arrivalTime = if(duration >= 0) departureTime + duration else -1
+  override def arrivalTime_=(i : Int) = {
+    if(i >= 0) {
+      duration = i - departureTime
+    } else {
+      duration = -1
+    }
+    if(duration < 0) duration = -1
+  }
+
+  override def durationString = if(duration >= 0) String.format("%d:%02d", (duration / 60).asInstanceOf[AnyRef], (duration % 60).asInstanceOf[AnyRef]) else ""
+  override protected def pUpdate(o:JsObject) = {} //tow flights are not syncedDown  
+}
+

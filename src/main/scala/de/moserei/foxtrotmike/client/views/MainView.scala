@@ -5,7 +5,7 @@ import de.moserei.foxtrotmike.client.models.I18n
 import de.moserei.foxtrotmike.client.models.FlightsTableModel
 
 class MainView extends MainFrame {
-  title = I18n.t("main.title")
+  title = I18n("main.title")
   preferredSize = new Dimension(1000, 650)
   val tabs = new TabbedPane
   val flightsTableModel = new FlightsTableModel
@@ -16,7 +16,7 @@ class MainView extends MainFrame {
   }
   val flightPanel = new FlightView
   val defaultsPanel = new DefaultsView
-  tabs.pages += new TabbedPane.Page(I18n("defaults.tab"), defaultsPanel)
+  tabs.pages += new TabbedPane.Page(I18n("defaults"), defaultsPanel)
   contents = new SplitPane {
     dividerSize = 12
     oneTouchExpandable = true
