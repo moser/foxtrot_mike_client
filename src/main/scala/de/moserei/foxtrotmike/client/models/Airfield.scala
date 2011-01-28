@@ -3,14 +3,17 @@ package de.moserei.foxtrotmike.client.models
 import javax.persistence._
 import dispatch.json.JsObject
 import dispatch.json.Js._
+import de.moserei.foxtrotmike.client.models.repos.AllAirfields
 
 @Entity
 class Airfield extends BaseModel with UUIDHelper {
+  observers = AllAirfields :: observers
+  
   @Id
   var id : String = createUUID
 
   var registration : String = ""
-  var name : String = ""
+  var name : String = ""  
 
   def this(o:JsObject) = {
     this()

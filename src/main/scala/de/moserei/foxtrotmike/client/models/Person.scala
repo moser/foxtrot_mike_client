@@ -3,9 +3,12 @@ package de.moserei.foxtrotmike.client.models
 import javax.persistence._
 import dispatch.json.JsObject
 import dispatch.json.Js._
+import de.moserei.foxtrotmike.client.models.repos.AllPeople
 
 @Entity
 class Person extends BaseModel with UUIDHelper {
+  observers = AllPeople :: observers
+
   @Id
   var id : String = createUUID
 

@@ -11,6 +11,7 @@ class MyComboBox[T](model : ComboBoxModel) extends ComboBox[T](Nil) {
   override lazy val peer: JComboBox = new JComboBox(model) with SuperMixin
 }
 
+//TODO should depend on BaseEntityRepository#all (reload often, see DefaultAutoCompleterModel)
 class MyComboBoxModel[T](a : Seq[T]) extends DefaultComboBoxModel(new java.util.Vector(a.asJava))
 
 class DefaultsView extends MigPanel("wrap 1") {
