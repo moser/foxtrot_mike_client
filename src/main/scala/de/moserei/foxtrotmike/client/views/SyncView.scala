@@ -12,7 +12,7 @@ class SyncView extends Dialog {
   val password = new PasswordField("admin")
   val btUp = new Button(I18n("sync.up"))
   val btDown = new Button(I18n("sync.down"))
-  val btNo = new Button(I18n("cancel"))
+  val btNo = new Button(I18n("close"))
   val progress = new ProgressBar() {
     min = 0
     max = 100

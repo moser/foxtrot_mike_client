@@ -15,6 +15,10 @@ class Flight extends AbstractFlight {
       FlightsTableModels.insert(this)
     }
   }
+  
+  override def afterDelete = {
+    FlightsTableModels.remove(this)
+  }
 
   def this(d : Defaults) {
     this()
@@ -46,5 +50,9 @@ class Flight extends AbstractFlight {
         }
       }
     }
+  }
+  
+  def finished = {
+    departureTime >= 0 && arrivalTime >= 0
   }
 }

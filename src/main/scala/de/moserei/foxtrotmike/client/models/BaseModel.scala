@@ -20,9 +20,19 @@ abstract class BaseModel {
     afterSaveInternal
   }
   def isPersisted = EntityMgr.em.find(this.getClass, id) != null
+  def delete = {
+    if(isPersisted) {
+      beforeDelete
+      EntityMgr.withTransaction(_.remove(this))
+      afterDelete
+    }
+  }
 
   def beforeSave(create : Boolean) = {}
   def afterSave(create : Boolean) = {}
+  
+  def beforeDelete = {}
+  def afterDelete = {}
   
   def afterSaveInternal = {
     println("afterSaveInternal")

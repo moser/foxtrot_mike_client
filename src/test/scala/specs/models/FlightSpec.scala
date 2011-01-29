@@ -63,5 +63,14 @@ class FlightSpec extends Spec with ShouldMatchers {
         f.durationString should equal ("")
       }
     }
+    
+    it("should tell if it is finished") {
+      val f = new Flight
+      f.finished should equal (false)
+      f.departureTime = 65 //1:05
+      f.finished should equal (false)
+      f.arrivalTime = 70 //1:10
+      f.finished should equal (true)
+    }
   }
 }

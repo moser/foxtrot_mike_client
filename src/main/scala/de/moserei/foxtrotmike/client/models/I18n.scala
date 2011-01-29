@@ -31,11 +31,16 @@ object I18n {
       case "password" => "Passwort"
       case "sync.down" => "Daten herunterladen"
       case "sync.up" => "Flüge hochladen"
-      case "cancel" => "Abbrechen"
+      case "close" => "Schließen"
       
       case "colored" => "farbig"
       case "flying-only" => "Noch in der Luft"
       case "with-problems-only" => "Mit Problemen"
+      
+      case "new" => "Neu"
+      case "save" => "Speichern"
+      case "delete" => "Löschen"
+      case "copy" => "Kopieren"
       case _ => s
     }
   }

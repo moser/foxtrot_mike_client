@@ -48,6 +48,12 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       model.save
     }
   }
+  
+  view.btDelete.reactions += {
+    case ButtonClicked(_) => {
+      model.delete
+    }
+  }
 
   val timeFocus = new Reactor {
     listenTo(view.departureTime, view.arrivalTime)

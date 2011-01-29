@@ -11,4 +11,7 @@ object FlightsTableModels {
   def update(f : Flight) {
     inst.foreach(_.update(f))
   }
+  def remove(f : Flight) {
+    inst.foreach(_.remove(f))
+  }
 }

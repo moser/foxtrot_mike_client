@@ -24,13 +24,8 @@ class TowFlight extends AbstractFlight {
   override def departureDate = towLaunch.flight.departureDate
   override def departureTime = towLaunch.flight.departureTime
 
-  override def departureDate_=(d : Date) {
-    //ignore
-  }
-
-  override def departureTime_=(i : Int) {
-    //ignore
-  }
+  override def departureDate_=(d : Date) = { /*ignore*/ }
+  override def departureTime_=(i : Int) = { /*ignore*/ }
 
   override def arrivalTime = if(duration >= 0) departureTime + duration else -1
   override def arrivalTime_=(i : Int) = {

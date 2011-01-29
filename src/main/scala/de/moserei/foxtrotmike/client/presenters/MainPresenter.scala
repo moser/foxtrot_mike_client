@@ -43,6 +43,12 @@ class MainPresenter {
       view.flightPanel.departureDate.requestFocusInWindow
     }
   }
+  
+  view.unfinishedOnly.reactions += {
+    case ButtonClicked(_) => {
+      view.flightsTableModel.unfinishedOnly = view.unfinishedOnly.selected
+    }
+  }
 
   def nop {}  
   

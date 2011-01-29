@@ -2,7 +2,6 @@ package de.moserei.foxtrotmike.client.models
 
 import de.moserei.foxtrotmike.client.views.AutoCompleter
 import de.moserei.foxtrotmike.client.models.repos.BaseEntityRepository
-import de.moserei.foxtrotmike.client.models.BaseModel
 import scala.util.matching.Regex
 import scala.swing.Publisher
 

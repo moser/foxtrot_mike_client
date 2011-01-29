@@ -14,8 +14,9 @@ class MainView extends MainFrame {
     selection.intervalMode = Table.IntervalMode.Single
     selection.elementMode = Table.ElementMode.Row
   }
+  val unfinishedOnly = new CheckBox(I18n("flying-only"))
   val flightsPanel = new MigPanel("ins 0, fill", "", "[25!][]") {
-    add(new CheckBox(I18n("flying-only")))
+    add(unfinishedOnly)
     add(new CheckBox(I18n("with-problems-only")))
     add(new CheckBox(I18n("colored")), "wrap")
     add(new ScrollPane(flightsTable), "gap 0, dock south, grow")

@@ -6,6 +6,7 @@ import org.joda.time.DateTime
 import repos.AllFlights
 
 class FlightsTableModel extends AbstractTableModel {
+  private var pUnfinishedOnly = false
   val dateFormatter = DateFormat.getDateInstance
   val timeFormatter = TimeFormatterFactory.getFormatter(null)
   def int2Object(o: Int): Object = o.asInstanceOf[AnyRef]
@@ -47,12 +48,13 @@ class FlightsTableModel extends AbstractTableModel {
       def departureTimeX(f:Flight) = if(f.departureTime > 0) f.departureTime else 1441
       def dt(f:Flight) = new DateTime(f.departureDate)
       all = AllFlights.all.sortWith((f1, f2) => dt(f1).compareTo(dt(f2)) == -1 || (dt(f1).compareTo(dt(f2)) == 0 && departureTimeX(f1) < departureTimeX(f2))).reverse
+      if(pUnfinishedOnly) all = all.filter(!_.finished) 
       update_all = false
     }
     all
   }
 
-  def indexOf(f : Flight) = getAll.indexOf(f)
+  def indexOf(f : Flight) = getAll.indexOf(f) 
 
   def insert(f : Flight) = {
     update_all = true
@@ -66,4 +68,17 @@ class FlightsTableModel extends AbstractTableModel {
     val j = indexOf(f)
     fireTableRowsUpdated(i, j)
   }
+  
+  def remove(f : Flight) {
+    val i = indexOf(f)
+    update_all = true
+    fireTableRowsDeleted(i, i)
+  }
+  
+  def unfinishedOnly = pUnfinishedOnly
+  def unfinishedOnly_=(t : Boolean) = {
+    pUnfinishedOnly = t
+    update_all = true
+    fireTableDataChanged()
+  } 
 }

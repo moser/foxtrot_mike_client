@@ -66,8 +66,9 @@ class FlightView extends MigPanel("") {
     revalidate
   }
   launchPanel = new MigPanel("")
-  val btNew = new Button("New")
-  val btSave = new Button("Save")
+  val btNew = new Button(I18n("new"))
+  val btSave = new Button(I18n("save"))
+  val btDelete = new Button(I18n("delete"))
   
   add(new Label(I18n("departure_date")))
   add(new Label(I18n("plane")))
@@ -94,6 +95,7 @@ class FlightView extends MigPanel("") {
   add(launchPanelWrapper, "gap 0, grow, spanx 8, wrap")
   add(btNew)
   add(btSave)
+  add(btDelete)
   
   var _enabled = true
   override def enabled = _enabled
