@@ -10,6 +10,7 @@ class Defaults {
   var controller = AllPeople.first.orNull
   var wireLauncher = AllWireLaunchers.first.orNull
   var operator = AllPeople.first.orNull
+  var towPilot = AllPeople.first.orNull
 }
 
 

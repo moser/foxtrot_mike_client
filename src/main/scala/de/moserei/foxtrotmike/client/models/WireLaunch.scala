@@ -12,9 +12,14 @@ class WireLaunch extends Launch {
   def this(flight0 : Flight, d : Defaults) {
     this(flight0)
     wireLauncher = d.wireLauncher
-    //operator = d.operator
+    operator = d.operator
   }
+  
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="wire_launcher_id")
   var wireLauncher : WireLauncher = _
+  
+  @ManyToOne(fetch=FetchType.EAGER)
+  @JoinColumn(name="operator_id")
+  var operator : Person = _
 }
