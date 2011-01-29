@@ -1,6 +1,7 @@
 package de.moserei.foxtrotmike.client.models
 
 import javax.persistence._
+import dispatch.json.{JsString, JsValue}
 
 @Entity
 @DiscriminatorValue("F")
@@ -54,5 +55,12 @@ class Flight extends AbstractFlight {
   
   def finished = {
     departureTime >= 0 && arrivalTime >= 0
+  }
+  
+  override def jsonValues = {
+    if(launch != null)
+      super.jsonValues ++ Map[JsString, JsValue](JsString("launch_attributes") -> launch.toJson)
+    else
+      super.jsonValues
   }
 }

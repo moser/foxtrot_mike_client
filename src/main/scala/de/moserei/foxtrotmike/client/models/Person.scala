@@ -1,7 +1,7 @@
 package de.moserei.foxtrotmike.client.models
 
 import javax.persistence._
-import dispatch.json.JsObject
+import dispatch.json.{JsObject, JsString}
 import dispatch.json.Js._
 import de.moserei.foxtrotmike.client.models.repos.AllPeople
 
@@ -12,8 +12,9 @@ class Person extends BaseModel with UUIDHelper {
   @Id
   var id : String = createUUID
 
-  var firstname : String = ""
-  var lastname : String = ""
+  var firstname = ""
+  var lastname = ""
+  var status = "local"
 
   def name = firstname + " " + lastname
   override def toString = name
@@ -27,5 +28,10 @@ class Person extends BaseModel with UUIDHelper {
   override protected def pUpdate(o:JsObject) = {
     firstname = ('firstname ! str)(o)
     lastname = ('lastname ! str)(o)
+  }
+  
+  override def jsonValues = {
+    Map(JsString("firstname") -> JsString(firstname),
+        JsString("lastname") -> JsString(lastname))
   }
 }

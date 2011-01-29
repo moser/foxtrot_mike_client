@@ -3,7 +3,7 @@ package de.moserei.foxtrotmike.client.models
 import javax.persistence._
 import org.joda.time.DateTime
 import java.util.Date
-import dispatch.json.JsObject
+import dispatch.json.{JsObject, JsString, JsNumber, JsValue}
 
 @Entity
 @Inheritance
@@ -39,8 +39,10 @@ abstract class AbstractFlight extends BaseModel with UUIDHelper {
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="controller_id")
   var controller : Person = _
+  
+  var status = "local"
 
-  private def dt(d:Date) = new DateTime(d)
+  protected def dt(d:Date) = new DateTime(d)
 
   def departureDate = pDepartureDate
   def departureTime = pDepartureTime
@@ -69,4 +71,16 @@ abstract class AbstractFlight extends BaseModel with UUIDHelper {
 
   def durationString = if(duration >= 0) String.format("%d:%02d", (duration / 60).asInstanceOf[AnyRef], (duration % 60).asInstanceOf[AnyRef]) else ""
   override protected def pUpdate(o:JsObject) = {} //flights are not syncedDown
+  
+  override def jsonValues : Map[JsString, JsValue] = {
+    Map(JsString("plane_id") -> idToJson(plane),
+        JsString("seat1_id") -> idToJson(seat1),
+        JsString("seat2_id") -> idToJson(seat2),
+        JsString("from_id") -> idToJson(from),
+        JsString("to_id") -> idToJson(to),
+        JsString("controller_id") -> idToJson(controller),
+        JsString("arrival_time") -> JsNumber(arrivalTime),
+        JsString("departure_time") -> JsNumber(departureTime),
+        JsString("departure_date") -> JsString(dt(departureDate).toString("yyyy-MM-dd")))
+  }
 }

@@ -1,6 +1,7 @@
 package de.moserei.foxtrotmike.client.models
 
 import javax.persistence._
+import dispatch.json.{JsObject, JsString}
 
 @Entity
 @DiscriminatorValue("W")
@@ -22,4 +23,10 @@ class WireLaunch extends Launch {
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="operator_id")
   var operator : Person = _
+  
+  override def jsonValues = {
+    Map(JsString("type") -> JsString("WireLaunch"),
+        JsString("wire_launcher_id") -> idToJson(wireLauncher))
+        //JsString("operator_id") -> idToJson(operator)) //TODO implement on server side
+  }
 }

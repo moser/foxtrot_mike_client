@@ -1,7 +1,7 @@
 package de.moserei.foxtrotmike.client.models
 
 import javax.persistence._
-import dispatch.json.JsObject
+import dispatch.json.{JsObject, JsString}
 import dispatch.json.Js._
 import de.moserei.foxtrotmike.client.models.repos.AllPlanes
 
@@ -14,6 +14,7 @@ class Plane extends BaseModel with UUIDHelper {
 
   var registration  = ""
   var make = ""
+  var status = "local"
   
   var competitionSign = ""
   //var group, 
@@ -43,5 +44,10 @@ class Plane extends BaseModel with UUIDHelper {
     canBeTowed = ('can_be_towed ! bool)(o)
     canBeWireLaunched = ('can_be_wire_launched ! bool)(o)
     disabled = ('disabled ! bool)(o)
+  }
+  
+  override def jsonValues = {
+    Map(JsString("registration") -> JsString(registration),
+        JsString("make") -> JsString(make))
   }
 }

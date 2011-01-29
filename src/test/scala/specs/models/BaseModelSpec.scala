@@ -2,7 +2,7 @@ package specs.models
 
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
-import dispatch.json.{JsObject, JsString, JsNumber}
+import dispatch.json.{JsObject, JsString, JsNumber, JsValue}
 
 import dispatch.json.Js._
 import de.moserei.foxtrotmike.client.models.BaseModel
@@ -12,6 +12,7 @@ class BaseModelSpec extends Spec with ShouldMatchers {
     var id = ""
     var name = ""
     var foo = 1
+    var status = "local"
 
     def this(o:JsObject) {
       this()
@@ -23,6 +24,10 @@ class BaseModelSpec extends Spec with ShouldMatchers {
       name = ('name ! str)(o)
       foo = ('foo ! num)(o).toInt
     }
+    
+    override def jsonValues = {
+      Map[JsString, JsValue]()
+    }
   }
 
   val o = new JsObject(Map(JsString("id") -> JsString("123.1"), JsString("name") -> JsString("lala"), JsString("foo") -> JsNumber(2)))
@@ -30,7 +35,7 @@ class BaseModelSpec extends Spec with ShouldMatchers {
   describe("BaseModel") {
     it("should be of local origin when created") {
       val m = new ConcreteModel
-      m.origin should equal ("local")
+      m.status should equal ("local")
     }
 
     it("should update it's attributes from a JsObject") {
@@ -43,7 +48,7 @@ class BaseModelSpec extends Spec with ShouldMatchers {
     it("should update it's origin") {
       val m = new ConcreteModel
       m.update(o)
-      m.origin should equal ("remote")
+      m.status should equal ("remote")
     }
 
     it("should set the id when constructed from a JsObject") {

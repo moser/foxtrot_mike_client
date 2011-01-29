@@ -1,7 +1,7 @@
 package de.moserei.foxtrotmike.client.models
 
 import javax.persistence._
-import dispatch.json.JsObject
+import dispatch.json.{JsObject, JsString}
 import dispatch.json.Js._
 import de.moserei.foxtrotmike.client.models.repos.AllAirfields
 
@@ -14,6 +14,7 @@ class Airfield extends BaseModel with UUIDHelper {
 
   var registration : String = ""
   var name : String = ""  
+  var status = "local"
 
   def this(o:JsObject) = {
     this()
@@ -31,5 +32,10 @@ class Airfield extends BaseModel with UUIDHelper {
       name
     else
       registration
+  }
+  
+  override def jsonValues = {
+    Map(JsString("registration") -> stringToJson(registration),
+        JsString("name") -> stringToJson(name))
   }
 }

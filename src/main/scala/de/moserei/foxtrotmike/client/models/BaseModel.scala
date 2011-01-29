@@ -1,6 +1,6 @@
 package de.moserei.foxtrotmike.client.models
 
-import dispatch.json.JsObject
+import dispatch.json.{JsObject, JsString, JsValue, JsNull}
 import dispatch.json.Js._
 import java.util.Date
 import javax.persistence._
@@ -9,6 +9,8 @@ abstract class BaseModel {
   var observers = List[Observer]()
   def id : String
   def id_=(s: String) : Unit
+  def status : String
+  def status_=(s: String) : Unit
   def save = {
     val persisted = isPersisted
     beforeSave(!persisted)
@@ -49,14 +51,33 @@ abstract class BaseModel {
   final def update(o:JsObject) : Unit = {
     //assert(id.equals(('id ! str)(o))) //hmm
     pUpdate(o)
-    origin = "remote"
+    status = "remote"
   }
   protected def pUpdate(o:JsObject) : Unit
+  
+  def toJson : JsObject = {
+    JsObject(Map(JsString("id") -> JsString(id)) ++ jsonValues);
+  }
+  
+  def jsonValues : Map[JsString, JsValue]
 
   @Temporal(TemporalType.TIMESTAMP)
   var created_at : Date = new Date
   @Temporal(TemporalType.TIMESTAMP)
   var updated_at : Date = new Date
-  var origin = "local"
+  
+  protected def stringToJson(s: String) = {
+    if(s == null) 
+      JsNull
+    else
+      JsString(s)
+  }
+  
+  protected def idToJson(o : { def id : String }) = {
+    if(o == null)
+      JsNull
+    else
+      JsString(o.id)
+  }
 }
 

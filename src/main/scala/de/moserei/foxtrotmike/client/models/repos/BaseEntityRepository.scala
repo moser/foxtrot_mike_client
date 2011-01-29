@@ -28,10 +28,8 @@ abstract class BaseEntityRepository[T <: BaseModel](implicit m:scala.reflect.Man
   }
 
   def syncDown(username: String, password: String, progressUpdater : Actor) = {
-    println(password)
     val http = new Http
     val req : Request = :/("localhost", 3000) / (toResource + ".json") as(username, password)
-    println(req.toString)
     val remote = http(req ># (list ! obj)) map (Symbol(toJsonClass) ! obj)
     remote.foreach((o:JsObject) => {
       progressUpdater ! (1.0 / remote.length.toDouble)
@@ -43,6 +41,18 @@ abstract class BaseEntityRepository[T <: BaseModel](implicit m:scala.reflect.Man
         r.update(o)
         r.save
       }
+    })
+  }
+  
+  def syncUp(username : String, password : String, progressUpdater : Actor) = {
+    val http = new Http
+    val req : Request = :/("localhost", 3000) / (toResource + ".json") << Map("json" -> true) as(username, password) 
+    val sync = all.filter(_.status == "local")
+    sync.foreach(e => {
+      progressUpdater ! (1.0 / sync.length.toDouble)
+      http(req << Map(toJsonClass + "_json" -> e.toJson.toString) >- ((x : String) => {
+        if(x == "OK") e.status = "synced"
+      }))
     })
   }
 

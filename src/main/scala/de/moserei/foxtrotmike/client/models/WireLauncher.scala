@@ -1,7 +1,7 @@
 package de.moserei.foxtrotmike.client.models
 
 import javax.persistence._
-import dispatch.json.JsObject
+import dispatch.json.{JsObject, JsString}
 import dispatch.json.Js._
 import de.moserei.foxtrotmike.client.models.repos.AllWireLaunchers
 
@@ -11,7 +11,8 @@ class WireLauncher extends BaseModel with UUIDHelper {
 
   @Id
   var id = createUUID
-  var registration : String = ""
+  var registration = ""
+  var status = "local"
 
   def this(o:JsObject) = {
     this()
@@ -24,4 +25,8 @@ class WireLauncher extends BaseModel with UUIDHelper {
   }
 
   override def toString = registration
+  
+  override def jsonValues = {
+    Map(JsString("registration") -> JsString(registration))
+  }
 }
