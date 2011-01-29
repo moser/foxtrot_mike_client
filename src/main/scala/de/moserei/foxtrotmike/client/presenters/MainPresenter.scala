@@ -24,17 +24,15 @@ class MainPresenter {
   }
 
   view.flightsTable.reactions += {
-    //case TableChanged(_) => println("tc")
     case TableUpdated(_, _, _) => {
       if(fp.model != null) {
         view.flightsTable.selection.rows.clear
         view.flightsTable.selection.rows.add(view.flightsTableModel.indexOf(fp.model))
       }
     }
-    //case TableStructureChanged(_) => println("tsc")
   }
   
-  view.flightPanel.btNew.reactions += {
+  view.btNew.reactions += {
     case ButtonClicked(_) => {
       val f = new Flight(DefaultsSingleton)
       f.save
@@ -44,9 +42,18 @@ class MainPresenter {
     }
   }
   
+  fp.view.btDelete.reactions += {
+    case ButtonClicked(_) => {
+      fp.model.delete
+      view.flightsTable.selection.rows.clear
+      if(view.flightsTableModel.getRowCount > 0) view.flightsTable.selection.rows.add(0)
+    }
+  }
+  
   view.unfinishedOnly.reactions += {
     case ButtonClicked(_) => {
       view.flightsTableModel.unfinishedOnly = view.unfinishedOnly.selected
+      if(view.flightsTableModel.getRowCount > 0) view.flightsTable.selection.rows.add(0)
     }
   }
 

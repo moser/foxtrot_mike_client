@@ -21,7 +21,6 @@ class TowLaunchPresenter(view0: TowLaunchView) extends BasePresenter[TowLaunch, 
     listenTo(view.arrivalTime)
     reactions += {
       case FocusLost(_, _, _) => {
-        println("at fl")
         updateModel
         updateView
       }

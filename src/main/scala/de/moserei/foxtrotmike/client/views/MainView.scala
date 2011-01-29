@@ -15,7 +15,9 @@ class MainView extends MainFrame {
     selection.elementMode = Table.ElementMode.Row
   }
   val unfinishedOnly = new CheckBox(I18n("flying-only"))
+  val btNew = new Button(I18n("new"))
   val flightsPanel = new MigPanel("ins 0, fill", "", "[25!][]") {
+    add(btNew)
     add(unfinishedOnly)
     add(new CheckBox(I18n("with-problems-only")))
     add(new CheckBox(I18n("colored")), "wrap")

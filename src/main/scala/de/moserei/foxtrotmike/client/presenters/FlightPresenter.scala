@@ -18,7 +18,6 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     if(f == null) { view.enabled = false }
     if(f != null) { view.enabled = true }
     _model = f
-    println(view.enabled)
   }
   model = null
   var wireLaunchPresenter : WireLaunchPresenter = _
@@ -46,12 +45,6 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     case ButtonClicked(_) => {
       updateModel
       model.save
-    }
-  }
-  
-  view.btDelete.reactions += {
-    case ButtonClicked(_) => {
-      model.delete
     }
   }
 
@@ -98,7 +91,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       case LaunchItem(_) => { 
         wireLaunchPresenter = null
         towLaunchPresenter = null
-        view.launchPanel = new MigPanel
+        view.launchPanel = new MigPanel("ins 0")
       }
     }
   }

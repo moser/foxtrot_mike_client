@@ -35,7 +35,6 @@ abstract class BaseModel {
   def afterDelete = {}
   
   def afterSaveInternal = {
-    println("afterSaveInternal")
     observers.foreach(o => {
       o.update(this)
     })

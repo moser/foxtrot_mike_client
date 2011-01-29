@@ -34,8 +34,8 @@ object I18n {
       case "close" => "Schließen"
       
       case "colored" => "farbig"
-      case "flying-only" => "Noch in der Luft"
-      case "with-problems-only" => "Mit Problemen"
+      case "flying-only" => "Nur Unvollendete"
+      case "with-problems-only" => "Nur mit Problemen"
       
       case "new" => "Neu"
       case "save" => "Speichern"

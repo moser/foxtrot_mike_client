@@ -13,7 +13,7 @@ class MyFormattedTextField(f: javax.swing.JFormattedTextField.AbstractFormatterF
   override lazy val peer: JFormattedTextField = new JFormattedTextField(f) with SuperMixin
 }
 
-class FlightView extends MigPanel("") {
+class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70!]3[70!]5[60!]5[120!]") {
   val departureDate = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
@@ -65,8 +65,7 @@ class FlightView extends MigPanel("") {
     launchPanelWrapper.add(_launchPanel, "grow")
     revalidate
   }
-  launchPanel = new MigPanel("")
-  val btNew = new Button(I18n("new"))
+  launchPanel = new MigPanel("ins 0")
   val btSave = new Button(I18n("save"))
   val btDelete = new Button(I18n("delete"))
   
@@ -81,20 +80,19 @@ class FlightView extends MigPanel("") {
   add(new Label(I18n("duration")))
   add(new Label(I18n("controller")), "wrap")
 
-  add(departureDate, "w 70")
-  peer.add(plane, "w 80")
-  peer.add(seat1, "w 120, sg names")
+  add(departureDate, "w 70!")
+  peer.add(plane, "w 80!")
+  peer.add(seat1, "w 120!, sg names")
   peer.add(seat2, "sg names")
-  peer.add(from, "w 80, sg airfields")
+  peer.add(from, "w 80!, sg airfields")
   peer.add(to, "sg airfields")
-  add(departureTime, "w 70, sg times")
+  add(departureTime, "w 70!, sg times")
   add(arrivalTime, "sg times")
-  add(duration, "w 60")
+  add(duration, "w 60!")
   peer.add(controller, "sg names, wrap")
   add(launchType)
-  add(launchPanelWrapper, "gap 0, grow, spanx 8, wrap")
-  add(btNew)
-  add(btSave)
+  add(launchPanelWrapper, "gap 0, grow, spanx 9, wrap")
+  add(btSave, "span 2")
   add(btDelete)
   
   var _enabled = true
