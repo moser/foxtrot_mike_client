@@ -2,25 +2,16 @@ package de.moserei.foxtrotmike.client.models
 
 import javax.persistence._
 import dispatch.json.{JsString, JsValue}
+import de.moserei.foxtrotmike.client.models.repos.AllFlights
 
 @Entity
 @DiscriminatorValue("F")
 class Flight extends AbstractFlight {
+  addObserver(AllFlights)
+
   @OneToOne(fetch=FetchType.EAGER, mappedBy="flight", cascade = Array(CascadeType.ALL))
   var launch : Launch = _
-
-  override def afterSave(create : Boolean) {
-    if(!create) {
-      FlightsTableModels.update(this)
-    } else {
-      FlightsTableModels.insert(this)
-    }
-  }
   
-  override def afterDelete = {
-    FlightsTableModels.remove(this)
-  }
-
   def this(d : Defaults) {
     this()
     from = d.airfield

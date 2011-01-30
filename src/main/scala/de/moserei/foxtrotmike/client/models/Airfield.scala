@@ -7,7 +7,7 @@ import de.moserei.foxtrotmike.client.models.repos.AllAirfields
 
 @Entity
 class Airfield extends BaseModel with UUIDHelper {
-  observers = AllAirfields :: observers
+  addObserver(AllAirfields)
   
   @Id
   var id : String = createUUID

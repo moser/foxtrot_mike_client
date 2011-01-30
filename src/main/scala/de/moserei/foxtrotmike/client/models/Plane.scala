@@ -7,7 +7,7 @@ import de.moserei.foxtrotmike.client.models.repos.AllPlanes
 
 @Entity
 class Plane extends BaseModel with UUIDHelper {
-  observers = AllPlanes :: observers
+  addObserver(AllPlanes)
   
   @Id
   var id : String = createUUID

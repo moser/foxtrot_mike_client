@@ -7,7 +7,7 @@ import de.moserei.foxtrotmike.client.models.repos.AllWireLaunchers
 
 @Entity
 class WireLauncher extends BaseModel with UUIDHelper {
-  observers = AllWireLaunchers :: observers
+  addObserver(AllWireLaunchers)
 
   @Id
   var id = createUUID

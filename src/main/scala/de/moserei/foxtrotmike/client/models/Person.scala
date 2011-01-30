@@ -7,7 +7,7 @@ import de.moserei.foxtrotmike.client.models.repos.AllPeople
 
 @Entity
 class Person extends BaseModel with UUIDHelper {
-  observers = AllPeople :: observers
+  addObserver(AllPeople)
 
   @Id
   var id : String = createUUID

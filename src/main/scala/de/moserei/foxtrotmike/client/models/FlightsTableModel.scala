@@ -5,7 +5,7 @@ import java.text.DateFormat
 import org.joda.time.DateTime
 import repos.AllFlights
 
-class FlightsTableModel extends AbstractTableModel {
+class FlightsTableModel extends AbstractTableModel with Observer {
   private var pUnfinishedOnly = false
   val dateFormatter = DateFormat.getDateInstance
   val timeFormatter = TimeFormatterFactory.getFormatter(null)
@@ -21,7 +21,7 @@ class FlightsTableModel extends AbstractTableModel {
                   ("duration", { f: Flight => f.durationString }))
   var all : Seq[Flight] = Nil
   var update_all = true
-  FlightsTableModels.addInstance(this)
+  AllFlights.addObserver(this)
     
   override def getRowCount = {
     getAll.length
@@ -56,23 +56,38 @@ class FlightsTableModel extends AbstractTableModel {
 
   def indexOf(f : Flight) = getAll.indexOf(f) 
 
-  def insert(f : Flight) = {
-    update_all = true
-    val i = indexOf(f)
-    fireTableRowsInserted(i, i)
+  def created(m : BaseModel) = {
+    m match {
+      case f : Flight => {
+        update_all = true
+        val i = indexOf(f)
+        fireTableRowsInserted(i, i)
+      }
+      case _ => {}
+    }
   }
 
-  def update(f : Flight) = {
-    val i = indexOf(f) //index before update
-    update_all = true
-    val j = indexOf(f)
-    fireTableRowsUpdated(i, j)
+  def updated(m : BaseModel) = {
+   m match {
+      case f : Flight => {
+        val i = indexOf(f) //index before update
+        update_all = true
+        val j = indexOf(f)
+        fireTableRowsUpdated(i, j)
+      }
+      case _ => {}
+    }
   }
   
-  def remove(f : Flight) {
-    val i = indexOf(f)
-    update_all = true
-    fireTableRowsDeleted(i, i)
+  def removed(m : BaseModel) {
+   m match {
+      case f : Flight => {
+        val i = indexOf(f)
+        update_all = true
+        fireTableRowsDeleted(i, i)
+      }
+      case _ => {}
+    }
   }
   
   def unfinishedOnly = pUnfinishedOnly

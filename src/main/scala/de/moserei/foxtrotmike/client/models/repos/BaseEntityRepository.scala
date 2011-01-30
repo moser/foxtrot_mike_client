@@ -3,11 +3,11 @@ package de.moserei.foxtrotmike.client.models.repos
 import scalaj.collection.Imports._
 import dispatch.json.JsHttp._
 import dispatch.json.JsObject
-import de.moserei.foxtrotmike.client.models.{EntityMgr, BaseModel, Observer}
+import de.moserei.foxtrotmike.client.models.{EntityMgr, BaseModel, Observer, Observalbe}
 import dispatch._
 import scala.actors.Actor
 
-abstract class BaseEntityRepository[T <: BaseModel](implicit m:scala.reflect.Manifest[T]) extends Observer {
+abstract class BaseEntityRepository[T <: BaseModel](implicit m:scala.reflect.Manifest[T]) extends Observer with Observalbe {
   lazy val allQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x")
   lazy val firstQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x").setMaxResults(1)
   
@@ -59,9 +59,24 @@ abstract class BaseEntityRepository[T <: BaseModel](implicit m:scala.reflect.Man
   def toResource =  toJsonClass + "s"
   def toJsonClass = m.erasure.getSimpleName.toLowerCase
   
-  def update(a : BaseModel) = {
+  def created(a : BaseModel) = {
+    markDirty(a)
+    notifyCreated(a)
+  }
+  
+  def updated(a : BaseModel) = {
+    markDirty(a)
+    notifyUpdated(a)
+  }
+  
+  def removed(a : BaseModel) = {
+    markDirty(a)
+    notifyRemoved(a)
+  }
+  
+  private def markDirty(a : BaseModel) = {
     a match {
-      case airfield : T => {
+      case model : T => {
         dirty = true
       }
       case _ => {}
