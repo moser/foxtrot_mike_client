@@ -27,8 +27,14 @@ class MainView extends MainFrame {
   val flightPanel = new FlightView
   val defaultsPanel = new DefaultsView
   
+  val btSync = new Button(I18n("sync"))
+  val actionPanel = new MigPanel {
+    add(btSync)
+  }
+  
   tabs.pages += new TabbedPane.Page(I18n("flight"), flightPanel)
   tabs.pages += new TabbedPane.Page(I18n("defaults"), defaultsPanel)
+  tabs.pages += new TabbedPane.Page(I18n("actions"), actionPanel)
   
   contents = new SplitPane {
     dividerSize = 12

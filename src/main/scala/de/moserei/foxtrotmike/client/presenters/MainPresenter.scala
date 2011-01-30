@@ -46,18 +46,31 @@ class MainPresenter {
     case ButtonClicked(_) => {
       fp.model.delete
       view.flightsTable.selection.rows.clear
-      if(view.flightsTableModel.getRowCount > 0) view.flightsTable.selection.rows.add(0)
+      selectFirstOrNull
     }
   }
   
   view.unfinishedOnly.reactions += {
     case ButtonClicked(_) => {
       view.flightsTableModel.unfinishedOnly = view.unfinishedOnly.selected
-      if(view.flightsTableModel.getRowCount > 0) view.flightsTable.selection.rows.add(0)
+      selectFirstOrNull
+    }
+  }
+  
+  view.btSync.reactions += {
+    case ButtonClicked(_) => {
+      sp.view.open
     }
   }
 
   def nop {}  
+  
+  private def selectFirstOrNull = {
+    if(view.flightsTableModel.getRowCount > 0) 
+      view.flightsTable.selection.rows.add(0)
+    else
+      fp.model = null
+  }
   
   sp.view.open
 }
