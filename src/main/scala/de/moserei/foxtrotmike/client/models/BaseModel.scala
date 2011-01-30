@@ -32,6 +32,8 @@ abstract class BaseModel extends Observalbe {
       notifyRemoved(this)
     }
   }
+  
+  def isValid = true
 
   def beforeSave(create : Boolean) = {}
   def afterSave(create : Boolean) = {}

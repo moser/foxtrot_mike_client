@@ -57,6 +57,20 @@ class MainPresenter {
     }
   }
   
+  view.problemsOnly.reactions += {
+    case ButtonClicked(_) => {
+      view.flightsTableModel.problemsOnly = view.problemsOnly.selected
+      selectFirstOrNull
+    }
+  }
+  
+  view.colored.reactions += {
+    case ButtonClicked(_) => {
+      view.flightsTable.repaint
+      
+    }
+  }
+  
   view.btSync.reactions += {
     case ButtonClicked(_) => {
       sp.view.open

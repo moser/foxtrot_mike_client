@@ -2,7 +2,7 @@ package specs.models
 
 import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
-import de.moserei.foxtrotmike.client.models.Flight
+import de.moserei.foxtrotmike.client.models.{Airfield, Flight, Person, Plane}
 
 class FlightSpec extends Spec with ShouldMatchers {
   describe("A flight") {
@@ -71,6 +71,23 @@ class FlightSpec extends Spec with ShouldMatchers {
       f.finished should equal (false)
       f.arrivalTime = 70 //1:10
       f.finished should equal (true)
+    }
+    
+    it("should only be valid if all the required attributes are set") {
+      val f = new Flight
+      f should not be ('valid)
+      f.plane = new Plane
+      f should not be ('valid)
+      f.seat1 = new Person
+      f should not be ('valid)
+      f.departureTime = 10 //0:10
+      f should not be ('valid)
+      f.controller = new Person
+      f should not be ('valid)
+      f.from = new Airfield
+      f should not be ('valid)
+      f.to = new Airfield
+      f should be ('valid)
     }
   }
 }

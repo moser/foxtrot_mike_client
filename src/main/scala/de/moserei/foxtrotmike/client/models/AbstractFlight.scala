@@ -83,4 +83,9 @@ abstract class AbstractFlight extends BaseModel with UUIDHelper {
         JsString("departure_time") -> JsNumber(departureTime),
         JsString("departure_date") -> JsString(dt(departureDate).toString("yyyy-MM-dd")))
   }
+  
+  override def isValid = {
+    //TODO remove departureTime >+= 0 when implemented on the server
+    plane != null && seat1 != null && departureTime >= 0 && controller != null && from != null && to != null
+  }
 }

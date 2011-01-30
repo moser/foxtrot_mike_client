@@ -7,6 +7,7 @@ import repos.AllFlights
 
 class FlightsTableModel extends AbstractTableModel with Observer {
   private var pUnfinishedOnly = false
+  private var pProblemsOnly = false
   val dateFormatter = DateFormat.getDateInstance
   val timeFormatter = TimeFormatterFactory.getFormatter(null)
   def int2Object(o: Int): Object = o.asInstanceOf[AnyRef]
@@ -42,6 +43,10 @@ class FlightsTableModel extends AbstractTableModel with Observer {
   }
   
   override def isCellEditable(r: Int, c: Int): Boolean = false
+  
+  def get(i : Int) = {
+    getAll(i)
+  }
 
   def getAll = {
     if(update_all) {
@@ -49,6 +54,7 @@ class FlightsTableModel extends AbstractTableModel with Observer {
       def dt(f:Flight) = new DateTime(f.departureDate)
       all = AllFlights.all.sortWith((f1, f2) => dt(f1).compareTo(dt(f2)) == -1 || (dt(f1).compareTo(dt(f2)) == 0 && departureTimeX(f1) < departureTimeX(f2))).reverse
       if(pUnfinishedOnly) all = all.filter(!_.finished) 
+      if(pProblemsOnly) all = all.filter(!_.isValid) 
       update_all = false
     }
     all
@@ -93,6 +99,13 @@ class FlightsTableModel extends AbstractTableModel with Observer {
   def unfinishedOnly = pUnfinishedOnly
   def unfinishedOnly_=(t : Boolean) = {
     pUnfinishedOnly = t
+    update_all = true
+    fireTableDataChanged()
+  } 
+  
+  def problemsOnly = pProblemsOnly
+  def problemsOnly_=(t : Boolean) = {
+    pProblemsOnly = t
     update_all = true
     fireTableDataChanged()
   } 
