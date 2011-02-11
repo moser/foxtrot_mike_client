@@ -1,9 +1,10 @@
 package de.moserei.foxtrotmike.client.presenters
 
-import de.moserei.foxtrotmike.client.views.{ FlightView, MigPanel }
+import de.moserei.foxtrotmike.client.views.{ FlightView, MigPanel, MyFormattedTextField }
 import de.moserei.foxtrotmike.client.models.{ Flight, WireLaunch, TowLaunch, LaunchItem }
+import org.joda.time.DateTime
 import scala.swing.event._
-import scala.swing.Component
+import scala.swing.{Component, TextComponent}
 import java.util.Date
 import swing.Reactor
 import java.awt.Color
@@ -56,6 +57,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   
   view.launchType.selection.reactions += {
     case SelectionChanged(_) => {
+      updateModel
       model.launchType = view.launchType.selection.item.back
       updateView
     }
@@ -65,6 +67,24 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     case ButtonClicked(_) => {
       updateModel
       model.save
+    }
+  }
+  
+  val timeSetter = new Reactor {
+    def setCurrentTime(where:MyFormattedTextField) = {
+      var dt = new DateTime
+      if(dt.getSecondOfMinute > 30) { dt = dt.plusMinutes(1) }
+      where.text = String.format("%d:%02d", dt.getHourOfDay.asInstanceOf[AnyRef], dt.getMinuteOfHour.asInstanceOf[AnyRef])
+      updateModel
+      updateView
+    }
+  
+    listenTo(view.btDepartureTime, view.btArrivalTime)
+    reactions += {
+      case ButtonClicked(c) => {
+        if(c.equals(view.btDepartureTime)) setCurrentTime(view.departureTime)
+        if(c.equals(view.btArrivalTime)) setCurrentTime(view.arrivalTime)
+      }
     }
   }
 

@@ -17,7 +17,6 @@ class MainPresenter {
         var i = view.flightsTable.selection.rows.head
         if(i >= 0) {
           fp.model = view.flightsTableModel.getAll.apply(i)
-          fp.updateView
         }
       }
     }

@@ -24,6 +24,7 @@ class MainView extends MainFrame {
     model = flightsTableModel
     selection.intervalMode = Table.IntervalMode.Single
     selection.elementMode = Table.ElementMode.Row
+    focusable = false
 
     override def rendererComponent(isSelected: Boolean, focused: Boolean, row: Int, column: Int): Component = {
       val c = super.rendererComponent(isSelected, focused, row, column)
@@ -63,12 +64,12 @@ class MainView extends MainFrame {
   val problemsOnly = new CheckBox(I18n("with-problems-only"))
   val colored = new CheckBox(I18n("colored"))
   val btNew = new Button(I18n("new"))
-  val flightsPanel = new MigPanel("ins 0, fill", "", "[25!][]") {
+  val flightsPanel = new MigPanel("ins 0, fill", "", "[grow 0][fill]") {
     add(btNew)
     add(unfinishedOnly)
     add(problemsOnly)
     add(colored, "wrap")
-    add(new ScrollPane(flightsTable), "gap 0, dock south, grow")
+    add(new ScrollPane(flightsTable), "gap 0, span 4, w 100%")
   }
   
   val flightPanel = new FlightView

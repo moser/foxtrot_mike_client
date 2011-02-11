@@ -2,15 +2,30 @@ package de.moserei.foxtrotmike.client.views
 
 import swing._
 import java.text.DateFormat
-import javax.swing.JFormattedTextField
+import java.awt.Insets
+import javax.swing.{JFormattedTextField, Icon}
 import de.moserei.foxtrotmike.client.models.repos._
 import de.moserei.foxtrotmike.client.models._
 import de.moserei.foxtrotmike.client.views.AutoCompleter.DefaultItemRenderer
 import java.awt.Color
+import com.wordpress.tips4java.ComponentBorder
 
 
 class MyFormattedTextField(f: javax.swing.JFormattedTextField.AbstractFormatterFactory) extends FormattedTextField(null) {
-  override lazy val peer: JFormattedTextField = new JFormattedTextField(f) with SuperMixin
+  override lazy val peer: JFormattedTextField = new JFormattedTextField(f) with SuperMixin {
+    override def processFocusEvent(e:java.awt.event.FocusEvent) {
+      super.processFocusEvent(e)
+      selectAll
+    }
+  }
+}
+
+class InnerButton extends Button("   ") {
+  focusable = false
+  margin = new Insets(0,0,0,0)
+  focusPainted = false
+  borderPainted = false
+  border = null
 }
 
 class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70!]3[70!]5[60!]5[120!]") {
@@ -45,8 +60,13 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
 	}
   val from = new AutoCompleter(new DefaultAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
   val to = new AutoCompleter(new DefaultAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
+  
+  val btDepartureTime = new InnerButton()
   val departureTime = new MyFormattedTextField(TimeFormatterFactory)
+  new ComponentBorder(btDepartureTime.peer).install(departureTime.peer)
+  val btArrivalTime = new InnerButton()
   val arrivalTime = new MyFormattedTextField(TimeFormatterFactory)
+  new ComponentBorder(btArrivalTime.peer).install(arrivalTime.peer)
   val duration = new TextField {
     enabled = false
   }
@@ -100,7 +120,9 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
   override def enabled_=(b:Boolean) = {
     _enabled = b
     departureDate.enabled = b
+    btDepartureTime.enabled = b
     departureTime.enabled = b
+    btArrivalTime.enabled = b
     arrivalTime.enabled = b
     launchType.enabled = b
     
