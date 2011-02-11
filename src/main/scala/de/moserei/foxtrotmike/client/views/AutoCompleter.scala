@@ -27,6 +27,9 @@ object AutoCompleter {
   class NilOption[T >: Null <: AnyRef] extends AutoCompleter.SyntheticOption[T] {
     override def toStringForList = "-"
     override def toStringForTextfield = ""
+    override def equals(o:Any) = {
+      o.isInstanceOf[NilOption[T]]
+    }
   }
 
   class RealOption[T >: Null <: AnyRef](e : T) extends AutoCompleter.Option[T] {
@@ -36,6 +39,13 @@ object AutoCompleter {
     override def toString() = e.toString
     override def toStringForList = toString
     override def toStringForTextfield = toString
+    override def equals(o:Any) = {
+      if(o.isInstanceOf[RealOption[T]]) { 
+        o.asInstanceOf[RealOption[T]].get.equals(e) 
+      } else {
+        false
+      }
+    }
   }
 
   /**
@@ -83,7 +93,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
     }
   })
 	private val popup = new JScrollPane(popupList)
-	popup.setSize(new Dimension(100, 80))
+	popup.setSize(new Dimension(120, 80))
 	popup.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED)
 	popupList.addMouseListener(this)
 	popupList.addKeyListener(this)
@@ -97,7 +107,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 		this(m, new AutoCompleter.DefaultItemRenderer[T])
 	}
 
-  private val H = 120
+  private val H = 150
   private val KEYS_UP = List(KeyEvent.VK_UP, KeyEvent.VK_PAGE_UP)
 	private val KEYS_DOWN = List(KeyEvent.VK_DOWN, KeyEvent.VK_PAGE_DOWN)
 	private val KEYS_ACCEPT = List(KeyEvent.VK_ENTER)
@@ -125,10 +135,12 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 
 	private def setupPopup {
 		findTopLevelContainer.add(popup)
-		findTopLevelContainer.setLayer(popup, 300)
+		findTopLevelContainer.setLayer(popup, 3452356)
     setup = true
 	}
 
+
+  //TODO use JPopupMenu: http://www.thatsjava.com/java-swing/19667/
 	private def showPopup {
 		if(!setup) setupPopup
 		popup.setVisible(true)
@@ -145,11 +157,11 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 				popupListModel.add(i, o)
         i = i + 1
 			})
-			popupList.setSelectedValue(selectedItem, true)
+			popupList.setSelectedValue(pSelectedItem, true)
 			if(popupList.getSelectedIndex() == -1 && popupListModel.getSize() > 0) popupList.setSelectedIndex(0);
 			val l = SwingUtilities.convertPoint(this, popup.getLocation(), popup)
 			val add = if(popupList.getPreferredSize().getHeight() > H) 30 else 10
-			popup.setBounds(l.x, l.y + getHeight(), max(getWidth() + add, popupList.getPreferredSize().getWidth() + add).toInt, min(popupList.getPreferredSize().getHeight() + 10, 120).toInt)
+			popup.setBounds(l.x, l.y + getHeight(), max(getWidth() + add, popupList.getPreferredSize().getWidth() + add).toInt, min(popupList.getPreferredSize().getHeight() + 10, 150).toInt)
 			popup.setLocation(new Point(l.x, l.y + getHeight()))
 		}
 	}
