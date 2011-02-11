@@ -16,6 +16,7 @@ class TowFlight extends AbstractFlight {
     this(launch0)
     plane = d.towPlane
     seat1 = d.towPilot
+    to = d.airfield
   }
 
   @OneToOne(fetch=FetchType.EAGER, mappedBy="towFlight", cascade = Array(CascadeType.ALL))
