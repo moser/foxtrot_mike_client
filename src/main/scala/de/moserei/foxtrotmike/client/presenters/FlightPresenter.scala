@@ -18,6 +18,26 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     if(f == null) { view.enabled = false }
     if(f != null) { view.enabled = true }
     _model = f
+    if(f != null) {
+      updateView
+      if(!f.isValid) {
+        f.invalidFields.head match {
+          case "plane" => view.plane.requestFocusInWindow
+          case "seat1" => view.seat1.requestFocusInWindow
+          case "from" => view.from.requestFocusInWindow
+          case "to" => view.to.requestFocusInWindow
+          case "departureTime" => view.departureTime.requestFocusInWindow
+          case "controller" => view.controller.requestFocusInWindow
+          case _ => {}
+        }
+      } else if(!f.finished) {
+        if(f.departureTime < 0) {
+          view.departureTime.requestFocusInWindow
+        } else {
+          view.arrivalTime.requestFocusInWindow
+        }
+      }
+    }
   }
   model = null
   var wireLaunchPresenter : WireLaunchPresenter = _

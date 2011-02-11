@@ -34,6 +34,7 @@ abstract class BaseModel extends Observalbe {
   }
   
   def isValid = true
+  def invalidFields = List[String]()
 
   def beforeSave(create : Boolean) = {}
   def afterSave(create : Boolean) = {}

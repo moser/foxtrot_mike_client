@@ -85,7 +85,18 @@ abstract class AbstractFlight extends BaseModel with UUIDHelper {
   }
   
   override def isValid = {
+    invalidFields.isEmpty
+  }
+  
+  override def invalidFields = {
     //TODO remove departureTime >+= 0 when implemented on the server
-    plane != null && seat1 != null && departureTime >= 0 && controller != null && from != null && to != null
+    var r = List[String]()
+    if(plane == null) { r = r :+ "plane" }
+    if(seat1 == null) { r = r :+ "seat1" }
+    if(from == null) { r = r :+ "from" }
+    if(to == null) { r = r :+ "to" }
+    if(departureTime < 0) { r = r :+ "departureTime" }
+    if(controller == null) { r = r :+ "controller" }
+    r
   }
 }
