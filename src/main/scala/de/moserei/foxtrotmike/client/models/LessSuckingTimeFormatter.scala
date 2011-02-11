@@ -6,6 +6,7 @@ import javax.swing.JFormattedTextField
 
 class LessSuckingTimeFormatter extends DefaultFormatter {
   setCommitsOnValidEdit(true)
+  setOverwriteMode(false)
   implicit def string2Int(s: String): Int = augmentString(s).toInt
   implicit def object2Int(o: Object): Int = o.asInstanceOf[Int]
   def int2Object(o: Int): Object = o.asInstanceOf[AnyRef]
@@ -32,26 +33,6 @@ class LessSuckingTimeFormatter extends DefaultFormatter {
       "%02d:%02d".format(o / 60, o % 60)
     else
       ""
-  }
-
-  class TimeDocumentFilter extends DocumentFilter {
-    override def insertString(fb : DocumentFilter.FilterBypass, offset : Int, str : String, attr : AttributeSet) {}
-    override def replace(fb : DocumentFilter.FilterBypass, offset : Int, length : Int, str : String, attr : AttributeSet) {
-      if(offset != fb.getDocument.getLength)
-        fb.replace(offset, str.length, str, attr)
-    }
-    override def remove(fb : DocumentFilter.FilterBypass, offset : Int, length : Int) {}
-  }
-
-  class TimeNavigationFilter extends NavigationFilter {
-    override def setDot(fb: NavigationFilter.FilterBypass, offset : Int, bias : Position.Bias) {
-      if(offset == 2)
-        super.setDot(fb, offset + (offset - fb.getCaret.getDot), bias)
-      else
-        super.setDot(fb, offset, bias)
-    }
-
-    override def moveDot(fb: NavigationFilter.FilterBypass, dot : Int, bias : Position.Bias) {}
   }
 }
 
