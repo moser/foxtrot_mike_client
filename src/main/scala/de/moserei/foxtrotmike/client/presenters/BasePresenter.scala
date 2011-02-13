@@ -10,11 +10,11 @@ abstract class BasePresenter[M,V] {
     def updateView(m:M, v:V) = mtv(m,v)
   }
 
-  def updateModel {
+  def updateModel = {
     if(model != null) mappings.map(m => m.updateModel(model, view))
   }
 
-  def updateView {
+  def updateView = {
     if(model != null) mappings.map(m => m.updateView(model, view))
   }
 

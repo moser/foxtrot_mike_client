@@ -7,6 +7,7 @@ import de.moserei.foxtrotmike.client.models.repos._
 import de.moserei.foxtrotmike.client.models._
 import de.moserei.foxtrotmike.client.views.AutoCompleter.DefaultItemRenderer
 import java.awt.Color
+import com.wordpress.tips4java.ComponentBorder
 
 
 class TowLaunchView extends MigPanel("ins 0", "[80!]5[120!]5[120!]5[80!]3[80!]5[70!]3[70!]5[60!]") {
@@ -37,7 +38,10 @@ class TowLaunchView extends MigPanel("ins 0", "[80!]5[120!]5[120!]5[80!]3[80!]5[
     }
 	}
   val to = new AutoCompleter(new DefaultAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
+  
+  val btArrivalTime = new InnerButton()
   val arrivalTime = new MyFormattedTextField(TimeFormatterFactory)
+  new ComponentBorder(btArrivalTime.peer).install(arrivalTime.peer)
   val duration = new TextField {
     enabled = false
   }

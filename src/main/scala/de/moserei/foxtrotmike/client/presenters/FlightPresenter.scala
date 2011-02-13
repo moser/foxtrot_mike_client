@@ -53,22 +53,9 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     }
   }
   
-  val timeSetter = new Reactor {
-    def setCurrentTime(where:MyFormattedTextField) = {
-      var dt = new DateTime
-      if(dt.getSecondOfMinute > 30) { dt = dt.plusMinutes(1) }
-      where.text = String.format("%d:%02d", dt.getHourOfDay.asInstanceOf[AnyRef], dt.getMinuteOfHour.asInstanceOf[AnyRef])
-      updateModel
-      updateView
-    }
-  
-    listenTo(view.btDepartureTime, view.btArrivalTime)
-    reactions += {
-      case ButtonClicked(c) => {
-        if(c.equals(view.btDepartureTime)) setCurrentTime(view.departureTime)
-        if(c.equals(view.btArrivalTime)) setCurrentTime(view.arrivalTime)
-      }
-    }
+  val timeSetter = new TimeSetter(this) { 
+    add(view.btDepartureTime, view.departureTime)
+    add(view.btArrivalTime, view.arrivalTime)
   }
 
   val timeFocus = new Reactor {

@@ -26,4 +26,8 @@ class TowLaunchPresenter(view0: TowLaunchView) extends BasePresenter[TowLaunch, 
       }
     }
   }
+  
+  val timeSetter = new TimeSetter(this) { 
+    add(view.btArrivalTime, view.arrivalTime)
+  }
 }

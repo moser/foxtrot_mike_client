@@ -20,14 +20,6 @@ class MyFormattedTextField(f: javax.swing.JFormattedTextField.AbstractFormatterF
   }
 }
 
-class InnerButton extends Button("   ") {
-  focusable = false
-  margin = new Insets(0,0,0,0)
-  focusPainted = false
-  borderPainted = false
-  border = null
-}
-
 class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70!]3[70!]5[60!]5[120!]") {
   val departureDate = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
