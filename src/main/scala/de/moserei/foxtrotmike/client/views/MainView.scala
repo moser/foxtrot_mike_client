@@ -24,7 +24,6 @@ class MainView extends MainFrame {
     model = flightsTableModel
     selection.intervalMode = Table.IntervalMode.Single
     selection.elementMode = Table.ElementMode.Row
-    focusable = false
 
     override def rendererComponent(isSelected: Boolean, focused: Boolean, row: Int, column: Int): Component = {
       val c = super.rendererComponent(isSelected, focused, row, column)
