@@ -92,16 +92,18 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
       l
     }
   })
-	private val popup = new JScrollPane(popupList)
-	popup.setSize(new Dimension(120, 80))
-	popup.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED)
+	private val popup = new JPopupMenu();
+	popup.setPopupSize(new Dimension(120, 80))
+	val popupScrollPane = new JScrollPane(popupList)
+	popupScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED)
+	popup.add(popupScrollPane);
+	popup.setBorderPainted(false)
 	popupList.addMouseListener(this)
 	popupList.addKeyListener(this)
 	popupList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
 	popupList.setFocusable(false)
   private var topLevelContainer : JLayeredPane = null
 	private var previousText = ""
-  private var setup = false
 
   def this(m : AutoCompleter.AutoCompleterModel[T]) {
 		this(m, new AutoCompleter.DefaultItemRenderer[T])
@@ -116,39 +118,17 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 					KeyEvent.VK_PAGE_DOWN, KeyEvent.VK_HOME, KeyEvent.VK_END,
 					KeyEvent.VK_ENTER, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
 					KeyEvent.VK_KP_LEFT, KeyEvent.VK_KP_RIGHT)
-	
 
-	private def findTopLevelContainer = {
-		if (topLevelContainer == null) {
-			var parent : Container = this
-			var found = false
-			while (!found) {
-				parent = parent.getParent()
-				if (parent.isInstanceOf[RootPaneContainer]) {
-					topLevelContainer = parent.asInstanceOf[RootPaneContainer].getLayeredPane
-					found = true;
-				}
-			}
-		}
-		topLevelContainer
-	}
-
-	private def setupPopup {
-		findTopLevelContainer.add(popup)
-		findTopLevelContainer.setLayer(popup, 3452356)
-    setup = true
-	}
-
-
-  //TODO use JPopupMenu: http://www.thatsjava.com/java-swing/19667/
 	private def showPopup {
-		if(!setup) setupPopup
+		val l = SwingUtilities.convertPoint(this, popup.getLocation(), popup)
+		popup.setLocation(l.x, l.y + getHeight())
 		popup.setVisible(true)
 		updatePopup
+		
 	}
 
 	private def updatePopup {
-		if (!setup || !popup.isVisible) {
+		if (!popup.isVisible) {
 			showPopup
 		} else {
 			popupListModel.removeAllElements
@@ -159,10 +139,8 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 			})
 			popupList.setSelectedValue(pSelectedItem, true)
 			if(popupList.getSelectedIndex() == -1 && popupListModel.getSize() > 0) popupList.setSelectedIndex(0);
-			val l = SwingUtilities.convertPoint(this, popup.getLocation(), popup)
-			val add = if(popupList.getPreferredSize().getHeight() > H) 30 else 10
-			popup.setBounds(l.x, l.y + getHeight(), max(getWidth() + add, popupList.getPreferredSize().getWidth() + add).toInt, min(popupList.getPreferredSize().getHeight() + 10, 150).toInt)
-			popup.setLocation(new Point(l.x, l.y + getHeight()))
+			val add = if(popupList.getPreferredSize().getHeight() > H) 35 else 15
+			popup.setPopupSize(max(getWidth(), popupList.getPreferredSize().getWidth()).toInt + add, min(popupList.getPreferredSize().getHeight() + 18, H).toInt)
 		}
 	}
 
