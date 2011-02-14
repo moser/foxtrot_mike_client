@@ -8,8 +8,8 @@ class SyncView extends Dialog {
   modal = true
   preferredSize = new Dimension(450, 180)
   resizable = false
-  val username = new TextField("admin")
-  val password = new PasswordField("admin")
+  val username = new TextField()
+  val password = new PasswordField()
   val btUp = new Button(I18n("sync.up"))
   val btDown = new Button(I18n("sync.down"))
   val btNo = new Button(I18n("close"))

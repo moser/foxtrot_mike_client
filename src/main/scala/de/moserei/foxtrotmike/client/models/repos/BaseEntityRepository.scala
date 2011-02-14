@@ -3,7 +3,7 @@ package de.moserei.foxtrotmike.client.models.repos
 import scalaj.collection.Imports._
 import dispatch.json.JsHttp._
 import dispatch.json.JsObject
-import de.moserei.foxtrotmike.client.models.{EntityMgr, BaseModel, Observer, Observalbe}
+import de.moserei.foxtrotmike.client.models.{EntityMgr, BaseModel, Observer, Observalbe, Config}
 import dispatch._
 import scala.actors.Actor
 
@@ -29,7 +29,7 @@ abstract class BaseEntityRepository[T <: BaseModel](implicit m:scala.reflect.Man
 
   def syncDown(username: String, password: String, progressUpdater : Actor) = {
     val http = new Http
-    val req : Request = :/("localhost", 3000) / (toResource + ".json") as(username, password)
+    val req : Request = :/(Config.server, Config.port) / (toResource + ".json") as(username, password)
     val remote = http(req ># (list ! obj)) map (Symbol(toJsonClass) ! obj)
     remote.foreach((o:JsObject) => {
       progressUpdater ! (1.0 / remote.length.toDouble)

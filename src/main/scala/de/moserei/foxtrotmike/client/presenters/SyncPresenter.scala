@@ -2,7 +2,7 @@ package de.moserei.foxtrotmike.client.presenters
 
 import de.moserei.foxtrotmike.client.views.SyncView
 import de.moserei.foxtrotmike.client.models.repos._
-import de.moserei.foxtrotmike.client.models.I18n
+import de.moserei.foxtrotmike.client.models.{I18n, Config}
 import swing.event._
 import scala.actors.Actor._
 import scala.swing.Dialog
@@ -11,6 +11,8 @@ class SyncPresenter {
   val view = new SyncView
   val down = List(AllAirfields.syncDown(_,_,_), AllPeople.syncDown(_,_,_), AllPlanes.syncDown(_,_,_), AllWireLaunchers.syncDown(_,_,_))
   val up = List(AllAirfields.syncUp(_,_,_), AllPeople.syncUp(_,_,_), AllPlanes.syncUp(_,_,_), AllWireLaunchers.syncUp(_,_,_))
+  
+  view.username.text = Config.lastUser
   
   view.btDown.reactions += {
     case ButtonClicked(_) => {
@@ -25,6 +27,7 @@ class SyncPresenter {
   }
   
   private def sync(dirUp : Boolean) = {
+    Config.lastUser = view.username.text
     view.progress.value = 0
     var progressUpdater = actor {
       var done = false
