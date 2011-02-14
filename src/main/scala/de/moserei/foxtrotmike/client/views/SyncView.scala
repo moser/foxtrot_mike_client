@@ -28,4 +28,21 @@ class SyncView extends Dialog {
     add(btNo, "wrap")
     add(progress, "span 3, grow")
   }
+  
+  private var _enabled = true
+  def enabled = _enabled
+  def enabled_=(b:Boolean) = {
+    _enabled = b
+    username.enabled = b
+    password.enabled = b
+    btUp.enabled = b
+    btDown.enabled = b
+    btNo.enabled = b
+    
+    if(!b) {
+      peer.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE)
+    } else {
+      peer.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE)
+    }
+  }
 }

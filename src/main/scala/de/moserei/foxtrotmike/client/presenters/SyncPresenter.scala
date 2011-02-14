@@ -28,6 +28,7 @@ class SyncPresenter {
   
   private def sync(dirUp : Boolean) = {
     Config.lastUser = view.username.text
+    view.enabled = false
     view.progress.value = 0
     var progressUpdater = actor {
       var done = false
@@ -37,6 +38,7 @@ class SyncPresenter {
           case false => {
             view.progress.value = 100
             done = true
+            view.enabled = true
           }
         }
       }
@@ -76,7 +78,9 @@ class SyncPresenter {
   
   view.btNo.reactions += {
     case ButtonClicked(_) => {
-      view.close
+      if(view.enabled) {
+        view.close
+      }
     }
   } 
 }
