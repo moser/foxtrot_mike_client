@@ -172,6 +172,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 	private def pSelectedItem_=(o : AutoCompleter.Option[T]) {
 		model.selectedItem = o
 		setText(itemRenderer.renderForTextfield(o))
+		setCaretPosition(0)
 	}
 
 	def selectedItem : T = pSelectedItem.get
@@ -185,11 +186,11 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 			selectCurrentElement
 			hidePopup
 		}
+		setCaretPosition(0)
 	}
 
 	override def focusGained(e : FocusEvent) {
-		setSelectionStart(0)
-		setSelectionEnd(getText.length)
+		selectAll
 		model.forceUpdate
 		updatePopup
 	}
