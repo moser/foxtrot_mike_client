@@ -12,11 +12,16 @@ class TowFlight extends AbstractFlight {
     towLaunch = launch0
   }
   
-  def this(launch0: TowLaunch, d : Defaults) {
+  def this(launch0: TowLaunch, d : Defaults) = {
     this(launch0)
     plane = d.towPlane
     seat1 = d.towPilot
     to = d.airfield
+  }
+  
+  def this(launch0: TowLaunch, f : TowFlight) = {
+    this(launch0)
+    copyFrom(f)
   }
 
   @OneToOne(fetch=FetchType.EAGER, mappedBy="towFlight", cascade = Array(CascadeType.ALL))

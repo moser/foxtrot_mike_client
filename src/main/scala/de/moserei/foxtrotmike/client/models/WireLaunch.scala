@@ -10,10 +10,17 @@ class WireLaunch extends Launch {
     this()
     flight = flight0
   }
-  def this(flight0 : Flight, d : Defaults) {
+  
+  def this(flight0 : Flight, d : Defaults) = {
     this(flight0)
     wireLauncher = d.wireLauncher
     operator = d.operator
+  }
+  
+  def this(flight0 : Flight, l : WireLaunch) = {
+    this(flight0)
+    wireLauncher = l.wireLauncher
+    operator = l.operator
   }
   
   @ManyToOne(fetch=FetchType.EAGER)

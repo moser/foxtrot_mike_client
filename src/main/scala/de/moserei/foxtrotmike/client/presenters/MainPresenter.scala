@@ -41,6 +41,18 @@ class MainPresenter {
     }
   }
   
+  view.btCopy.reactions += {
+    case ButtonClicked(_) => {
+      if(fp.model != null) {
+        val f = new Flight(fp.model)
+        f.save
+        view.flightsTable.selection.rows.clear
+        view.flightsTable.selection.rows.add(view.flightsTableModel.indexOf(f))
+        view.flightPanel.departureDate.requestFocusInWindow
+      }
+    }
+  }
+  
   fp.view.btDelete.reactions += {
     case ButtonClicked(_) => {
       fp.model.delete

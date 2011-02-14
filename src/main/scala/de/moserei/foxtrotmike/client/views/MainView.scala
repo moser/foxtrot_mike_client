@@ -63,12 +63,14 @@ class MainView extends MainFrame {
   val problemsOnly = new CheckBox(I18n("with-problems-only"))
   val colored = new CheckBox(I18n("colored"))
   val btNew = new Button(I18n("new"))
+  val btCopy = new Button(I18n("copy"))
   val flightsPanel = new MigPanel("ins 0, fill", "", "[grow 0][fill]") {
     add(btNew)
+    add(btCopy)
     add(unfinishedOnly)
     add(problemsOnly)
     add(colored, "wrap")
-    add(new ScrollPane(flightsTable), "gap 0, span 4, w 100%")
+    add(new ScrollPane(flightsTable), "gap 0, span, w 100%")
   }
   
   val flightPanel = new FlightView

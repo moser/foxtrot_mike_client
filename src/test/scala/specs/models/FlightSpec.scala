@@ -3,9 +3,33 @@ package specs.models
 import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
 import de.moserei.foxtrotmike.client.models.{Airfield, Flight, Person, Plane}
+import org.joda.time.DateTime
 
 class FlightSpec extends Spec with ShouldMatchers {
   describe("A flight") {
+    it("should copy some attributes from another flight") {
+      val f0 = new Flight
+      f0.departureDate = new DateTime(2010, 12, 13, 0, 0, 0, 0).toDate
+      f0.plane = new Plane
+      f0.seat1 = new Person
+      f0.seat2 = new Person
+      f0.from = new Airfield
+      f0.to = f0.from
+      f0.departureTime = 65 //1:05
+      f0.arrivalTime = 70 //1:10
+      f0.controller = new Person
+      val f = new Flight(f0)
+      f.departureDate should equal (f0.departureDate)
+      f.plane should equal (f0.plane)
+      f.seat1 should equal (f0.seat1)
+      f.seat2 should equal (f0.seat2)
+      f.from should equal (f0.from)
+      f.to should equal (f0.to)
+      f.departureTime should equal (-1)
+      f.arrivalTime should equal (-1)
+      f.controller should equal (f0.controller)
+    }
+  
     describe("departureTime") {
       it("should change the duration if it is set") {
         val f = new Flight

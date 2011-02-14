@@ -12,12 +12,26 @@ class Flight extends AbstractFlight {
   @OneToOne(fetch=FetchType.EAGER, mappedBy="flight", cascade = Array(CascadeType.ALL))
   var launch : Launch = _
   
-  def this(d : Defaults) {
+  def this(d : Defaults) = {
     this()
     from = d.airfield
     to = d.airfield
     controller = d.controller
     departureDate = d.date
+  }
+  
+  def this(f : Flight) = {
+    this()
+    copyFrom(f)
+    f.launchType match { 
+      case "WireLaunch" => {
+        launch = new WireLaunch(this, f.launch.asInstanceOf[WireLaunch])
+      }
+      case "TowLaunch" => {
+        launch = new TowLaunch(this, f.launch.asInstanceOf[TowLaunch])
+      }
+      case _ => {}
+    }
   }
   
   def launchType = {

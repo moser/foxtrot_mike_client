@@ -99,4 +99,14 @@ abstract class AbstractFlight extends BaseModel with UUIDHelper {
     if(controller == null) { r = r :+ "controller" }
     r
   }
+  
+  protected def copyFrom(f : AbstractFlight) = {
+    departureDate = f.departureDate
+    plane = f.plane
+    seat1 = f.seat1
+    seat2 = f.seat2
+    from = f.from
+    to = f.to
+    controller = f.controller
+  }
 }
