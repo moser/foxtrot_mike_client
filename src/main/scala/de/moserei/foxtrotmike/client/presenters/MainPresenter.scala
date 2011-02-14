@@ -88,8 +88,6 @@ class MainPresenter {
       sp.view.open
     }
   }
-
-  def nop {}  
   
   private def selectFirstOrNull = {
     if(view.flightsTableModel.getRowCount > 0)  {
