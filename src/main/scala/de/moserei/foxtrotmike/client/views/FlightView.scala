@@ -117,6 +117,8 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
     btArrivalTime.enabled = b
     arrivalTime.enabled = b
     launchType.enabled = b
+    btSave.enabled = b
+    btDelete.enabled = b
     
     plane.setEnabled(b)
     seat1.setEnabled(b)
@@ -124,5 +126,7 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
     controller.setEnabled(b)
     from.setEnabled(b)
     to.setEnabled(b)
+    
+    _launchPanel.enabled = b
   }
 }

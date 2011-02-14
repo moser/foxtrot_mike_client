@@ -11,4 +11,12 @@ class WireLaunchView extends MigPanel("ins 0", "[80!]5[120!]") {
 
   peer.add(wireLauncher, "w 80!")
   peer.add(operator, "w 120!")
+  
+  var _enabled = true
+  override def enabled = _enabled
+  override def enabled_=(b:Boolean) = {
+    _enabled = b
+    wireLauncher.setEnabled(b)
+    operator.setEnabled(b)
+  }
 }

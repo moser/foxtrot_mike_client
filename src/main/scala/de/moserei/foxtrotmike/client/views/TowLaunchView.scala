@@ -51,4 +51,16 @@ class TowLaunchView extends MigPanel("ins 0", "[80!]5[120!]5[120!]5[80!]3[80!]5[
   peer.add(to, "w 80!, skip 2")
   add(arrivalTime, "skip 1, w 70!")
   add(duration, "w 60!")
+  
+  var _enabled = true
+  override def enabled = _enabled
+  override def enabled_=(b:Boolean) = {
+    _enabled = b
+    btArrivalTime.enabled = b
+    arrivalTime.enabled = b
+    
+    plane.setEnabled(b)
+    seat1.setEnabled(b)
+    to.setEnabled(b)
+  }
 }

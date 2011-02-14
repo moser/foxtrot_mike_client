@@ -17,6 +17,7 @@ class MainPresenter {
         var i = view.flightsTable.selection.rows.head
         if(i >= 0) {
           fp.model = view.flightsTableModel.getAll.apply(i)
+          view.btCopy.enabled = true
         }
       }
     }
@@ -91,10 +92,13 @@ class MainPresenter {
   def nop {}  
   
   private def selectFirstOrNull = {
-    if(view.flightsTableModel.getRowCount > 0) 
+    if(view.flightsTableModel.getRowCount > 0)  {
       view.flightsTable.selection.rows.add(0)
-    else
+      view.btCopy.enabled = true
+    } else {
       fp.model = null
+      view.btCopy.enabled = false
+    }
   }
   
   sp.view.open

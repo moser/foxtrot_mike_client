@@ -63,7 +63,9 @@ class MainView extends MainFrame {
   val problemsOnly = new CheckBox(I18n("with-problems-only"))
   val colored = new CheckBox(I18n("colored"))
   val btNew = new Button(I18n("new"))
-  val btCopy = new Button(I18n("copy"))
+  val btCopy = new Button(I18n("copy")) {
+    enabled = false
+  }
   val flightsPanel = new MigPanel("ins 0, fill", "", "[grow 0][fill]") {
     add(btNew)
     add(btCopy)
