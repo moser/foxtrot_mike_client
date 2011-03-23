@@ -2,6 +2,7 @@ package de.moserei.foxtrotmike.client.presenters
 
 import de.moserei.foxtrotmike.client.views.{ FlightView, MigPanel, MyFormattedTextField }
 import de.moserei.foxtrotmike.client.models.{ Flight, WireLaunch, TowLaunch, LaunchItem }
+import de.moserei.foxtrotmike.client.views.AutoCompleter.CreateEvent
 import org.joda.time.DateTime
 import scala.swing.event._
 import scala.swing.{Component, TextComponent}
@@ -50,6 +51,22 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     case ButtonClicked(_) => {
       updateModel
       model.save
+    }
+  }
+  
+  view.seat1.reactions += {
+    case CreateEvent(str, old) => {
+      println("create")
+      view.seat1.setEnabled(false)
+      val bp = new PersonBalloonPresenter(view.seat1)
+      bp.reactions += {
+        case PersonBalloonPresenter.OkEvent(o) => {
+          view.seat1.selectedItem = o
+        }
+        case PersonBalloonPresenter.CancelEvent() => {
+          view.seat1.revertLast
+        }
+      }
     }
   }
   

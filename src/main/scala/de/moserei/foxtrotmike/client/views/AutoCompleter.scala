@@ -5,15 +5,25 @@ import javax.swing.event.{DocumentEvent, DocumentListener}
 import java.awt.{Color, Dimension, Point, Container}
 import scala.math.{min, max}
 import javax.swing._
+import scala.swing.event.Event
+import scala.swing.Publisher
+import de.moserei.foxtrotmike.client.models.DefaultAutoCompleterModel.CreateOption
 
 object AutoCompleter {
   trait AutoCompleterModel[T >: Null <: AnyRef] {
     protected var pFilterString : String = ""
     protected var pSelectedItem : AutoCompleter.Option[T] = new AutoCompleter.NilOption
+    protected var pLastSelectedItem : T = _
     def filterString = pFilterString
     def filterString_=(s:String) = pFilterString = s
 		def selectedItem = pSelectedItem
-    def selectedItem_= = pSelectedItem = _:AutoCompleter.Option[T]
+    def selectedItem_=(obj : AutoCompleter.Option[T]) = {
+      if(pSelectedItem.isInstanceOf[AutoCompleter.RealOption[T]]) {
+        pLastSelectedItem = pSelectedItem.get
+      }
+      pSelectedItem = obj
+    }
+    def lastSelectedItem = pLastSelectedItem
 		def filteredItems : Seq[Option[T]]
 		def forceUpdate : Unit
 	}
@@ -71,6 +81,8 @@ object AutoCompleter {
 			o.toStringForList
 		}
 	}
+	
+	case class CreateEvent[T](str : String, old : T) extends Event
 }
 
 /**
@@ -78,7 +90,7 @@ object AutoCompleter {
  * 
  * @author moser
  */
-class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterModel[T], itemRenderer : AutoCompleter.AutoCompleterItemRenderer[T]) extends JTextField with FocusListener with KeyListener with MouseListener with DocumentListener {
+class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterModel[T], itemRenderer : AutoCompleter.AutoCompleterItemRenderer[T]) extends JTextField with FocusListener with KeyListener with MouseListener with DocumentListener with Publisher {
   addKeyListener(this)
 	addFocusListener(this)
 	getDocument().addDocumentListener(this)
@@ -148,8 +160,12 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 		if(popup != null) popup.setVisible(false) 
 	}
 
-	private def reset {
+	def reset {
 		pSelectedItem = pSelectedItem
+	}
+	
+	def revertLast {
+	  selectedItem = model.lastSelectedItem
 	}
 
 	private def moveSelected(d : Int) {
@@ -173,6 +189,9 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 		model.selectedItem = o
 		setText(itemRenderer.renderForTextfield(o))
 		setCaretPosition(0)
+		if(o.isInstanceOf[CreateOption[T]]) {
+		  publish(AutoCompleter.CreateEvent[T](o.asInstanceOf[CreateOption[T]].filterString, model.lastSelectedItem))
+		}
 	}
 
 	def selectedItem : T = pSelectedItem.get
@@ -234,6 +253,9 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 			hidePopup
 		}
 	}
+	
+	//override def enabled : Boolean = isEnabled()
+	//override def enabled_=(b : Boolean) = setEnabled(b)
 
 // Unused stuff
 	override def keyPressed(arg0 : KeyEvent) {}	
