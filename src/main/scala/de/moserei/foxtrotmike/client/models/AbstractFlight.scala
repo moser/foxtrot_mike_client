@@ -91,14 +91,21 @@ abstract class AbstractFlight extends BaseModel with UUIDHelper {
   override def invalidFields = {
     //TODO remove departureTime >+= 0 when implemented on the server
     var r = List[String]()
-    if(plane == null) { r = r :+ "plane" }
-    if(seat1 == null) { r = r :+ "seat1" }
-    if(from == null) { r = r :+ "from" }
-    if(to == null) { r = r :+ "to" }
-    if(departureTime < 0) { r = r :+ "departureTime" }
-    if(controller == null) { r = r :+ "controller" }
+    if(!isPlaneValid) { r = r :+ "plane" }
+    if(!isSeat1Valid) { r = r :+ "seat1" }
+    if(!isFromValid) { r = r :+ "from" }
+    if(!isToValid) { r = r :+ "to" }
+    if(!isDepartureTimeValid) { r = r :+ "departureTime" }
+    if(!isControllerValid) { r = r :+ "controller" }
     r
   }
+  
+  def isPlaneValid = plane != null
+  def isSeat1Valid = seat1 != null
+  def isFromValid = from != null
+  def isToValid = to != null
+  def isDepartureTimeValid = departureTime >= 0
+  def isControllerValid = controller != null
   
   protected def copyFrom(f : AbstractFlight) = {
     departureDate = f.departureDate

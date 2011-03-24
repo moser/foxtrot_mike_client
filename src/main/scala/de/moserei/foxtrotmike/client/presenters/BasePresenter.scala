@@ -21,4 +21,8 @@ abstract class BasePresenter[M,V] {
   protected def map(vtm : (M,V) => Unit, mtv : (M,V) => Unit) {
     mappings = (new Mapping[M,V](vtm, mtv))::mappings
   }
+  
+  protected def mapViewOnly(mtv : (M,V) => Unit) {
+    map((m,v) => {}, mtv)
+  }
 }

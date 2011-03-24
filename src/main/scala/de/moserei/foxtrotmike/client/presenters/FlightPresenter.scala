@@ -8,7 +8,7 @@ import scala.swing.event._
 import scala.swing.{Component, TextComponent}
 import java.util.Date
 import swing.Reactor
-import java.awt.Color
+import java.awt.{ Color, Component => AWTComponent }
 
 
 class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightView] {
@@ -37,7 +37,26 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   map((m,v) => m.departureDate = v.departureDate.peer.getValue.asInstanceOf[Date], (m,v) => v.departureDate.peer.setValue(m.departureDate))
   map((m,v) => m.arrivalTime = v.arrivalTime.peer.getValue.asInstanceOf[Int], (m,v) => v.arrivalTime.peer.setValue(m.arrivalTime))
   map((m,v) => m.departureTime = v.departureTime.peer.getValue.asInstanceOf[Int], (m,v) => v.departureTime.peer.setValue(m.departureTime))
-  map((m,v) => {}, (m,v) => v.duration.text = m.durationString)
+  mapViewOnly((m,v) => v.duration.text = m.durationString)
+  mapViewOnly((m,v) => markIfInvalid(v.plane, m.isPlaneValid))
+  mapViewOnly((m,v) => markIfInvalid(v.seat1, m.isSeat1Valid))
+  mapViewOnly((m,v) => markIfInvalid(v.from, m.isFromValid))
+  mapViewOnly((m,v) => markIfInvalid(v.to, m.isToValid))
+  mapViewOnly((m,v) => markIfInvalid(v.departureTime, m.isDepartureTimeValid))
+  mapViewOnly((m,v) => markIfInvalid(v.controller, m.isControllerValid))
+  
+  
+  private def markIfInvalid(c : Component, valid : Boolean) : Unit = {
+    markIfInvalid(c.peer, valid)
+  }
+  
+  private def markIfInvalid(c : AWTComponent, valid : Boolean) : Unit = {
+    if(!valid) {
+      c.setBackground(new Color(231, 122, 122)) //TODO create an object that holds all the used colors
+    } else {
+      c.setBackground(null)
+    }
+  }
   
   view.launchType.selection.reactions += {
     case SelectionChanged(_) => {
