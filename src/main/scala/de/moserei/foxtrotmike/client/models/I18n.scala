@@ -1,8 +1,8 @@
 package de.moserei.foxtrotmike.client.models
 
 object I18n {
-  def t(s:String) : String = {
-    s match {
+  def t(s:String, interpolation : Array[{ def toString : String }]) : String = {
+    var res = s match {
       case "main.title" => "FoxtrotMike Flugeingabe"
       case "flight" => "Flug"
       case "departure_date" => "Datum"
@@ -48,9 +48,17 @@ object I18n {
       case "save" => "Speichern"
       case "delete" => "Löschen"
       case "copy" => "Kopieren"
+      case "create" => "%% anlegen"
       case _ => s
     }
+    for(i <- interpolation) {
+      res = res.replaceFirst("%%", i.toString)
+    } 
+    res
   }
+  
+  def t(s : String) : String = t(s, Array[{ def toString : String }]())
 
   def apply(s:String) = t(s)
+  def apply(s:String, arr : Array[{ def toString : String }]) = t(s, arr)
 }
