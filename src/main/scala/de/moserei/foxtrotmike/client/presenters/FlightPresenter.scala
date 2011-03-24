@@ -58,7 +58,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     case CreateEvent(str, old) => {
       println("create")
       view.seat1.setEnabled(false)
-      val bp = new PersonBalloonPresenter(view.seat1)
+      val bp = new PersonBalloonPresenter(str, view.seat1)
       bp.reactions += {
         case PersonBalloonPresenter.OkEvent(o) => {
           view.seat1.selectedItem = o

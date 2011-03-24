@@ -19,6 +19,10 @@ object I18n {
       case "wire_launcher" => "Winde"
       case "tow_plane" => "Schleppflugzeug"
       case "airfield" => "Flugplatz"
+      case "firstname" => "Vorname"
+      case "lastname" => "Nachname"
+      case "group" => "Gruppe"
+      case "person_balloon.title" => "<html><h2>Unbekannte Person</h2>Bitte füllen Sie die folgenden Felder aus, um sie anzulegen.</html>"
       
       case "defaults" => "Standardwerte"
       
@@ -32,6 +36,9 @@ object I18n {
       case "sync.down" => "Daten herunterladen"
       case "sync.up" => "Flüge hochladen"
       case "close" => "Schließen"
+      
+      case "ok" => "Ok"
+      case "cancel" => "Abbrechen"
       
       case "colored" => "farbig"
       case "flying-only" => "Nur Unvollendete"

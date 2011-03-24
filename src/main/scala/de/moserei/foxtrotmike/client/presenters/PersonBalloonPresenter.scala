@@ -12,10 +12,16 @@ object PersonBalloonPresenter {
   case class CancelEvent() extends Event
 }
 
-class PersonBalloonPresenter(val attach : JComponent, view0: PersonBalloonView) extends BasePresenter[Person, PersonBalloonView] with Publisher {
-  def this(attach : JComponent) = this(attach, new PersonBalloonView(attach))  
+class PersonBalloonPresenter(str : String, val attach : JComponent, view0: PersonBalloonView) extends BasePresenter[Person, PersonBalloonView] with Publisher {
+  def this(str : String, attach : JComponent) = this(str, attach, new PersonBalloonView(attach))  
   var view = view0
   var model : Person = new Person
+  
+  var spl = str.split(" ")
+  view.firstname.text = spl(0)
+  if(spl.length > 1) {
+    view.lastname.text = spl(1)
+  }
   
   map((m,v) => m.firstname = v.firstname.text, (m,v) => v.firstname.text = m.firstname)
   map((m,v) => m.lastname = v.lastname.text, (m,v) => v.lastname.text = m.lastname)
