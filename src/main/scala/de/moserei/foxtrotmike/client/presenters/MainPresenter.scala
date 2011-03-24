@@ -24,10 +24,9 @@ class MainPresenter {
   }
 
   view.flightsTable.reactions += {
-    case TableUpdated(_, _, _) => {
+    case TableChanged(_) => {
       if(fp.model != null) {
-        view.flightsTable.selection.rows.clear
-        view.flightsTable.selection.rows.add(view.flightsTableModel.indexOf(fp.model))
+        selectOrNull(view.flightsTableModel.indexOf(fp.model))
       }
     }
   }
@@ -89,14 +88,19 @@ class MainPresenter {
     }
   }
   
-  private def selectFirstOrNull = {
-    if(view.flightsTableModel.getRowCount > 0)  {
-      view.flightsTable.selection.rows.add(0)
+  private def selectOrNull(i : Int) = {
+    println("a " + i)
+    if(i >= 0 && view.flightsTableModel.getRowCount > i)  {
+      view.flightsTable.selection.rows.add(i)
       view.btCopy.enabled = true
     } else {
       fp.model = null
       view.btCopy.enabled = false
     }
+  }
+  
+  private def selectFirstOrNull = {
+    selectOrNull(0)
   }
   
   sp.view.open

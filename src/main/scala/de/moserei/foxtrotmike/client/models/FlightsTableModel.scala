@@ -52,9 +52,10 @@ class FlightsTableModel extends AbstractTableModel with Observer {
     if(update_all) {
       def departureTimeX(f:Flight) = if(f.departureTime > 0) f.departureTime else 1441
       def dt(f:Flight) = new DateTime(f.departureDate)
-      all = AllFlights.all.sortWith((f1, f2) => dt(f1).compareTo(dt(f2)) == -1 || (dt(f1).compareTo(dt(f2)) == 0 && departureTimeX(f1) < departureTimeX(f2))).reverse
+      all = AllFlights.all
       if(pUnfinishedOnly) all = all.filter(!_.finished) 
       if(pProblemsOnly) all = all.filter(!_.isValid) 
+      all = all.sortWith((f1, f2) => dt(f1).compareTo(dt(f2)) == -1 || (dt(f1).compareTo(dt(f2)) == 0 && departureTimeX(f1) < departureTimeX(f2))).reverse
       update_all = false
     }
     all
@@ -67,7 +68,8 @@ class FlightsTableModel extends AbstractTableModel with Observer {
       case f : Flight => {
         update_all = true
         val i = indexOf(f)
-        fireTableRowsInserted(i, i)
+        //fireTableRowsInserted(i, i)
+        fireTableDataChanged()
       }
       case _ => {}
     }
@@ -79,7 +81,8 @@ class FlightsTableModel extends AbstractTableModel with Observer {
         val i = indexOf(f) //index before update
         update_all = true
         val j = indexOf(f)
-        fireTableRowsUpdated(i, j)
+        //fireTableRowsUpdated(i, j)
+        fireTableDataChanged()
       }
       case _ => {}
     }
@@ -90,7 +93,8 @@ class FlightsTableModel extends AbstractTableModel with Observer {
       case f : Flight => {
         val i = indexOf(f)
         update_all = true
-        fireTableRowsDeleted(i, i)
+        //fireTableRowsDeleted(i, i)
+        fireTableDataChanged()
       }
       case _ => {}
     }
