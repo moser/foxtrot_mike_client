@@ -5,7 +5,7 @@ import org.scalatest.Spec
 import dispatch.json.{JsObject, JsString, JsNumber, JsValue}
 
 import dispatch.json.Js._
-import de.moserei.foxtrotmike.client.models.BaseModel
+import fmclient.models.BaseModel
 
 class BaseModelSpec extends Spec with ShouldMatchers {
   class ConcreteModel extends BaseModel[String] {

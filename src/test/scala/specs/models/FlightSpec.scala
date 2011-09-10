@@ -2,7 +2,7 @@ package specs.models
 
 import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
-import de.moserei.foxtrotmike.client.models.{Airfield, Flight, Person, Plane}
+import fmclient.models.{Airfield, Flight, Person, Plane}
 import org.joda.time.DateTime
 
 class FlightSpec extends Spec with ShouldMatchers {

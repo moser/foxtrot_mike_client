@@ -195,7 +195,7 @@
           <launchers>
             <launcher>
               <id>app</id>
-              <mainClass>de.moserei.foxtrotmike.client.App</mainClass>
+              <mainClass>fmclient.App</mainClass>
               <!-- args are optional -->
 <!--              <args>-->
 <!--                <arg>arg1</arg>-->

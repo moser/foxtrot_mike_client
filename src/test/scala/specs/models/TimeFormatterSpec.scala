@@ -1,7 +1,7 @@
 package specs.models
 
 import org.scalatest.matchers.ShouldMatchers
-import de.moserei.foxtrotmike.client.models.LessSuckingTimeFormatter
+import fmclient.models.LessSuckingTimeFormatter
 import org.scalatest.{BeforeAndAfterEach, Spec}
 
 class TimeFormatterSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {

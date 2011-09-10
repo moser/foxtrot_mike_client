@@ -2,7 +2,7 @@ package specs.models
 
 import org.scalatest.{ Spec, BeforeAndAfterAll }
 import org.scalatest.matchers.ShouldMatchers
-import de.moserei.foxtrotmike.client.models.{ FlightsTableModel, Flight, EntityMgr }
+import fmclient.models.{ FlightsTableModel, Flight, EntityMgr }
 
 class FlightsTableModelSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
 

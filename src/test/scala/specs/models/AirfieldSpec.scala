@@ -3,7 +3,7 @@ package specs.models
 import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
 import dispatch.json.{JsObject, JsString, JsNull}
-import de.moserei.foxtrotmike.client.models.Airfield
+import fmclient.models.Airfield
 
 class AirfieldSpec extends Spec with ShouldMatchers {
   describe("airfield") {

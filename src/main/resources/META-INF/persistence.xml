@@ -8,17 +8,17 @@
          org.eclipse.persistence.jpa.PersistenceProvider
      </provider>
      <exclude-unlisted-classes>true</exclude-unlisted-classes>
-     <class>de.moserei.foxtrotmike.client.models.Plane</class>
-     <class>de.moserei.foxtrotmike.client.models.Person</class>
-     <class>de.moserei.foxtrotmike.client.models.Airfield</class>
-     <class>de.moserei.foxtrotmike.client.models.WireLauncher</class>
-     <class>de.moserei.foxtrotmike.client.models.AbstractFlight</class>
-     <class>de.moserei.foxtrotmike.client.models.Flight</class>
-     <class>de.moserei.foxtrotmike.client.models.TowFlight</class>
-     <class>de.moserei.foxtrotmike.client.models.Launch</class>
-     <class>de.moserei.foxtrotmike.client.models.WireLaunch</class>
-     <class>de.moserei.foxtrotmike.client.models.TowLaunch</class>
-     <class>de.moserei.foxtrotmike.client.models.Group</class>
+     <class>fmclient.models.Plane</class>
+     <class>fmclient.models.Person</class>
+     <class>fmclient.models.Airfield</class>
+     <class>fmclient.models.WireLauncher</class>
+     <class>fmclient.models.AbstractFlight</class>
+     <class>fmclient.models.Flight</class>
+     <class>fmclient.models.TowFlight</class>
+     <class>fmclient.models.Launch</class>
+     <class>fmclient.models.WireLaunch</class>
+     <class>fmclient.models.TowLaunch</class>
+     <class>fmclient.models.Group</class>
      <properties>
          <property name="javax.persistence.logging.level" value="INFO"/>
          <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

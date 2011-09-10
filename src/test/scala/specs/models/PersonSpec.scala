@@ -3,7 +3,7 @@ package specs.models
 import org.scalatest.{ Spec, BeforeAndAfterAll }
 import org.scalatest.matchers.ShouldMatchers
 import dispatch.json.{ JsObject, JsString, JsNumber }
-import de.moserei.foxtrotmike.client.models.{ Person, EntityMgr }
+import fmclient.models.{ Person, EntityMgr }
 
 class PersonSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
   

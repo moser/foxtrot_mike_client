@@ -3,7 +3,7 @@ package specs.models
 import org.scalatest.{ Spec, BeforeAndAfterAll }
 import org.scalatest.matchers.ShouldMatchers
 import dispatch.json.{JsObject, JsString, JsFalse, JsNumber}
-import de.moserei.foxtrotmike.client.models.{ Plane, EntityMgr }
+import fmclient.models.{ Plane, EntityMgr }
 
 class PlaneSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
   
