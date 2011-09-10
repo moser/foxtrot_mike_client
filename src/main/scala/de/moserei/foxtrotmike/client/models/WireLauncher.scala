@@ -6,7 +6,7 @@ import dispatch.json.Js._
 import de.moserei.foxtrotmike.client.models.repos.AllWireLaunchers
 
 @Entity
-class WireLauncher extends BaseModel with UUIDHelper {
+class WireLauncher extends BaseModel[String] with UUIDHelper {
   addObserver(AllWireLaunchers)
 
   @Id

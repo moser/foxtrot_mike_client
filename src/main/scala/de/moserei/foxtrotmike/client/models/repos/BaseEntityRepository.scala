@@ -7,14 +7,16 @@ import de.moserei.foxtrotmike.client.models.{EntityMgr, BaseModel, Observer, Obs
 import dispatch._
 import scala.actors.Actor
 
-abstract class BaseEntityRepository[T <: BaseModel](implicit m:scala.reflect.Manifest[T]) extends Observer with Observalbe {
+abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.reflect.Manifest[T]) extends Observer with Observalbe {
   lazy val allQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x")
   lazy val firstQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x").setMaxResults(1)
   
   var dirty = true
   var cache : Seq[T] = _
 
-  def find(id: String): T = EntityMgr.em.find(m.erasure, id).asInstanceOf[T]
+  def find(id: PKT): T = EntityMgr.em.find(m.erasure, id).asInstanceOf[T]
+  
+  def extractId(o : JsObject) : PKT
 
   def all : Seq[T] = {
     if(dirty)
@@ -33,7 +35,7 @@ abstract class BaseEntityRepository[T <: BaseModel](implicit m:scala.reflect.Man
     val remote = http(req ># (list ! obj)) map (Symbol(toJsonClass) ! obj)
     remote.foreach((o:JsObject) => {
       progressUpdater ! (1.0 / remote.length.toDouble)
-      val id = ('id ! str)(o)
+      val id = extractId(o)
       if(find(id) == null) { //entity is new
         m.erasure.getConstructor(classOf[JsObject]).newInstance(o).asInstanceOf[T].save
       } else {
@@ -59,22 +61,22 @@ abstract class BaseEntityRepository[T <: BaseModel](implicit m:scala.reflect.Man
   def toResource =  toJsonClass + "s"
   def toJsonClass = m.erasure.getSimpleName.toLowerCase
   
-  def created(a : BaseModel) = {
+  def created(a : BaseModel[_]) = {
     markDirty(a)
     notifyCreated(a)
   }
   
-  def updated(a : BaseModel) = {
+  def updated(a : BaseModel[_]) = {
     markDirty(a)
     notifyUpdated(a)
   }
   
-  def removed(a : BaseModel) = {
+  def removed(a : BaseModel[_]) = {
     markDirty(a)
     notifyRemoved(a)
   }
   
-  private def markDirty(a : BaseModel) = {
+  private def markDirty(a : BaseModel[_]) = {
     a match {
       case model : T => {
         dirty = true

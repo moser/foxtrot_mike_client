@@ -29,61 +29,55 @@ class FlightSpec extends Spec with ShouldMatchers {
       f.arrivalTime should equal (-1)
       f.controller should equal (f0.controller)
     }
-  
+    
     describe("departureTime") {
-      it("should change the duration if it is set") {
+      it("should not allow values gteq 1440") {
         val f = new Flight
-        f.departureTime = 65 //1:05
-        f.duration = 30
-        f.departureTime = 75 //1:15
-        f.duration should equal (20)
-        f.departureTime = 60 //1:00
-        f.duration should equal (35)
+        f.departureTime = 1441
+        f.departureTime should equal (1)
       }
     }
-
-    describe("arrival Time") {
-      it("should return null when duration is < 0") {
+    
+    describe("arrivalTime") {
+      it("should not allow values gteq 1440") {
         val f = new Flight
-        f.duration = -1
-        f.arrivalTime should equal (-1)
+        f.arrivalTime = 1441
+        f.arrivalTime should equal (1)
       }
-
-      it("should return a Date when duration is >= 0") {
+    }
+  
+    describe("duration") {
+      it("should return null when arrival is not set") {
         val f = new Flight
-        f.pDepartureTime = 612 //10:12
-        f.duration = 0
-        f.arrivalTime should not equal (-1)
-        f.duration = 10
-        f.arrivalTime should equal (622) //10:22
-      }
-
-      it("should set the duration") {
-        val f = new Flight
-        f.departureTime = 0 //0:00
-        f.arrivalTime = 65
-        f.duration should equal (65)
-      }
-
-       it("should set the duration to -1 when passed null") {
-        val f = new Flight
-        f.departureTime = 0 //0:00
-        f.duration = 120
-        f.arrivalTime = -1
+        f.departureTime = 10 //0:10
         f.duration should equal (-1)
+      }
+
+      it("should return the difference between departure and arrival") {
+        val f = new Flight
+        f.departureTime = 10 //0:10
+        f.arrivalTime = 10 //0:10
+        f.duration should equal (0)
+        f.departureTime = 10 //0:10
+        f.arrivalTime = 20 //0:20
+        f.duration should equal (10)
+        f.departureTime = 10 //0:10
+        f.arrivalTime = 9 //0:09
+        f.duration should equal (1439)
       }
     }
 
     describe("durationString") {
       it("should return a padded string") {
         val f = new Flight
-        f.duration = 1
+        f.departureTime = 0
+        f.arrivalTime = 1
         f.durationString should equal ("0:01")
-        f.duration = 69
+        f.arrivalTime = 69
         f.durationString should equal ("1:09")
-        f.duration = 90
+        f.arrivalTime = 90
         f.durationString should equal ("1:30")
-        f.duration = -1
+        f.arrivalTime = -1
         f.durationString should equal ("")
       }
     }

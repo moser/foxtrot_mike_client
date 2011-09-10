@@ -13,7 +13,7 @@ object DefaultAutoCompleterModel {
   }
 }
 
-class DefaultAutoCompleterModel[T >: Null <: BaseModel](collection : BaseEntityRepository[T], extract : T => String, options_ : Map[String, Boolean] = Map()) extends AutoCompleter.AutoCompleterModel[T] with Publisher {
+class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEntityRepository[T, _], extract : T => String, options_ : Map[String, Boolean] = Map()) extends AutoCompleter.AutoCompleterModel[T] with Publisher {
   val options = Map("allowNil" -> true, "allowCreate" -> true) ++ options_
   var dirty = true
   var pFilteredItems : Seq[AutoCompleter.Option[T]] = List()

@@ -63,7 +63,7 @@ class FlightsTableModel extends AbstractTableModel with Observer {
 
   def indexOf(f : Flight) = getAll.indexOf(f) 
 
-  def created(m : BaseModel) = {
+  def created(m : BaseModel[_]) = {
     m match {
       case f : Flight => {
         update_all = true
@@ -75,7 +75,7 @@ class FlightsTableModel extends AbstractTableModel with Observer {
     }
   }
 
-  def updated(m : BaseModel) = {
+  def updated(m : BaseModel[_]) = {
    m match {
       case f : Flight => {
         val i = indexOf(f) //index before update
@@ -88,7 +88,7 @@ class FlightsTableModel extends AbstractTableModel with Observer {
     }
   }
   
-  def removed(m : BaseModel) {
+  def removed(m : BaseModel[_]) {
    m match {
       case f : Flight => {
         val i = indexOf(f)

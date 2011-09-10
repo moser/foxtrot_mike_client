@@ -1,13 +1,13 @@
 package de.moserei.foxtrotmike.client.models
 
-import dispatch.json.{JsObject, JsString, JsValue, JsNull}
+import dispatch.json.{JsObject, JsString, JsValue, JsNull, JsNumber}
 import dispatch.json.Js._
 import java.util.Date
 import javax.persistence._
 
-abstract class BaseModel extends Observalbe {
-  def id : String
-  def id_=(s: String) : Unit
+abstract class BaseModel[T] extends Observalbe {
+  def id : T
+  def id_=(s: T) : Unit
   def status : String
   def status_=(s: String) : Unit
   def save = {
@@ -44,12 +44,12 @@ abstract class BaseModel extends Observalbe {
 
   def this(o:JsObject) {
     this()
-    id = ('id ! str)(o)
     update(o)
   }
 
   final def update(o:JsObject) : Unit = {
     //assert(id.equals(('id ! str)(o))) //hmm
+    // id = ('id ! str)(o)
     pUpdate(o)
     status = "remote"
   }
@@ -78,6 +78,13 @@ abstract class BaseModel extends Observalbe {
       JsNull
     else
       JsString(o.id)
+  }
+  
+  protected def idToJsonInt(o : { def id : Int }) = {
+    if(o == null)
+      JsNull
+    else
+      JsNumber(o.id)
   }
 }
 

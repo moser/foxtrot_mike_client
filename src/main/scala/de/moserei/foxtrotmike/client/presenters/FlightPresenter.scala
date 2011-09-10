@@ -38,7 +38,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   map((m,v) => m.arrivalTime = v.arrivalTime.peer.getValue.asInstanceOf[Int], (m,v) => v.arrivalTime.peer.setValue(m.arrivalTime))
   map((m,v) => m.departureTime = v.departureTime.peer.getValue.asInstanceOf[Int], (m,v) => v.departureTime.peer.setValue(m.departureTime))
   mapViewOnly((m,v) => v.duration.text = m.durationString)
-  mapViewOnly((m,v) => markIfInvalid(v.plane, m.isPlaneValid))
+  mapViewOnly((m,v) => markIfInvalid(v.plane, m.isPlaneValid)) 
   mapViewOnly((m,v) => markIfInvalid(v.seat1, m.isSeat1Valid))
   mapViewOnly((m,v) => markIfInvalid(v.from, m.isFromValid))
   mapViewOnly((m,v) => markIfInvalid(v.to, m.isToValid))
@@ -70,6 +70,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     case ButtonClicked(_) => {
       updateModel
       model.save
+      updateView
     }
   }
   
@@ -98,6 +99,17 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     listenTo(view.departureTime, view.arrivalTime)
     reactions += {
       case FocusLost(_, _, _) => {
+        updateModel
+        updateView
+      }
+    }
+  }
+  
+  val validationFocus = new Reactor {
+    listenTo(view.plane, view.seat1, view.from, view.to, view.controller)
+    reactions += {
+      case FocusLost(_, _, _) => {
+        println("validationFocus")
         updateModel
         updateView
       }
@@ -139,6 +151,14 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
         towLaunchPresenter = null
         view.launchPanel = new MigPanel("ins 0")
       }
+    }
+  }
+  
+  override def shutdown = {
+    println("shutdown")
+    if(model != null) {
+      updateModel
+      model.save
     }
   }
 }

@@ -8,7 +8,7 @@ import dispatch.json.Js._
 import de.moserei.foxtrotmike.client.models.BaseModel
 
 class BaseModelSpec extends Spec with ShouldMatchers {
-  class ConcreteModel extends BaseModel {
+  class ConcreteModel extends BaseModel[String] {
     var id = ""
     var name = ""
     var foo = 1

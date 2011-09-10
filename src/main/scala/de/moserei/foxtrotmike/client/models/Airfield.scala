@@ -6,7 +6,7 @@ import dispatch.json.Js._
 import de.moserei.foxtrotmike.client.models.repos.AllAirfields
 
 @Entity
-class Airfield extends BaseModel with UUIDHelper {
+class Airfield extends BaseModel[String] with UUIDHelper {
   addObserver(AllAirfields)
   
   @Id

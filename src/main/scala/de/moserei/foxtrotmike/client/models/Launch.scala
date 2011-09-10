@@ -5,7 +5,7 @@ import dispatch.json.{JsObject, JsString, JsValue}
 
 @Entity
 @Inheritance
-abstract class Launch extends BaseModel with UUIDHelper {
+abstract class Launch extends BaseModel[String] with UUIDHelper {
   @Id
   var id = createUUID
 

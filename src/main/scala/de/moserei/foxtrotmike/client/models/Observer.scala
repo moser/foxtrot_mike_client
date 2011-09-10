@@ -2,9 +2,9 @@ package de.moserei.foxtrotmike.client.models
 
 //TODO split update into inserted and removed
 trait Observer {
-  def created(o : BaseModel)
-  def updated(o : BaseModel)
-  def removed(o : BaseModel)
+  def created(o : BaseModel[_])
+  def updated(o : BaseModel[_])
+  def removed(o : BaseModel[_])
 }
 
 trait Observalbe {
@@ -13,15 +13,15 @@ trait Observalbe {
     observers = o :: observers
   }
   
-  protected def notifyCreated(a : BaseModel) = {
+  protected def notifyCreated(a : BaseModel[_]) = {
     observers.foreach(_.created(a))
   }
   
-  protected def notifyUpdated(a : BaseModel) = {
+  protected def notifyUpdated(a : BaseModel[_]) = {
     observers.foreach(_.updated(a))
   }
    
-  protected def notifyRemoved(a : BaseModel) = {
+  protected def notifyRemoved(a : BaseModel[_]) = {
     observers.foreach(_.removed(a))
   }
 }

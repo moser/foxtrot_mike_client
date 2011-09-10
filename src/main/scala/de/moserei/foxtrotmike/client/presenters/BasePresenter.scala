@@ -25,4 +25,6 @@ abstract class BasePresenter[M,V] {
   protected def mapViewOnly(mtv : (M,V) => Unit) {
     map((m,v) => {}, mtv)
   }
+  
+  def shutdown = {}
 }

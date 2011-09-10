@@ -4,15 +4,35 @@ import javax.persistence._
 import scalaj.collection.Imports._
 
 object EntityMgr {
-  val properties = Map("javax.persistence.jdbc.url" -> ("jdbc:h2:" + System.getProperty("user.dir") + "/data"))
-  val emf = Persistence.createEntityManagerFactory("default", properties.asJava)
-  val em = emf.createEntityManager
+  private var emf : EntityManagerFactory = _
+  private var _em : EntityManager = _
+  
+  def em = { 
+    init(false)
+    _em
+  }
+  
+  var initialized = false
+  
+  def init(test:Boolean) = {
+    if (!initialized) {
+      var properties = Map("javax.persistence.jdbc.url" -> ("jdbc:h2:" + System.getProperty("user.dir") + "/data"))
+      if(test) {
+        properties = Map("javax.persistence.jdbc.url" -> ("jdbc:h2:mem:test"))
+      }
+      emf = Persistence.createEntityManagerFactory("default", properties.asJava)
+      _em = emf.createEntityManager
+      initialized = true
+    }
+  }
+  
   
   def withTransaction(f: EntityManager => Unit) = {
-    val t = em.getTransaction
+    init(false)
+    val t = _em.getTransaction
     try {
       t.begin
-      f(em)
+      f(_em)
       t.commit
     } catch {
       case e => {

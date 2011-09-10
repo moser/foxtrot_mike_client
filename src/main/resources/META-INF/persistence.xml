@@ -18,6 +18,7 @@
      <class>de.moserei.foxtrotmike.client.models.Launch</class>
      <class>de.moserei.foxtrotmike.client.models.WireLaunch</class>
      <class>de.moserei.foxtrotmike.client.models.TowLaunch</class>
+     <class>de.moserei.foxtrotmike.client.models.Group</class>
      <properties>
          <property name="javax.persistence.logging.level" value="INFO"/>
          <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

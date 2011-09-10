@@ -7,14 +7,14 @@ import dispatch.json.{JsObject, JsString, JsNumber, JsValue}
 
 @Entity
 @Inheritance
-abstract class AbstractFlight extends BaseModel with UUIDHelper {
+abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
   @Id
   var id : String = createUUID
 
   @Temporal(TemporalType.TIMESTAMP)
   var pDepartureDate : Date = (new DateTime).toDateMidnight.toDate
-  var pDepartureTime = -1
-  var duration : Int = -1
+  var pDepartureTime : Int = -1
+  var pArrivalTime = -1
 
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="plane_id")
@@ -27,6 +27,8 @@ abstract class AbstractFlight extends BaseModel with UUIDHelper {
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="seat2_id")
   var seat2 : Person = _
+  
+  var seat2_number : Integer = _
 
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="from_id")
@@ -45,28 +47,27 @@ abstract class AbstractFlight extends BaseModel with UUIDHelper {
   protected def dt(d:Date) = new DateTime(d)
 
   def departureDate = pDepartureDate
-  def departureTime = pDepartureTime
-
   def departureDate_=(d : Date) {
     pDepartureDate = dt(d).toDateMidnight.toDateTime.toDate
   }
-
+  
+  def departureTime = pDepartureTime
   def departureTime_=(i : Int) {
-    if(duration > 0) {
-      val delta =  pDepartureTime - i
-      duration += delta
-    }
-    pDepartureTime = i
+    pDepartureTime = i % 1440
+  }
+  
+  def arrivalTime = pArrivalTime
+  def arrivalTime_=(i : Int) {
+    pArrivalTime = i % 1440
   }
 
-  def arrivalTime = if(duration >= 0) pDepartureTime + duration else -1
-  def arrivalTime_=(i : Int) = {
-    if(i >= 0) {
-      duration = i - pDepartureTime
-    } else {
-      duration = -1
+  def duration = {
+    if(departureTime < 0 || arrivalTime < 0)
+      -1
+    else {
+      var delta = (arrivalTime - departureTime) % 1440
+      if(delta >= 0) { delta } else { 1440 + delta }
     }
-    if(duration < 0) duration = -1
   }
 
   def durationString = if(duration >= 0) String.format("%d:%02d", (duration / 60).asInstanceOf[AnyRef], (duration % 60).asInstanceOf[AnyRef]) else ""

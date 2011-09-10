@@ -2,10 +2,17 @@ package de.moserei.foxtrotmike.client.presenters
 
 import de.moserei.foxtrotmike.client.views.MainView
 import scala.swing.event._
-import de.moserei.foxtrotmike.client.models.{DefaultsSingleton, Flight}
+import de.moserei.foxtrotmike.client.models.{DefaultsSingleton, Flight, EntityMgr}
 
 class MainPresenter {
   val view = new MainView()
+  
+  view.reactions += {
+    case WindowClosed(view) => {
+      shutdown
+    }
+  }
+  
   view.visible = true
   var fp = new FlightPresenter(view.flightPanel)
   var dp = new DefaultsPresenter(view.defaultsPanel)
@@ -101,6 +108,11 @@ class MainPresenter {
   
   private def selectFirstOrNull = {
     selectOrNull(0)
+  }
+  
+  private def shutdown = {
+    fp.shutdown
+    EntityMgr.close
   }
   
   sp.view.open
