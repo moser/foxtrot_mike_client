@@ -17,11 +17,16 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   protected var _model : Flight = _
   def model = _model
   def model_=(f:Flight) = {
+    if(model != null && !model.deleted) {
+      updateModel
+      model.save
+    }
     if(f == null) { view.enabled = false }
     if(f != null) { view.enabled = true }
     _model = f
     if(f != null) {
       updateView
+     // view.departureDate.requestFocusInWindow
     }
   }
   model = null
@@ -104,24 +109,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       }
     }
   }
-  
-  val validationFocus = new Reactor {
-    listenTo(view.plane, view.seat1, view.from, view.to, view.controller)
-    reactions += {
-      case FocusLost(_, _, _) => {
-        println("validationFocus")
-        updateModel
-        updateView
-      }
-    }
-  }
-  
-  view.reactions += {
-    case FocusLost(_, _, _) => {
-      println("flight lost focus")
-    }
-  }
-  
+
   override def updateModel() = {
     super.updateModel
     if(wireLaunchPresenter != null) { wireLaunchPresenter.updateModel }

@@ -6,6 +6,8 @@ import java.util.Date
 import javax.persistence._
 
 abstract class BaseModel[T] extends Observalbe {
+  private var deleted_ = false
+  def deleted = deleted_
   def id : T
   def id_=(s: T) : Unit
   def status : String
@@ -29,6 +31,7 @@ abstract class BaseModel[T] extends Observalbe {
       beforeDelete
       EntityMgr.withTransaction(_.remove(this))
       afterDelete
+      deleted_ = true
       notifyRemoved(this)
     }
   }

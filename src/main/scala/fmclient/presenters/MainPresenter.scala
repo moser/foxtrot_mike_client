@@ -17,13 +17,17 @@ class MainPresenter {
   var fp = new FlightPresenter(view.flightPanel)
   var dp = new DefaultsPresenter(view.defaultsPanel)
   val sp = new SyncPresenter
-  
+
+  private var updating = false
   view.flightsTable.selection.reactions += {
     case TableRowsSelected(_, r, false) => {
-      if(!view.flightsTable.selection.rows.isEmpty) {
+      if(!view.flightsTable.selection.rows.isEmpty && !updating) {
         var i = view.flightsTable.selection.rows.head
         if(i >= 0) {
+          updating = true
           fp.model = view.flightsTableModel.getAll.apply(i)
+          selectOrNull(i)
+          updating = false
           view.btCopy.enabled = true
         }
       }
@@ -32,7 +36,7 @@ class MainPresenter {
 
   view.flightsTable.reactions += {
     case TableChanged(_) => {
-      if(fp.model != null) {
+      if(fp.model != null && !updating) {
         selectOrNull(view.flightsTableModel.indexOf(fp.model))
       }
     }
@@ -85,7 +89,6 @@ class MainPresenter {
   view.colored.reactions += {
     case ButtonClicked(_) => {
       view.flightsTable.repaint
-      
     }
   }
   
@@ -94,9 +97,8 @@ class MainPresenter {
       sp.view.open
     }
   }
-  
+
   private def selectOrNull(i : Int) = {
-    println("a " + i)
     if(i >= 0 && view.flightsTableModel.getRowCount > i)  {
       view.flightsTable.selection.rows.add(i)
       view.btCopy.enabled = true
