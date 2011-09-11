@@ -32,7 +32,7 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
   def syncDown(username: String, password: String, progressUpdater : Actor) = {
     val http = new Http
     val req : Request = :/(Config.server, Config.port) / (toResource + ".json") as(username, password)
-    val remote = http(req ># (list ! obj)) map (Symbol(toJsonClass) ! obj)
+    val remote = http(req ># (list ! obj))
     remote.foreach((o:JsObject) => {
       progressUpdater ! (1.0 / remote.length.toDouble)
       val id = extractId(o)
