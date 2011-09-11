@@ -22,7 +22,6 @@ class Plane extends BaseModel[String] with UUIDHelper {
   var group : Group = _
   
   var competitionSign = ""
-  //var group, 
   var defaultLaunchMethod = ""
   var hasEngine = false 
   var canFlyWithoutEngine = false
@@ -42,7 +41,7 @@ class Plane extends BaseModel[String] with UUIDHelper {
   override protected def pUpdate(o:JsObject) = {
     registration = ('registration ! str)(o)
     make = ('make ! str)(o)
-    //defaultLaunchMethod = ('default_launch_method ! str)(o)
+    defaultLaunchMethod = ('default_launch_method ! str)(o)
     hasEngine = ('has_engine ! bool)(o)
     canFlyWithoutEngine = ('can_fly_without_engine ! bool)(o)
     canTow = ('can_tow ! bool)(o)

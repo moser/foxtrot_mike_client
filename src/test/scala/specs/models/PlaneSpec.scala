@@ -16,7 +16,7 @@ class PlaneSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
       val o = new JsObject(Map(JsString("id") -> JsString("123.1"), 
                                 JsString("registration") -> JsString("lala"), 
                                 JsString("make") -> JsString("some plane"),
-                                //JsString("default_launch_method") -> JsString("t"), //??
+                                JsString("default_launch_method") -> JsString("TowLaunch"),
                                 JsString("has_engine") -> JsFalse,
                                 JsString("can_fly_without_engine") -> JsFalse,
                                 JsString("can_tow") -> JsFalse,
@@ -28,6 +28,13 @@ class PlaneSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
       p.id should equal ("123.1")
       p.registration should equal ("lala")
       p.make should equal ("some plane")
+      p.defaultLaunchMethod should equal ("TowLaunch")
+      p.hasEngine should equal (false)
+      p.canFlyWithoutEngine should equal (false)
+      p.canTow should equal (false)
+      p.canBeTowed should equal (false)
+      p.canBeWireLaunched should equal (false)
+      p.disabled should equal (false)
     }
   }
 }
