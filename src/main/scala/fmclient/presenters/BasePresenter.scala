@@ -1,6 +1,6 @@
 package fmclient.presenters;
 
-abstract class BasePresenter[M,V] {
+abstract class BasePresenter[M,V] extends AbstractPresenter {
   var mappings : List[Mapping[M,V]] = Nil
   var model:M
   var view:V
@@ -21,10 +21,10 @@ abstract class BasePresenter[M,V] {
   protected def map(vtm : (M,V) => Unit, mtv : (M,V) => Unit) {
     mappings = (new Mapping[M,V](vtm, mtv))::mappings
   }
-  
+
   protected def mapViewOnly(mtv : (M,V) => Unit) {
     map((m,v) => {}, mtv)
   }
-  
+
   def shutdown = {}
 }

@@ -4,15 +4,15 @@ import fmclient.views.MainView
 import scala.swing.event._
 import fmclient.models.{DefaultsSingleton, Flight, EntityMgr}
 
-class MainPresenter {
+class MainPresenter extends AbstractPresenter {
   val view = new MainView()
-  
+
   view.reactions += {
     case WindowClosed(view) => {
       shutdown
     }
   }
-  
+
   view.visible = true
   var fp = new FlightPresenter(view.flightPanel)
   var dp = new DefaultsPresenter(view.defaultsPanel)
