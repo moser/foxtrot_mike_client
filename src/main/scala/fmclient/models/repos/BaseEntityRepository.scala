@@ -48,7 +48,7 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
   
   def syncUp(username : String, password : String, progressUpdater : Actor) = {
     val http = new Http
-    val req : Request = :/("localhost", 3000) / (toResource + ".json") << Map("json" -> true) as(username, password) 
+    val req : Request = :/("localhost", 3000) / (toResource + ".json") << Map("json" -> "true") as(username, password) 
     val sync = all.filter(_.status == "local")
     sync.foreach(e => {
       progressUpdater ! (1.0 / sync.length.toDouble)
