@@ -19,6 +19,7 @@
      <class>fmclient.models.WireLaunch</class>
      <class>fmclient.models.TowLaunch</class>
      <class>fmclient.models.Group</class>
+     <class>fmclient.models.CostHint</class>
      <properties>
          <property name="javax.persistence.logging.level" value="INFO"/>
          <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
