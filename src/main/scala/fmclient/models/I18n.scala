@@ -14,7 +14,10 @@ object I18n {
       case "from" => "Von"
       case "to" => "Nach"
       case "duration" => "Dauer"
+      case "engine_duration" => "Motorlaufzeit"
       case "controller" => "Flugleiter"
+      case "comment" => "Kommentar"
+      case "cost_hint" => "Kostengruppe"
       case "operator" => "Windenfahrer"
       case "wire_launcher" => "Winde"
       case "tow_plane" => "Schleppflugzeug"
@@ -23,27 +26,27 @@ object I18n {
       case "lastname" => "Nachname"
       case "group" => "Gruppe"
       case "person_balloon.title" => "<html><h2>Unbekannte Person</h2>Bitte füllen Sie die folgenden Felder aus, um sie anzulegen.</html>"
-      
+
       case "defaults" => "Standardwerte"
-      
+
       case "WireLaunch.short" => "W"
       case "TowLaunch.short" => "F"
       case "SelfLaunch.short" => ""
-      
+
       case "sync.title" => "Synchronisation"
       case "username" => "Benutzername"
       case "password" => "Passwort"
       case "sync.down" => "Daten herunterladen"
       case "sync.up" => "Flüge hochladen"
       case "close" => "Schließen"
-      
+
       case "ok" => "Ok"
       case "cancel" => "Abbrechen"
-      
+
       case "colored" => "farbig"
       case "flying-only" => "Nur Unvollendete"
       case "with-problems-only" => "Nur mit Problemen"
-      
+
       case "new" => "Neu"
       case "save" => "Speichern"
       case "delete" => "Löschen"
@@ -53,10 +56,10 @@ object I18n {
     }
     for(i <- interpolation) {
       res = res.replaceFirst("%%", i.toString)
-    } 
+    }
     res
   }
-  
+
   def t(s : String) : String = t(s, Array[{ def toString : String }]())
 
   def apply(s:String) = t(s)

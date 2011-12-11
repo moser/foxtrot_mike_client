@@ -39,9 +39,12 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   map((m,v) => m.controller = v.controller.selectedItem, (m,v) => v.controller.selectedItem = m.controller)
   map((m,v) => m.from = v.from.selectedItem, (m,v) => v.from.selectedItem = m.from)
   map((m,v) => m.to = v.to.selectedItem, (m,v) => v.to.selectedItem = m.to)
+  map((m,v) => m.costHint = v.costHint.selection.item, (m,v) => v.costHint.selection.item = m.costHint)
+  map((m,v) => m.comment = v.comment.text, (m,v) => v.comment.text = m.comment)
   map((m,v) => m.departureDate = v.departureDate.peer.getValue.asInstanceOf[Date], (m,v) => v.departureDate.peer.setValue(m.departureDate))
   map((m,v) => m.arrivalTime = v.arrivalTime.peer.getValue.asInstanceOf[Int], (m,v) => v.arrivalTime.peer.setValue(m.arrivalTime))
   map((m,v) => m.departureTime = v.departureTime.peer.getValue.asInstanceOf[Int], (m,v) => v.departureTime.peer.setValue(m.departureTime))
+  map((m,v) => m.engineDuration = v.engineDuration.peer.getValue.asInstanceOf[Int], (m,v) => v.engineDuration.peer.setValue(m.engineDuration))
   mapViewOnly((m,v) => v.duration.text = m.durationString)
   mapViewOnly((m,v) => markIfInvalid(v.plane, m.isPlaneValid)) 
   mapViewOnly((m,v) => markIfInvalid(v.seat1, m.isSeat1Valid))
@@ -49,12 +52,13 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   mapViewOnly((m,v) => markIfInvalid(v.to, m.isToValid))
   mapViewOnly((m,v) => markIfInvalid(v.departureTime, m.isDepartureTimeValid))
   mapViewOnly((m,v) => markIfInvalid(v.controller, m.isControllerValid))
-  
-  
+  mapViewOnly((m,v) => v.engineDuration.enabled = m.engineDurationPossible)
+
+
   private def markIfInvalid(c : Component, valid : Boolean) : Unit = {
     markIfInvalid(c.peer, valid)
   }
-  
+
   private def markIfInvalid(c : AWTComponent, valid : Boolean) : Unit = {
     if(!valid) {
       c.setBackground(new Color(231, 122, 122)) //TODO create an object that holds all the used colors
@@ -62,7 +66,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       c.setBackground(null)
     }
   }
-  
+
   view.launchType.selection.reactions += {
     case SelectionChanged(_) => {
       updateModel
@@ -78,7 +82,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       updateView
     }
   }
-  
+
   view.seat1.reactions += {
     case CreateEvent(str, old) => {
       println("create")
@@ -94,7 +98,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       }
     }
   }
-  
+
   val timeSetter = new TimeSetter(this) { 
     add(view.btDepartureTime, view.departureTime)
     add(view.btArrivalTime, view.arrivalTime)
@@ -115,7 +119,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     if(wireLaunchPresenter != null) { wireLaunchPresenter.updateModel }
     if(towLaunchPresenter != null) { towLaunchPresenter.updateModel }
   }
-  
+
   override def updateView = {
     super.updateView
     view.launchType.selection.item = LaunchItem(model.launchType)
@@ -141,7 +145,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       }
     }
   }
-  
+
   override def shutdown = {
     println("shutdown")
     if(model != null) {

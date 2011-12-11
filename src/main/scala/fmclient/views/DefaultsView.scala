@@ -15,7 +15,7 @@ class DefaultsView extends MigPanel("") {
   val wireLauncher = new MyComboBox[WireLauncher](new MyComboBoxModel(AllWireLaunchers))
   val operator = new MyComboBox[Person](new MyComboBoxModel(AllPeople))
   val controller = new MyComboBox[Person](new MyComboBoxModel(AllPeople))
-  
+
   add(new Label(I18n("departure_date")))
   add(new Label(I18n("airfield")))
   add(new Label(I18n("tow_plane")))
@@ -23,7 +23,7 @@ class DefaultsView extends MigPanel("") {
   add(new Label(I18n("wire_launcher")))
   add(new Label(I18n("operator")))
   add(new Label(I18n("controller")), "wrap")
-  
+
   add(date, "w 70")
   add(airfield)
   add(towPlane)

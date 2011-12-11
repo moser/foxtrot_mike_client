@@ -1,9 +1,14 @@
 - Eingabe
-  - Kommentar, Motorlaufzeit fehlt
   - Standardstartart, mögliche Startarten
   - Lizenzprüfung?
+  - Begleiter: Number
+  - Pilot: Unbekannt..
 - Unvollendet: Bei Flügen mit Startart F auch F-Schlepper prüfen
 - Farbe: Bei unvollendeten Flügen Ankunft blau markieren
+- Hochladen: Wenn Flüge weg, FlightView disabled setzen
+
+- Fehlerbehandlung:
+  - Logdatei mit Fehler und Stacktrace
 
 - Specs
   - OutOfMemoryError (PermGen space erhöhen?)

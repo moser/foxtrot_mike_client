@@ -22,7 +22,8 @@ class PlaneSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
                                 JsString("can_tow") -> JsFalse,
                                 JsString("can_be_towed") -> JsFalse,
                                 JsString("can_be_wire_launched") -> JsFalse,
-                                JsString("disabled") -> JsFalse, 
+                                JsString("default_engine_duration_to_duration") -> JsFalse,
+                                JsString("disabled") -> JsFalse,
                                 JsString("group_id") -> JsNumber(0)))
       val p = new Plane(o)
       p.id should equal ("123.1")
@@ -34,6 +35,7 @@ class PlaneSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
       p.canTow should equal (false)
       p.canBeTowed should equal (false)
       p.canBeWireLaunched should equal (false)
+      p.defaultEngineDurationToDuration should equal (false)
       p.disabled should equal (false)
     }
   }

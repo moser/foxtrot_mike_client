@@ -12,6 +12,9 @@ class Flight extends AbstractFlight {
   @OneToOne(fetch=FetchType.EAGER, mappedBy="flight", cascade = Array(CascadeType.ALL))
   var launch : Launch = _
 
+  @ManyToOne(fetch=FetchType.EAGER)
+  @JoinColumn(name="cost_hint_id")
+  var costHint : CostHint  = _
 
   def this(d : Defaults) = {
     this()
@@ -64,9 +67,10 @@ class Flight extends AbstractFlight {
   }
 
   override def jsonValues = {
+    val json = super.jsonValues ++ Map(JsString("cost_hint_id") -> idToJsonInt(costHint))
     if(launch != null)
-      super.jsonValues ++ Map[JsString, JsValue](JsString("launch_attributes") -> launch.toJson)
+      json ++ Map[JsString, JsValue](JsString("launch_attributes") -> launch.toJson)
     else
-      super.jsonValues
+      json
   }
 }

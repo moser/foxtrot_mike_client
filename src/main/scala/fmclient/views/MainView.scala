@@ -9,12 +9,12 @@ import java.awt.Color
 class MainView extends MainFrame {
   private val colInvalid = new Color(231, 122, 122)
   private val colInvalidSelected = new Color(231, 40, 40)
-  
+
   private val colUnfinished = new Color(122, 122, 231)
   private val colUnfinishedSelected = new Color(40, 40, 231)
-  
+
   private val col = new Color(122, 231, 122)
-  private val colSelected = new Color(40, 231, 40)
+  private val colSelected = new Color(40, 180, 40)
 
   title = I18n("main.title")
   preferredSize = new Dimension(1000, 650)
@@ -30,13 +30,13 @@ class MainView extends MainFrame {
       if(!colored.selected) {
         if(isSelected) {
           c.background = selectionBackground
-	        c.foreground = selectionForeground
-    	  } else {
-    	    c.background = background
+          c.foreground = selectionForeground
+        } else {
+          c.background = background
           c.foreground = foreground
-    	  }
-    	} else {
-    	  if(isSelected) {
+        }
+      } else {
+        if(isSelected) {
           if(!flightsTableModel.get(row).finished) {
             c.background = colUnfinishedSelected
           } else if(!flightsTableModel.get(row).isValid) {
@@ -45,8 +45,8 @@ class MainView extends MainFrame {
             c.background = colSelected
           }
           c.foreground = selectionForeground
-    	  } else {
-	        if(!flightsTableModel.get(row).finished) {
+        } else {
+          if(!flightsTableModel.get(row).finished) {
             c.background = colUnfinished
           } else if(!flightsTableModel.get(row).isValid) {
             c.background = colInvalid
@@ -54,8 +54,8 @@ class MainView extends MainFrame {
             c.background = col
           }
           c.foreground = foreground
-    	  }
-	    }
+        }
+      }
       c
     }
   }
@@ -74,19 +74,19 @@ class MainView extends MainFrame {
     add(colored, "wrap")
     add(new ScrollPane(flightsTable), "gap 0, span, w 100%")
   }
-  
+
   val flightPanel = new FlightView
   val defaultsPanel = new DefaultsView
-  
+
   val btSync = new Button(I18n("sync"))
   val actionPanel = new MigPanel {
     add(btSync)
   }
-  
+
   tabs.pages += new TabbedPane.Page(I18n("flight"), flightPanel)
   tabs.pages += new TabbedPane.Page(I18n("defaults"), defaultsPanel)
   tabs.pages += new TabbedPane.Page(I18n("actions"), actionPanel)
-  
+
   contents = new SplitPane {
     dividerSize = 12
     orientation = Orientation.Horizontal

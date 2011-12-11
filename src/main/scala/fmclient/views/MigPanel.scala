@@ -8,21 +8,21 @@ class MigPanel(constraints: String, colConstraints: String, rowConstraints: Stri
   def this(constraints: String, colConstraints: String) = {
     this(constraints, colConstraints, "")
   }
-  
+
   def this(constraints: String) = {
     this(constraints, "", "")
   }
-  
+
   def this() {
     this("", "", "")
   }
-  
+
   override lazy val peer = new javax.swing.JPanel(new MigLayout(constraints, colConstraints, rowConstraints)) with SuperMixin
 
   def add(c: Component, l: String = "") {
     peer.add(c.peer, l)
   }
-  
+
   def remove(c: Component) {
     peer.remove(c.peer)
   }
