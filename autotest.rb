@@ -1,11 +1,11 @@
 IO.popen('sbt "~test"') do |f|
   while(l = f.gets) do
-    if l =~ /All tests PASSED/
-      `notify-send 'Tests passed' -i ~/traffic-light-green.jpg &> /dev/null`
+    if l =~ /Passed: /
+      `notify-send 'FMC: Tests passed' -i ~/code/foxtrot_mike/.notify-img/passed.png &> /dev/null`
     elsif l =~ /Compilation failed/
-      `notify-send 'Compilation problems' -i ~/traffic-light-red.jpg &> /dev/null`
-    elsif l =~ /Error running test/
-      `notify-send 'Test(s) failed' -i ~/traffic-light-red.jpg &> /dev/null`
+      `notify-send 'FMC: Compilation failed' -i ~/code/foxtrot_mike/.notify-img/error.png &> /dev/null`
+    elsif l =~ /Failed: /
+      `notify-send 'FMC: Test(s) failed' -i ~/code/foxtrot_mike/.notify-img/failed.png &> /dev/null`
     end
     puts l
   end
