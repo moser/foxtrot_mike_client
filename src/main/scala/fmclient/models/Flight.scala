@@ -11,7 +11,8 @@ class Flight extends AbstractFlight {
 
   @OneToOne(fetch=FetchType.EAGER, mappedBy="flight", cascade = Array(CascadeType.ALL))
   var launch : Launch = _
-  
+
+
   def this(d : Defaults) = {
     this()
     from = d.airfield
@@ -19,7 +20,7 @@ class Flight extends AbstractFlight {
     controller = d.controller
     departureDate = d.date
   }
-  
+
   def this(f : Flight) = {
     this()
     copyFrom(f)
@@ -33,7 +34,7 @@ class Flight extends AbstractFlight {
       case _ => {}
     }
   }
-  
+
   def launchType = {
     if(launch.isInstanceOf[WireLaunch]) {
       "WireLaunch"
@@ -43,7 +44,7 @@ class Flight extends AbstractFlight {
       "SelfLaunch"
     }
   }
-  
+
   def launchType_=(s:String) = {
     if(launchType != s) {
       if(s == "SelfLaunch") {
@@ -57,11 +58,11 @@ class Flight extends AbstractFlight {
       }
     }
   }
-  
+
   def finished = {
     departureTime >= 0 && arrivalTime >= 0
   }
-  
+
   override def jsonValues = {
     if(launch != null)
       super.jsonValues ++ Map[JsString, JsValue](JsString("launch_attributes") -> launch.toJson)

@@ -8,7 +8,7 @@ import fmclient.models.repos.AllAirfields
 @Entity
 class Airfield extends BaseModel[String] with UUIDHelper {
   addObserver(AllAirfields)
-  
+
   @Id
   var id : String = createUUID
 

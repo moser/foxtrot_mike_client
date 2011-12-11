@@ -11,21 +11,21 @@ class SyncPresenter {
   val view = new SyncView
   val down = List(AllGroups.syncDown(_,_,_), AllAirfields.syncDown(_,_,_), AllPeople.syncDown(_,_,_), AllPlanes.syncDown(_,_,_), AllWireLaunchers.syncDown(_,_,_), AllCostHints.syncDown(_,_,_))
   val up = List(AllGroups.syncUp(_,_,_), AllAirfields.syncUp(_,_,_), AllPeople.syncUp(_,_,_), AllPlanes.syncUp(_,_,_), AllWireLaunchers.syncUp(_,_,_))
-  
+
   view.username.text = Config.lastUser
-  
+
   view.btDown.reactions += {
     case ButtonClicked(_) => {
       sync(false)
     }
   }
-  
+
   view.btUp.reactions += {
     case ButtonClicked(_) => {
       sync(true)
     }
   }
-  
+
   private def sync(dirUp : Boolean) = {
     Config.lastUser = view.username.text
     view.enabled = false
@@ -76,12 +76,12 @@ class SyncPresenter {
     progressUpdater.start
     backgroundSync.start
   }
-  
+
   view.btNo.reactions += {
     case ButtonClicked(_) => {
       if(view.enabled) {
         view.close
       }
     }
-  } 
+  }
 }

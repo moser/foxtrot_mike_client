@@ -6,14 +6,14 @@ import scalaj.collection.Imports._
 object EntityMgr {
   private var emf : EntityManagerFactory = _
   private var _em : EntityManager = _
-  
+
   def em = { 
     init(false)
     _em
   }
-  
+
   var initialized = false
-  
+
   def init(test:Boolean) = {
     if (!initialized) {
       var properties = Map("javax.persistence.jdbc.url" -> ("jdbc:h2:" + System.getProperty("user.dir") + "/data"))
@@ -25,8 +25,8 @@ object EntityMgr {
       initialized = true
     }
   }
-  
-  
+
+
   def withTransaction(f: EntityManager => Unit) = {
     init(false)
     val t = _em.getTransaction
@@ -46,5 +46,6 @@ object EntityMgr {
   def close = {
     em.close
     emf.close
+    initialized = false
   }
 }
