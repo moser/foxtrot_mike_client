@@ -27,4 +27,8 @@ class FlightsTableModelSpec extends Spec with ShouldMatchers with BeforeAndAfter
       }
     }
   }
+
+  override def afterAll(configMap: Map[String, Any]) {
+    //EntityMgr.close
+  }
 }

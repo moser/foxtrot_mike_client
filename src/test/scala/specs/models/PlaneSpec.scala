@@ -6,11 +6,11 @@ import dispatch.json.{JsObject, JsString, JsFalse, JsNumber}
 import fmclient.models.{ Plane, EntityMgr }
 
 class PlaneSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
-  
+
   override def beforeAll(configMap: Map[String, Any]) {
     EntityMgr.init(true)
   }
-  
+
   describe("plane") {
     it("should have a constructor accepting a JsObject") {
       val o = new JsObject(Map(JsString("id") -> JsString("123.1"), 
@@ -36,5 +36,9 @@ class PlaneSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
       p.canBeWireLaunched should equal (false)
       p.disabled should equal (false)
     }
+  }
+
+  override def afterAll(configMap: Map[String, Any]) {
+    //EntityMgr.close
   }
 }

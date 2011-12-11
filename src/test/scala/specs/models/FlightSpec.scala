@@ -29,7 +29,7 @@ class FlightSpec extends Spec with ShouldMatchers {
       f.arrivalTime should equal (-1)
       f.controller should equal (f0.controller)
     }
-    
+
     describe("departureTime") {
       it("should not allow values gteq 1440") {
         val f = new Flight
@@ -37,7 +37,7 @@ class FlightSpec extends Spec with ShouldMatchers {
         f.departureTime should equal (1)
       }
     }
-    
+
     describe("arrivalTime") {
       it("should not allow values gteq 1440") {
         val f = new Flight
@@ -45,7 +45,7 @@ class FlightSpec extends Spec with ShouldMatchers {
         f.arrivalTime should equal (1)
       }
     }
-  
+
     describe("duration") {
       it("should return null when arrival is not set") {
         val f = new Flight
@@ -81,7 +81,7 @@ class FlightSpec extends Spec with ShouldMatchers {
         f.durationString should equal ("")
       }
     }
-    
+
     it("should tell if it is finished") {
       val f = new Flight
       f.finished should equal (false)
@@ -90,7 +90,7 @@ class FlightSpec extends Spec with ShouldMatchers {
       f.arrivalTime = 70 //1:10
       f.finished should equal (true)
     }
-    
+
     it("should only be valid if all the required attributes are set") {
       val f = new Flight
       f should not be ('valid)
