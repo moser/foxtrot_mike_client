@@ -37,3 +37,5 @@ libraryDependencies += "org.eclipse.persistence" % "javax.persistence" % "2.0.0"
 libraryDependencies += "com.h2database" % "h2" % "1.2.+"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "1.6.1" % "test"
+
+parallelExecution in Test := false

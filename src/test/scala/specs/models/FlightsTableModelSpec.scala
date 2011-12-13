@@ -5,11 +5,6 @@ import org.scalatest.matchers.ShouldMatchers
 import fmclient.models.{ FlightsTableModel, Flight, EntityMgr }
 
 class FlightsTableModelSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
-
-  override def beforeAll(configMap: Map[String, Any]) {
-    EntityMgr.init(true)
-  }
-
   describe("A flight table model") {
     describe("filters") {
       it("should only return unfinished flights") {
@@ -26,9 +21,5 @@ class FlightsTableModelSpec extends Spec with ShouldMatchers with BeforeAndAfter
         m.getAll.length should equal(0)
       }
     }
-  }
-
-  override def afterAll(configMap: Map[String, Any]) {
-    //EntityMgr.close
   }
 }

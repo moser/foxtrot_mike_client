@@ -4,7 +4,6 @@ import javax.persistence._
 import dispatch.json.{JsObject, JsString}
 import dispatch.json.Js._
 import fmclient.models.repos.{AllPeople, AllGroups}
-import fmclient.models.Group
 
 @Entity
 class Person extends BaseModel[String] with UUIDHelper {
@@ -16,7 +15,7 @@ class Person extends BaseModel[String] with UUIDHelper {
   var firstname = ""
   var lastname = ""
   var status = "local"
-  
+
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="group_id")
   var group : Group = _
@@ -35,7 +34,7 @@ class Person extends BaseModel[String] with UUIDHelper {
     lastname = ('lastname ! str)(o)
     group = AllGroups.find(('group_id ! num)(o).intValue)
   }
-  
+
   override def jsonValues = {
     Map(JsString("firstname") -> JsString(firstname),
         JsString("lastname") -> JsString(lastname),

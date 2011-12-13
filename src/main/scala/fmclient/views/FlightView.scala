@@ -6,9 +6,10 @@ import java.awt.Insets
 import javax.swing.{JFormattedTextField, Icon, BorderFactory}
 import fmclient.models.repos._
 import fmclient.models._
-import fmclient.views.AutoCompleter.DefaultItemRenderer
+import fmclient.views.AutoCompleter._
 import java.awt.Color
 import com.wordpress.tips4java.ComponentBorder
+import scala.util.matching.Regex
 
 
 class MyFormattedTextField(f: javax.swing.JFormattedTextField.AbstractFormatterFactory) extends FormattedTextField(null) {
@@ -34,7 +35,8 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
     }
   }
   val plane = new AutoCompleter(new DefaultAutoCompleterModel[Plane](AllPlanes, _.registration, Map("allowNil" -> false)), planeRenderer)
-  val seat1 = new AutoCompleter(new DefaultAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> false)))
+  val seat1Model = new DefaultAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> false))
+  val seat1 = new AutoCompleter(seat1Model)
   val seat2 = new AutoCompleter(new DefaultAutoCompleterModel[Person](AllPeople, _.name))
   val airfieldRenderer = new DefaultItemRenderer[Airfield] {
     override def renderForList(o : AutoCompleter.Option[Airfield]) = {

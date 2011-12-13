@@ -12,7 +12,7 @@ object EntityMgr {
     _em
   }
 
-  var initialized = false
+  private var initialized = false
 
   def init(test:Boolean) = {
     if (!initialized) {
