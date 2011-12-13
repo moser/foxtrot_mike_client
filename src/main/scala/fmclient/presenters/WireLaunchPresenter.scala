@@ -13,6 +13,6 @@ class WireLaunchPresenter(view0: WireLaunchView) extends BasePresenter[WireLaunc
   var model : WireLaunch = _
   var view = view0
 
-  map((m,v) => m.wireLauncher = v.wireLauncher.selectedItem, (m,v) => v.wireLauncher.selectedItem = m.wireLauncher)
-  map((m,v) => m.operator = v.operator.selectedItem, (m,v) => v.operator.selectedItem = m.operator)
+  map((m,v) => m.wireLauncher = v.wireLauncher.selectedOption.get, (m,v) => v.wireLauncher.selectedOption = m.wireLauncher)
+  map((m,v) => m.operator = v.operator.selectedOption.get, (m,v) => v.operator.selectedOption = m.operator)
 }

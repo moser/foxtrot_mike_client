@@ -1,8 +1,8 @@
 package fmclient.presenters
 
 import fmclient.views.{ FlightView, MigPanel, MyFormattedTextField }
-import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem }
-import fmclient.views.AutoCompleter.CreateEvent
+import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel }
+import fmclient.views.AutoCompleter._
 import org.joda.time.DateTime
 import scala.swing.event._
 import scala.swing.{Component, TextComponent}
@@ -12,7 +12,7 @@ import java.awt.{ Color, Component => AWTComponent }
 
 
 class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightView] {
-  def this() = this(new FlightView())  
+  def this() = this(new FlightView())
   var view = view0
   protected var _model : Flight = _
   def model = _model
@@ -33,12 +33,44 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   var wireLaunchPresenter : WireLaunchPresenter = _
   var towLaunchPresenter : TowLaunchPresenter = _
 
-  map((m,v) => m.plane = v.plane.selectedItem, (m,v) => v.plane.selectedItem = m.plane)
-  map((m,v) => m.seat1 = v.seat1.selectedItem, (m,v) => v.seat1.selectedItem = m.seat1)
-  map((m,v) => m.seat2 = v.seat2.selectedItem, (m,v) => v.seat2.selectedItem = m.seat2)
-  map((m,v) => m.controller = v.controller.selectedItem, (m,v) => v.controller.selectedItem = m.controller)
-  map((m,v) => m.from = v.from.selectedItem, (m,v) => v.from.selectedItem = m.from)
-  map((m,v) => m.to = v.to.selectedItem, (m,v) => v.to.selectedItem = m.to)
+  map((m,v) => m.plane = v.plane.selectedOption.get, (m,v) => v.plane.selectedOption = m.plane)
+
+  map((m,v) => { //to model
+        if(v.seat1.selectedOption.isInstanceOf[RealOption[Person]]) {
+          m.seat1 = v.seat1.selectedOption.get
+          m.seat1Unknown = false
+        } else if(v.seat1.selectedOption.isInstanceOf[Seat1ACModel.UnknownPersonOption]) {
+          m.seat1 = null
+          m.seat1Unknown = true
+        }
+      },
+      (m,v) => { //to view
+        if(!m.seat1Unknown) {
+          v.seat1.selectedOption = m.seat1
+        } else {
+          v.seat1.selectedOption = new Seat1ACModel.UnknownPersonOption
+        }
+      })
+
+  map((m,v) => { //to model
+        if(v.seat2.selectedOption.isInstanceOf[RealOption[Person]] || v.seat2.selectedOption.isInstanceOf[NilOption[Person]]) {
+          m.seat2 = v.seat2.selectedOption.get
+          m.seat2Number = -1
+        } else if(v.seat2.selectedOption.isInstanceOf[Seat2ACModel.NumberOption]) {
+          m.seat2 = null
+          m.seat2Number = v.seat2.selectedOption.asInstanceOf[Seat2ACModel.NumberOption].n
+        }
+      },
+      (m,v) => { //to view
+        if(m.seat2Number <= 0) {
+          v.seat2.selectedOption = m.seat2
+        } else {
+          v.seat2.selectedOption = new Seat2ACModel.NumberOption(m.seat2Number)
+        }
+      })
+  map((m,v) => m.controller = v.controller.selectedOption.get, (m,v) => v.controller.selectedOption = m.controller)
+  map((m,v) => m.from = v.from.selectedOption.get, (m,v) => v.from.selectedOption = m.from)
+  map((m,v) => m.to = v.to.selectedOption.get, (m,v) => v.to.selectedOption = m.to)
   map((m,v) => m.costHint = v.costHint.selection.item, (m,v) => v.costHint.selection.item = m.costHint)
   map((m,v) => m.comment = v.comment.text, (m,v) => v.comment.text = m.comment)
   map((m,v) => m.departureDate = v.departureDate.peer.getValue.asInstanceOf[Date], (m,v) => v.departureDate.peer.setValue(m.departureDate))
@@ -90,7 +122,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       val bp = new PersonBalloonPresenter(str, view.seat1)
       bp.reactions += {
         case PersonBalloonPresenter.OkEvent(o) => {
-          view.seat1.selectedItem = o
+          view.seat1.selectedOption = o
         }
         case PersonBalloonPresenter.CancelEvent() => {
           view.seat1.revertLast

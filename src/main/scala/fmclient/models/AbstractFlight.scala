@@ -24,13 +24,13 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
   @JoinColumn(name="seat1_id")
   var seat1 : Person = _
 
-  var seat1_unknown = false
+  var seat1Unknown = false
 
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="seat2_id")
   var seat2 : Person = _
 
-  var seat2_number : Integer = _
+  var seat2Number : Integer = -1
 
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="from_id")
@@ -99,8 +99,8 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
 
   override def jsonValues : Map[JsString, JsValue] = {
     Map(JsString("plane_id") -> idToJson(plane),
-        JsString("seat1_id") -> idToJson(seat1),
-        JsString("seat2_id") -> idToJson(seat2),
+        JsString("seat1_id") -> (if(seat1Unknown) JsString("unknown") else idToJson(seat1)),
+        JsString("seat2_id") -> (if(seat2Number <= 0) idToJson(seat2) else JsString("+" + seat2Number)),
         JsString("from_id") -> idToJson(from),
         JsString("to_id") -> idToJson(to),
         JsString("controller_id") -> idToJson(controller),

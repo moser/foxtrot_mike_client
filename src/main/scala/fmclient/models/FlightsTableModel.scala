@@ -13,8 +13,18 @@ class FlightsTableModel extends AbstractTableModel with Observer {
   def int2Object(o: Int): Object = o.asInstanceOf[AnyRef]
   val cols : List[(String, Flight => Object)] = List(("departure_date", { f : Flight => dateFormatter.format(f.departureDate) }),
                   ("plane", { f: Flight => f.plane }),
-                  ("seat1", { f: Flight => f.seat1 }),
-                  ("seat2", { f: Flight => f.seat2 }),
+                  ("seat1", { f: Flight => {
+                      if(!f.seat1Unknown)
+                        f.seat1
+                      else
+                        I18n("unknown_person")
+                  } }),
+                  ("seat2", { f: Flight => {
+                      if(f.seat2Number <= 0)
+                        f.seat2
+                      else
+                        "+" + f.seat2Number
+                  }  }),
                   ("from", { f: Flight => f.from }),
                   ("to", { f: Flight => f.to }),
                   ("departure_time", { f: Flight => timeFormatter.valueToString(int2Object(f.departureTime)) }),
@@ -23,27 +33,27 @@ class FlightsTableModel extends AbstractTableModel with Observer {
   var all : Seq[Flight] = Nil
   var update_all = true
   AllFlights.addObserver(this)
-    
+
   override def getRowCount = {
     getAll.length
   }
-  
+
   override def getColumnCount = {
     cols.length
   }
-  
+
   override def getColumnName(i: Int) = {
     I18n(cols(i)._1)
   }
-  
+
   override def getColumnClass(i: Int) = classOf[String]
-  
+
   override def getValueAt(r: Int, c: Int): Object = { 
     cols(c)._2(getAll(r))
   }
-  
+
   override def isCellEditable(r: Int, c: Int): Boolean = false
-  
+
   def get(i : Int) = {
     getAll(i)
   }
@@ -87,7 +97,7 @@ class FlightsTableModel extends AbstractTableModel with Observer {
       case _ => {}
     }
   }
-  
+
   def removed(m : BaseModel[_]) {
    m match {
       case f : Flight => {
@@ -99,18 +109,18 @@ class FlightsTableModel extends AbstractTableModel with Observer {
       case _ => {}
     }
   }
-  
+
   def unfinishedOnly = pUnfinishedOnly
   def unfinishedOnly_=(t : Boolean) = {
     pUnfinishedOnly = t
     update_all = true
     fireTableDataChanged()
-  } 
-  
+  }
+
   def problemsOnly = pProblemsOnly
   def problemsOnly_=(t : Boolean) = {
     pProblemsOnly = t
     update_all = true
     fireTableDataChanged()
-  } 
+  }
 }

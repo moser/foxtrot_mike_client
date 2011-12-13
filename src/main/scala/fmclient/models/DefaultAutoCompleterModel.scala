@@ -2,8 +2,8 @@ package fmclient.models
 
 import fmclient.views.AutoCompleter
 import fmclient.models.repos.BaseEntityRepository
-import scala.util.matching.Regex
 import scala.swing.Publisher
+import java.util.regex.Pattern
 
 object DefaultAutoCompleterModel {
   class CreateOption[T >: Null <: AnyRef](val filterString : String) extends AutoCompleter.SyntheticOption[T] {
@@ -16,7 +16,7 @@ object DefaultAutoCompleterModel {
 class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEntityRepository[T, _], extract : T => String, options_ : Map[String, Boolean] = Map()) extends AutoCompleter.AutoCompleterModel[T] with Publisher {
   val options = Map("allowNil" -> true, "allowCreate" -> true) ++ options_
   var dirty = true
-  var pFilteredItems : Seq[AutoCompleter.Option[T]] = List()
+  var pFilteredOptions: Seq[AutoCompleter.Option[T]] = List()
 
 //  override def filterString = filterString_
   override def filterString_=(s:String) = {
@@ -24,21 +24,24 @@ class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEnti
     dirty = true
   }
 
-  override def filteredItems = {
+  def syntheticOptions : Seq[AutoCompleter.SyntheticOption[T]] = List()
+
+  override def filteredOptions = {
     if(dirty) {
-      val r = new Regex(filterString.toLowerCase)
-      pFilteredItems = collection.all.filter(o => { r.findFirstIn(extract(o).toLowerCase) != None }).map(new AutoCompleter.RealOption[T](_))
-      if(options("allowCreate") && pFilteredItems.length == 0 &&
-        !(selectedItem.isInstanceOf[AutoCompleter.NilOption[T]] &&
-        filterString.equals(selectedItem.toString))) {
-        pFilteredItems = pFilteredItems ++ List(new DefaultAutoCompleterModel.CreateOption[T](filterString).asInstanceOf[AutoCompleter.Option[T]])
+      val p = Pattern.compile(filterString.toLowerCase, Pattern.LITERAL)
+      pFilteredOptions = collection.all.filter(o => { p.matcher(extract(o).toLowerCase).find }).map(new AutoCompleter.RealOption[T](_))
+      pFilteredOptions = pFilteredOptions ++ syntheticOptions.filter(_.matches(p))
+      if(options("allowCreate") && pFilteredOptions.length == 0 &&
+        !(selectedOption.isInstanceOf[AutoCompleter.NilOption[T]] &&
+        filterString.equals(selectedOption.toString))) {
+        pFilteredOptions = pFilteredOptions ++ List(new DefaultAutoCompleterModel.CreateOption[T](filterString).asInstanceOf[AutoCompleter.Option[T]])
       }
-      if(options("allowNil") && pFilteredItems.findIndexOf(_.isInstanceOf[AutoCompleter.NilOption[T]]) == -1) {
-        pFilteredItems = List(new AutoCompleter.NilOption[T].asInstanceOf[AutoCompleter.Option[T]]) ++ pFilteredItems
+      if(filterString.equals("") && options("allowNil")) {
+        pFilteredOptions = List(new AutoCompleter.NilOption[T].asInstanceOf[AutoCompleter.Option[T]]) ++ pFilteredOptions
       }
       dirty = false
     }
-    pFilteredItems
+    pFilteredOptions
   }
 
   override def forceUpdate {
