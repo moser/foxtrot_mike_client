@@ -11,34 +11,13 @@ import com.wordpress.tips4java.ComponentBorder
 
 
 class TowLaunchView extends MigPanel("ins 0", "[80!]5[120!]5[120!]5[80!]3[80!]5[70!]3[70!]5[60!]") {
-  val planeRenderer = new DefaultItemRenderer[Plane] {
-    override def renderForList(o : AutoCompleter.Option[Plane]) = {
-      if(o.isInstanceOf[AutoCompleter.RealOption[Plane]]) {
-        "<html>" + o.get.registration + "<br/><font color=gray><i>" + o.get.make + "</i></font></html>"
-      } else {
-        o.toStringForList
-      }
-    }
-	}
+  val planeRenderer = new PlaneRenderer
   val plane = new AutoCompleter(new DefaultAutoCompleterModel[Plane](TowPlanes, _.registration, Map("allowNil" -> false)), planeRenderer)
   val seat1 = new AutoCompleter(new DefaultAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> false)))
 
-  val airfieldRenderer = new DefaultItemRenderer[Airfield] {
-    override def renderForList(o : AutoCompleter.Option[Airfield]) = {
-      if(o.isInstanceOf[AutoCompleter.RealOption[Airfield]]) {
-        if(o.get.registration == null || o.get.registration.equals(""))
-          o.get.name
-        else if(o.get.name == null || o.get.name.equals(""))
-          o.get.registration
-        else
-          "<html>" + o.get.registration + "<br/><font color=gray><i>" + o.get.name + "</i></font></html>"
-      } else {
-        o.toStringForList
-      }
-    }
-	}
+  val airfieldRenderer = new AirfieldRenderer
   val to = new AutoCompleter(new DefaultAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
-  
+
   val btArrivalTime = new InnerButton()
   val arrivalTime = new MyFormattedTextField(TimeFormatterFactory)
   new ComponentBorder(btArrivalTime.peer).install(arrivalTime.peer)
@@ -51,14 +30,14 @@ class TowLaunchView extends MigPanel("ins 0", "[80!]5[120!]5[120!]5[80!]3[80!]5[
   peer.add(to, "w 80!, skip 2")
   add(arrivalTime, "skip 1, w 70!")
   add(duration, "w 60!")
-  
+
   var _enabled = true
   override def enabled = _enabled
   override def enabled_=(b:Boolean) = {
     _enabled = b
     btArrivalTime.enabled = b
     arrivalTime.enabled = b
-    
+
     plane.setEnabled(b)
     seat1.setEnabled(b)
     to.setEnabled(b)

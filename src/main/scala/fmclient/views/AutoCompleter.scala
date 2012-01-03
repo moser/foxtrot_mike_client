@@ -9,6 +9,7 @@ import scala.swing.event.Event
 import scala.swing.Publisher
 import fmclient.models.DefaultAutoCompleterModel.CreateOption
 import java.util.regex.Pattern
+import scala.util.matching.{ Regex => SRegex }
 
 object AutoCompleter {
   trait AutoCompleterModel[T >: Null <: AnyRef] {
@@ -69,8 +70,14 @@ object AutoCompleter {
   }
 
   trait AutoCompleterItemRenderer[T >: Null <: AnyRef] {
+    def html(str: String) = "<html>" + str + "</html>"
+    def mark(str: String, replace : String) = {
+      new SRegex("(?iu)(" + replace + ")").replaceAllIn(str, o => {
+        "<u>" + str.substring(o.start, o.end) + "</u>"
+      })
+    }
     def renderForTextfield(o : AutoCompleter.Option[T]) : String
-    def renderForList(o : AutoCompleter.Option[T]) : String
+    def renderForList(o : AutoCompleter.Option[T], currentText : String) : String
   }
 
   class DefaultItemRenderer[T >: Null <: AnyRef] extends AutoCompleterItemRenderer[T] {
@@ -78,8 +85,8 @@ object AutoCompleter {
       o.toStringForTextfield
     }
 
-    override def renderForList(o : AutoCompleter.Option[T]) = {
-      o.toStringForList
+    override def renderForList(o : AutoCompleter.Option[T], replace : String) = {
+      html(mark(o.toStringForList, replace))
     }
   }
   case class CreateEvent[T >: Null <: AnyRef](str : String, old : AutoCompleter.Option[T]) extends Event
@@ -100,7 +107,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
   popupList.setCellRenderer(new DefaultListCellRenderer() {
     override def getListCellRendererComponent(list : JList,  value : Any, i : Int, selected : Boolean, cellHasFocus : Boolean) = {
       val l = super.getListCellRendererComponent(list, value, i, selected, cellHasFocus).asInstanceOf[JLabel]
-      l.setText(itemRenderer.renderForList(value.asInstanceOf[AutoCompleter.Option[T]]))
+      l.setText(itemRenderer.renderForList(value.asInstanceOf[AutoCompleter.Option[T]], AutoCompleter.this.getText))
       l
     }
   })

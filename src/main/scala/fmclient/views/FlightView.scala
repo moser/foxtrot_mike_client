@@ -24,32 +24,10 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
   val departureDate = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
-  val planeRenderer = new DefaultItemRenderer[Plane] {
-    override def renderForList(o : AutoCompleter.Option[Plane]) = {
-      if(o.isInstanceOf[AutoCompleter.RealOption[Plane]]) {
-        "<html>" + o.get.registration + "<br/><font color=gray><i>" + o.get.make + "</i></font></html>"
-      } else {
-        o.toStringForList
-      }
-    }
-  }
-  val plane = new AutoCompleter(new DefaultAutoCompleterModel[Plane](AllPlanes, _.registration, Map("allowNil" -> false)), planeRenderer)
+  val plane = new AutoCompleter(new DefaultAutoCompleterModel[Plane](AllPlanes, _.registration, Map("allowNil" -> false)), new PlaneRenderer)
   val seat1 = new AutoCompleter(new Seat1ACModel)
   val seat2 = new AutoCompleter(new Seat2ACModel)
-  val airfieldRenderer = new DefaultItemRenderer[Airfield] {
-    override def renderForList(o : AutoCompleter.Option[Airfield]) = {
-      if(o.isInstanceOf[AutoCompleter.RealOption[Airfield]]) {
-        if(o.get.registration == null || o.get.registration.equals(""))
-          o.get.name
-        else if(o.get.name == null || o.get.name.equals(""))
-          o.get.registration
-        else
-          "<html>" + o.get.name + "<br/><font color=gray><i>" + o.get.registration + "</i></font></html>"
-      } else {
-        o.toStringForList
-      }
-    }
-  }
+  val airfieldRenderer = new AirfieldRenderer
   val from = new AutoCompleter(new DefaultAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
   val to = new AutoCompleter(new DefaultAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
 
