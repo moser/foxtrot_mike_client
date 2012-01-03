@@ -44,7 +44,7 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
         else if(o.get.name == null || o.get.name.equals(""))
           o.get.registration
         else
-          "<html>" + o.get.registration + "<br/><font color=gray><i>" + o.get.name + "</i></font></html>"
+          "<html>" + o.get.name + "<br/><font color=gray><i>" + o.get.registration + "</i></font></html>"
       } else {
         o.toStringForList
       }

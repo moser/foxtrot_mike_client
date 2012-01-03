@@ -10,12 +10,12 @@ import scala.actors.Actor
 abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.reflect.Manifest[T]) extends Observer with Observalbe {
   lazy val allQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x")
   lazy val firstQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x").setMaxResults(1)
-  
+
   var dirty = true
   var cache : Seq[T] = _
 
   def find(id: PKT): T = EntityMgr.em.find(m.erasure, id).asInstanceOf[T]
-  
+
   def extractId(o : JsObject) : PKT
 
   def all : Seq[T] = {
@@ -45,7 +45,7 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
       }
     })
   }
-  
+
   def syncUp(username : String, password : String, progressUpdater : Actor) = {
     val http = new Http
     val req : Request = :/("localhost", 3000) / (toResource + ".json") << Map("json" -> "true") as(username, password) 
@@ -60,22 +60,22 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
 
   def toResource =  toJsonClass + "s"
   def toJsonClass = m.erasure.getSimpleName.toLowerCase
-  
+
   def created(a : BaseModel[_]) = {
     markDirty(a)
     notifyCreated(a)
   }
-  
+
   def updated(a : BaseModel[_]) = {
     markDirty(a)
     notifyUpdated(a)
   }
-  
+
   def removed(a : BaseModel[_]) = {
     markDirty(a)
     notifyRemoved(a)
   }
-  
+
   private def markDirty(a : BaseModel[_]) = {
     a match {
       case model : T => {
