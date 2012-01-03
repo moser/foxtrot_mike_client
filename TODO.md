@@ -4,6 +4,8 @@
 - Eingabe
   - Standardstartart, mögliche Startarten
   - Lizenzprüfung?
+- autocompleter
+  scroll marked element to visible
 
 - Hochladen: Wenn Flüge weg, FlightView disabled setzen
 

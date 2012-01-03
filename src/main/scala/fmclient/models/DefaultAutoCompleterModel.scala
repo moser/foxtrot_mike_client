@@ -29,7 +29,16 @@ class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEnti
   override def filteredOptions = {
     if(dirty) {
       val p = Pattern.compile(filterString.toLowerCase, Pattern.LITERAL)
-      pFilteredOptions = collection.all.filter(o => { p.matcher(extract(o).toLowerCase).find }).map(new AutoCompleter.RealOption[T](_))
+      var n = 0
+      pFilteredOptions = collection.all.filter(o => {
+          if(n > 15)
+            false
+          else {
+            val r = p.matcher(extract(o).toLowerCase).find
+            if(r)
+              n += 1
+            r
+          }}).map(new AutoCompleter.RealOption[T](_))
       pFilteredOptions = pFilteredOptions ++ syntheticOptions.filter(_.matches(p))
       if(options("allowCreate") && pFilteredOptions.length == 0 &&
         !(selectedOption.isInstanceOf[AutoCompleter.NilOption[T]] &&
