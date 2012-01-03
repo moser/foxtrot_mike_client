@@ -11,6 +11,7 @@
 - Specs
   - OutOfMemoryError (PermGen space erhöhen?)
     - Problem mit JPA...
+- Installer?
 
 # Ideas
 - Unvollendet: Bei Flügen mit Startart F auch F-Schlepper prüfen

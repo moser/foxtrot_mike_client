@@ -1,3 +1,5 @@
+import AssemblyKeys._ // put this at the top of the file
+
 name := "Foxtrot Mike Client"
 
 version := "1.0"
@@ -39,3 +41,5 @@ libraryDependencies += "com.h2database" % "h2" % "1.2.+"
 libraryDependencies += "org.scalatest" %% "scalatest" % "1.6.1" % "test"
 
 parallelExecution in Test := false
+
+seq(assemblySettings: _*)
