@@ -39,7 +39,7 @@ object EntityMgr {
         t.rollback
         println("Error in EntityMgr#withTransaction")
         e.printStackTrace
-      } 
+      }
     }
   }
 
