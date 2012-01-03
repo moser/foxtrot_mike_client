@@ -11,6 +11,9 @@ object Seat1ACModel {
       p.matcher(toString.toLowerCase).find
     }
     override def toString = I18n("unknown_person")
+    override def equals(o:Any) = {
+      o.isInstanceOf[UnknownPersonOption]
+    }
   }
 }
 

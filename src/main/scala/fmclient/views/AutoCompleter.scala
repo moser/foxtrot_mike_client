@@ -50,7 +50,7 @@ object AutoCompleter {
       throw new IllegalArgumentException("e must not be null")
     override def get = e
     override def toString() = e.toString
-        override def equals(o:Any) = {
+    override def equals(o:Any) = {
       if(o.isInstanceOf[RealOption[T]]) {
         o.asInstanceOf[RealOption[T]].get.equals(e)
       } else {
@@ -155,10 +155,10 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
         popupListModel.add(i, o)
         i = i + 1
       })
+      val add = if(popupList.getPreferredSize().getHeight() > H) 35 else 25
+      popup.setPopupSize(max(getWidth(), popupList.getPreferredSize().getWidth()).toInt + add, min(popupList.getPreferredSize().getHeight() + 18, H).toInt)
       popupList.setSelectedValue(pSelectedOption, true)
       if(popupList.getSelectedIndex() == -1 && popupListModel.getSize() > 0) popupList.setSelectedIndex(0);
-      val add = if(popupList.getPreferredSize().getHeight() > H) 35 else 15
-      popup.setPopupSize(max(getWidth(), popupList.getPreferredSize().getWidth()).toInt + add, min(popupList.getPreferredSize().getHeight() + 18, H).toInt)
     }
   }
 
