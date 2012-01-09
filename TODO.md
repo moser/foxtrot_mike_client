@@ -6,6 +6,8 @@
   - Lizenzprüfung?
 - autocompleter
   scroll marked element to visible
+- comment: width
+- controller: optional
 
 - Hochladen: Wenn Flüge weg, FlightView disabled setzen
 
