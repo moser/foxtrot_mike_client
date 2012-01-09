@@ -22,6 +22,7 @@ object I18n {
       case "operator" => "Windenfahrer"
       case "wire_launcher" => "Winde"
       case "tow_plane" => "Schleppflugzeug"
+      case "tow_pilot" => "Schlepppilot"
       case "airfield" => "Flugplatz"
       case "firstname" => "Vorname"
       case "lastname" => "Nachname"
