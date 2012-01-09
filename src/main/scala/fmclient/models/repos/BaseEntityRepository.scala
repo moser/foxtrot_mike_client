@@ -8,8 +8,10 @@ import dispatch._
 import scala.actors.Actor
 
 abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.reflect.Manifest[T]) extends Observer with Observalbe {
-  lazy val allQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x")
+  lazy val allQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x ORDER BY " + orderBy)
   lazy val firstQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x").setMaxResults(1)
+
+  val orderBy : String
 
   var dirty = true
   var cache : Seq[T] = _
