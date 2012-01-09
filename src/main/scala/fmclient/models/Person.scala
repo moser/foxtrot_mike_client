@@ -15,12 +15,13 @@ class Person extends BaseModel[String] with UUIDHelper {
   var firstname = ""
   var lastname = ""
   var status = "local"
+  var disabled = false
 
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="group_id")
   var group : Group = _
 
-  def name = firstname + " " + lastname
+  def name = lastname + " " + firstname
   override def toString = name
 
   def this(o:JsObject) = {
@@ -33,6 +34,7 @@ class Person extends BaseModel[String] with UUIDHelper {
     firstname = ('firstname ! str)(o)
     lastname = ('lastname ! str)(o)
     group = AllGroups.find(('group_id ! num)(o).intValue)
+    disabled = ('disabled ! bool)(o)
   }
 
   override def jsonValues = {

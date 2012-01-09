@@ -13,8 +13,9 @@ class Airfield extends BaseModel[String] with UUIDHelper {
   var id : String = createUUID
 
   var registration : String = ""
-  var name : String = ""  
+  var name : String = ""
   var status = "local"
+  var disabled = false
 
   def this(o:JsObject) = {
     this()
@@ -25,6 +26,7 @@ class Airfield extends BaseModel[String] with UUIDHelper {
   override protected def pUpdate(o:JsObject) = {
     name = ('name ?? str)(o).orNull
     registration = ('registration ?? str)(o).orNull
+    disabled = ('disabled ! bool)(o)
   }
 
   override def toString = {
@@ -33,7 +35,7 @@ class Airfield extends BaseModel[String] with UUIDHelper {
     else
       registration
   }
-  
+
   override def jsonValues = {
     Map(JsString("registration") -> stringToJson(registration),
         JsString("name") -> stringToJson(name))
