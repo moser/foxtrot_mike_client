@@ -2,7 +2,7 @@ package fmclient.presenters
 
 import fmclient.views.SyncView
 import fmclient.models.repos._
-import fmclient.models.{I18n, Config}
+import fmclient.models.{I18n, Config, DefaultsSingleton}
 import swing.event._
 import scala.actors.Actor._
 import scala.swing.Dialog
@@ -72,6 +72,7 @@ class SyncPresenter {
         AllFlights.all.filter(_.status == "synced").foreach(_.delete)
       }
       progressUpdater ! false
+      DefaultsSingleton.update
     }
     progressUpdater.start
     backgroundSync.start

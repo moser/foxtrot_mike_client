@@ -6,6 +6,7 @@ import scalaj.collection.Imports._
 
 //TODO should depend on BaseEntityRepository#all (reload often, see DefaultAutoCompleterModel)
 class MyComboBoxModel[T <: BaseModel[_]](a : BaseEntityRepository[T, _]) extends DefaultComboBoxModel(new java.util.Vector(a.all.asJava)) with Observer {
+  a.addObserver(this)
 
   def this(a : BaseEntityRepository[T, _], includeNull : Boolean) {
     this(a)

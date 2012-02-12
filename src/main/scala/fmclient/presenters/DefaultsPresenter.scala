@@ -22,11 +22,21 @@ class DefaultsPresenter(view0: DefaultsView) extends BasePresenter[Defaults, Def
   updateView
 
   val focus = new Reactor {
-    listenTo(view.towPlane, view.controller, view.date, view.wireLauncher, view.airfield, view.operator)
+    listenTo(view.towPlane, view.towPilot, view.controller, view.date, view.wireLauncher, view.airfield, view.operator)
     reactions += {
       case FocusLost(_, _, _) => {
         updateModel
         updateView
+      }
+    }
+  }
+
+  val update = new Reactor {
+    listenTo(model)
+    reactions += {
+      case Defaults.Updated() => {
+        updateView
+        updateModel
       }
     }
   }
