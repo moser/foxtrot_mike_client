@@ -78,7 +78,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   map((m,v) => m.departureTime = v.departureTime.peer.getValue.asInstanceOf[Int], (m,v) => v.departureTime.peer.setValue(m.departureTime))
   map((m,v) => m.engineDuration = v.engineDuration.peer.getValue.asInstanceOf[Int], (m,v) => v.engineDuration.peer.setValue(m.engineDuration))
   mapViewOnly((m,v) => v.duration.text = m.durationString)
-  mapViewOnly((m,v) => markIfInvalid(v.plane, m.isPlaneValid)) 
+  mapViewOnly((m,v) => markIfInvalid(v.plane, m.isPlaneValid))
   mapViewOnly((m,v) => markIfInvalid(v.seat1, m.isSeat1Valid))
   mapViewOnly((m,v) => markIfInvalid(v.from, m.isFromValid))
   mapViewOnly((m,v) => markIfInvalid(v.to, m.isToValid))
@@ -117,7 +117,6 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
 
   view.seat1.reactions += {
     case CreateEvent(str, old) => {
-      println("create")
       view.seat1.setEnabled(false)
       val bp = new PersonBalloonPresenter(str, view.seat1)
       bp.reactions += {
@@ -131,9 +130,19 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     }
   }
 
-  val timeSetter = new TimeSetter(this) { 
+  val timeSetter = new TimeSetter(this) {
     add(view.btDepartureTime, view.departureTime)
     add(view.btArrivalTime, view.arrivalTime)
+  }
+
+  val validationFocus = new Reactor {
+    listenTo(view.plane, view.seat1)
+    reactions += {
+      case FocusLostEvent() => {
+        updateModel
+        updateView
+      }
+    }
   }
 
   val timeFocus = new Reactor {
@@ -162,7 +171,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
         wireLaunchPresenter.model = model.launch.asInstanceOf[WireLaunch]
         view.launchPanel = wireLaunchPresenter.view
         wireLaunchPresenter.updateView
-      } 
+      }
       case LaunchItem("TowLaunch") => {
         wireLaunchPresenter = null
         towLaunchPresenter = new TowLaunchPresenter
@@ -179,7 +188,6 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   }
 
   override def shutdown = {
-    println("shutdown")
     if(model != null) {
       updateModel
       model.save

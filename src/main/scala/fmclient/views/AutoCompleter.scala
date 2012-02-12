@@ -90,6 +90,7 @@ object AutoCompleter {
     }
   }
   case class CreateEvent[T >: Null <: AnyRef](str : String, old : AutoCompleter.Option[T]) extends Event
+  case class FocusLostEvent extends Event
 }
 
 /**
@@ -216,6 +217,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
       hidePopup
     }
     setCaretPosition(0)
+    publish(AutoCompleter.FocusLostEvent())
   }
 
   override def focusGained(e : FocusEvent) {
@@ -267,7 +269,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
   //override def enabled_=(b : Boolean) = setEnabled(b)
 
 // Unused stuff
-  override def keyPressed(arg0 : KeyEvent) {}  
+  override def keyPressed(arg0 : KeyEvent) {}
   override def keyTyped(arg0 : KeyEvent) {}
 
   override def mouseEntered(e : MouseEvent) {}

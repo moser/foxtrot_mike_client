@@ -21,7 +21,6 @@ class MainPresenter extends AbstractPresenter {
   private var updating = false
   view.flightsTable.selection.reactions += {
     case TableRowsSelected(_, r, false) => {
-      println("TableRowsSelected " + updating)
       if(!view.flightsTable.selection.rows.isEmpty && !updating) {
         selectOrNull(view.flightsTable.selection.rows.head)
       }
@@ -31,7 +30,6 @@ class MainPresenter extends AbstractPresenter {
   view.flightsTable.reactions += {
     case TableChanged(_) => {
       var i = view.flightsTableModel.indexOf(fp.model)
-      println("TableChanged " + updating + " " + i)
       if(i > 0 && view.flightsTableModel.getRowCount > i) {
         view.flightsTable.selection.rows.add(i)
       }
@@ -95,7 +93,6 @@ class MainPresenter extends AbstractPresenter {
   }
 
   private def selectOrNull(i : Int) {
-    println("selectOrNull " + i)
     updating = true
     if(i >= 0 && view.flightsTableModel.getRowCount > i)  {
       fp.model = view.flightsTableModel.getAll.apply(i)
