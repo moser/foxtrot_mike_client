@@ -5,7 +5,7 @@ import java.text.DateFormat
 import fmclient.models._
 import fmclient.models.repos._
 
-class DefaultsView extends MigPanel("") { 
+class DefaultsView extends MigPanel("") {
   val date = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
@@ -24,7 +24,7 @@ class DefaultsView extends MigPanel("") {
   add(new Label(I18n("operator")))
   add(new Label(I18n("controller")), "wrap")
 
-  add(date, "w 70")
+  add(date, "w 70!")
   add(airfield)
   add(towPlane)
   add(towPilot)

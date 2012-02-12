@@ -25,6 +25,9 @@ class DefaultsPresenter(view0: DefaultsView) extends BasePresenter[Defaults, Def
     listenTo(view.towPlane, view.towPilot, view.controller, view.date, view.wireLauncher, view.airfield, view.operator)
     reactions += {
       case FocusLost(_, _, _) => {
+        if(view.date.peer.isEditValid) {
+          view.date.peer.commitEdit
+        }
         updateModel
         updateView
       }
