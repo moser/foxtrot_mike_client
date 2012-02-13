@@ -14,6 +14,7 @@ class MainPresenter extends AbstractPresenter {
   }
 
   view.visible = true
+  view.centerOnScreen
   var fp = new FlightPresenter(view.flightPanel)
   var dp = new DefaultsPresenter(view.defaultsPanel)
   val sp = new SyncPresenter
