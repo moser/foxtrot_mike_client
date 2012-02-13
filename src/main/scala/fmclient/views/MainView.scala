@@ -18,6 +18,14 @@ class MainView extends MainFrame {
 
   title = I18n("main.title")
   preferredSize = new Dimension(1000, 650)
+
+  val menuSync = new MenuItem(I18n("main.sync"))
+  val actionsMenu = new Menu(I18n("main.actions_menu.title"))
+  actionsMenu.contents += menuSync
+
+  menuBar = new MenuBar
+  menuBar.contents += actionsMenu
+
   val tabs = new TabbedPane
   val flightsTableModel = new FlightsTableModel
   val flightsTable = new Table {
@@ -78,14 +86,8 @@ class MainView extends MainFrame {
   val flightPanel = new FlightView
   val defaultsPanel = new DefaultsView
 
-  val btSync = new Button(I18n("sync"))
-  val actionPanel = new MigPanel {
-    add(btSync)
-  }
-
   tabs.pages += new TabbedPane.Page(I18n("flight"), flightPanel)
   tabs.pages += new TabbedPane.Page(I18n("defaults"), defaultsPanel)
-  tabs.pages += new TabbedPane.Page(I18n("actions"), actionPanel)
 
   contents = new SplitPane {
     dividerSize = 12

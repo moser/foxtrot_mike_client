@@ -86,7 +86,7 @@ class MainPresenter extends AbstractPresenter {
     }
   }
 
-  view.btSync.reactions += {
+  view.menuSync.reactions += {
     case ButtonClicked(_) => {
       sp.view.open
     }
