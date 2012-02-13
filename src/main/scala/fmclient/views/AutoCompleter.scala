@@ -69,10 +69,14 @@ object AutoCompleter {
     def matches(p : Pattern) = false
   }
 
+  class MyRegex(r: String) extends SRegex("") {
+    override val pattern = Pattern.compile(r, Pattern.LITERAL | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)
+  }
+
   trait AutoCompleterItemRenderer[T >: Null <: AnyRef] {
     def html(str: String) = "<html>" + str + "</html>"
     def mark(str: String, replace : String) = {
-      new SRegex("(?iu)(" + replace + ")").replaceAllIn(str, o => {
+      new MyRegex(replace).replaceAllIn(str, o => {
         "<u>" + str.substring(o.start, o.end) + "</u>"
       })
     }
