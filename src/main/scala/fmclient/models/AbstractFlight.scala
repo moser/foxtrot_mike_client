@@ -123,7 +123,6 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
     if(!isFromValid) { r = r :+ "from" }
     if(!isToValid) { r = r :+ "to" }
     if(!isDepartureTimeValid) { r = r :+ "departureTime" }
-    if(!isControllerValid) { r = r :+ "controller" }
     r
   }
 
@@ -132,7 +131,6 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
   def isFromValid = from != null
   def isToValid = to != null
   def isDepartureTimeValid = departureTime >= 0
-  def isControllerValid = controller != null
 
   protected def copyFrom(f : AbstractFlight) = {
     departureDate = f.departureDate

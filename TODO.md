@@ -4,10 +4,12 @@
 - Eingabe
   - Standardstartart, mögliche Startarten
   - Lizenzprüfung?
+  - liabilities
 - autocompleter
   scroll marked element to visible
 - comment: width
-- controller: optional
+- plane, airfield
+  - implement create
 
 - Hochladen: Wenn Flüge weg, FlightView disabled setzen
 

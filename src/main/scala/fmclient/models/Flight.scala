@@ -27,7 +27,7 @@ class Flight extends AbstractFlight {
   def this(f : Flight) = {
     this()
     copyFrom(f)
-    f.launchType match { 
+    f.launchType match {
       case "WireLaunch" => {
         launch = new WireLaunch(this, f.launch.asInstanceOf[WireLaunch])
       }

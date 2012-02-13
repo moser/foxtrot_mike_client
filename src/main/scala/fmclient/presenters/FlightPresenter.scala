@@ -83,7 +83,6 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   mapViewOnly((m,v) => markIfInvalid(v.from, m.isFromValid))
   mapViewOnly((m,v) => markIfInvalid(v.to, m.isToValid))
   mapViewOnly((m,v) => markIfInvalid(v.departureTime, m.isDepartureTimeValid))
-  mapViewOnly((m,v) => markIfInvalid(v.controller, m.isControllerValid))
   mapViewOnly((m,v) => v.engineDuration.enabled = m.engineDurationPossible)
 
 
