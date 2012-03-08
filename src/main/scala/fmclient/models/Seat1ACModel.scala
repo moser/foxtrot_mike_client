@@ -17,6 +17,6 @@ object Seat1ACModel {
   }
 }
 
-class Seat1ACModel extends DefaultAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> false)) {
+class Seat1ACModel extends EnabledOnlyAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> false)) {
   override def syntheticOptions = List(new Seat1ACModel.UnknownPersonOption)
 }

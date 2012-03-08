@@ -24,12 +24,12 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
   val departureDate = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
-  val plane = new AutoCompleter(new DefaultAutoCompleterModel[Plane](AllPlanes, _.registration, Map("allowNil" -> false)), new PlaneRenderer)
+  val plane = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Plane](AllPlanes, _.registration, Map("allowNil" -> false)), new PlaneRenderer)
   val seat1 = new AutoCompleter(new Seat1ACModel)
   val seat2 = new AutoCompleter(new Seat2ACModel)
   val airfieldRenderer = new AirfieldRenderer
-  val from = new AutoCompleter(new DefaultAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
-  val to = new AutoCompleter(new DefaultAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
+  val from = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
+  val to = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
 
   val btDepartureTime = new InnerButton()
   val departureTime = new MyFormattedTextField(TimeFormatterFactory)

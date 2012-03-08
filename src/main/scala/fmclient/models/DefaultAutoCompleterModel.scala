@@ -26,19 +26,28 @@ class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEnti
 
   def syntheticOptions : Seq[AutoCompleter.SyntheticOption[T]] = List()
 
+  def extractMatching(p : Pattern, s: Seq[T]) = {
+    var n = 0
+    var i = s.toIterator
+    var r = Seq[T]()
+    while(i.hasNext && n < 15) {
+      var e = i.next
+      if(p.matcher(extract(e).toLowerCase).find) {
+        r = r :+ e
+        n += 1
+      }
+    }
+    r.map(new AutoCompleter.RealOption[T](_))
+  }
+
+  def extractMatchingFromCollection(p : Pattern) = {
+    extractMatching(p, collection.all)
+  }
+
   override def filteredOptions = {
     if(dirty) {
       val p = Pattern.compile(filterString.toLowerCase, Pattern.LITERAL)
-      var n = 0
-      pFilteredOptions = collection.all.filter(o => {
-          if(n > 15)
-            false
-          else {
-            val r = p.matcher(extract(o).toLowerCase).find
-            if(r)
-              n += 1
-            r
-          }}).map(new AutoCompleter.RealOption[T](_))
+      pFilteredOptions = extractMatchingFromCollection(p)
       pFilteredOptions = pFilteredOptions ++ syntheticOptions.filter(_.matches(p))
       if(options("allowCreate") && pFilteredOptions.length == 0 &&
         !(selectedOption.isInstanceOf[AutoCompleter.NilOption[T]] &&

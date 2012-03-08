@@ -12,7 +12,6 @@
   - implement create
 - persist defaults
 - autocompleter
-  - show disabled entries only if less than 5 entries are shown
   - regex escape special characters
   - regex "v m" => "(v).\* (m)"
 
