@@ -97,7 +97,7 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
   controlPanel.add(new Label(I18n("cost_hint")))
   controlPanel.add(costHint)
   controlPanel.add(new Label(I18n("comment")))
-  controlPanel.add(comment)
+  controlPanel.add(comment, "w 150!")
 
   var _enabled = true
   override def enabled = _enabled

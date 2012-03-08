@@ -1,4 +1,5 @@
 # Before release
+- upload does not work in production
 - Fehlerbehandlung:
   - Logdatei mit Fehler und Stacktrace
 - Eingabe
@@ -7,9 +8,13 @@
   - liabilities
 - autocompleter
   scroll marked element to visible
-- comment: width
 - plane, airfield
   - implement create
+- persist defaults
+- autocompleter
+  - show disabled entries only if less than 5 entries are shown
+  - regex escape special characters
+  - regex "v m" => "(v).\* (m)"
 
 - Hochladen: Wenn Flüge weg, FlightView disabled setzen
 
