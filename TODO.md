@@ -1,5 +1,4 @@
 # Before release
-- upload does not work in production
 - Fehlerbehandlung:
   - Logdatei mit Fehler und Stacktrace
 - Eingabe
