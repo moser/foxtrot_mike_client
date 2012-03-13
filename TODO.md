@@ -4,23 +4,25 @@
 - Eingabe
   - Standardstartart, mögliche Startarten
   - Lizenzprüfung?
-  - liabilities
+  - liabilities - balloon?
+- airfield
+  - implement create
+- Hochladen: Wenn Flüge weg, FlightView disabled setzen
+- update/notify defaults#tow\_plane on down sync
+
+# Medium run
 - autocompleter
   scroll marked element to visible
-- plane, airfield
-  - implement create
 - persist defaults
 - autocompleter
   - regex escape special characters
   - regex "v m" => "(v).\* (m)"
-
-- Hochladen: Wenn Flüge weg, FlightView disabled setzen
-
-# Medium run
 - Specs
   - OutOfMemoryError (PermGen space erhöhen?)
     - Problem mit JPA...
 - Installer?
+- comment
+  - show as balloon (full text, longer...)
 
 # Ideas
 - Unvollendet: Bei Flügen mit Startart F auch F-Schlepper prüfen
