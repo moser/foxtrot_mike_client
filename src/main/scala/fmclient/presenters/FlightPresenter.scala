@@ -1,7 +1,7 @@
 package fmclient.presenters
 
-import fmclient.views.{ FlightView, MigPanel, MyFormattedTextField }
-import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel }
+import fmclient.views.{ FlightView, MigPanel, MyFormattedTextField, AutoCompleter }
+import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel, Airfield }
 import fmclient.views.AutoCompleter._
 import org.joda.time.DateTime
 import scala.swing.event._
@@ -165,6 +165,31 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       case FocusLost(_, _, _) => {
         updateModel
         updateView
+      }
+    }
+  }
+
+  view.from.reactions += {
+    case CreateEvent(str, _) => {
+      showAirfieldBalloon(view.from, str)
+    }
+  }
+
+  view.to.reactions += {
+    case CreateEvent(str, _) => {
+      showAirfieldBalloon(view.to, str)
+    }
+  }
+
+  def showAirfieldBalloon(c : AutoCompleter[Airfield], str : String) {
+    c.setEnabled(false)
+    val bp = new AirfieldBalloonPresenter(str, c)
+    bp.reactions += {
+      case AirfieldBalloonPresenter.OkEvent(o) => {
+        c.selectedOption = o
+      }
+      case AirfieldBalloonPresenter.CancelEvent() => {
+        c.revertLast
       }
     }
   }

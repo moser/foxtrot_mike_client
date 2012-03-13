@@ -5,8 +5,6 @@
   - Standardstartart, mögliche Startarten
   - Lizenzprüfung?
   - liabilities - balloon?
-- airfield
-  - implement create
 - Hochladen: Wenn Flüge weg, FlightView disabled setzen
 - update/notify defaults#tow\_plane on down sync
 
