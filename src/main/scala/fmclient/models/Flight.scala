@@ -40,20 +40,20 @@ class Flight extends AbstractFlight {
 
   def launchType = {
     if(launch.isInstanceOf[WireLaunch]) {
-      "WireLaunch"
+      "wire_launch"
     } else if(launch.isInstanceOf[TowLaunch]) {
-      "TowLaunch"
+      "tow_launch"
     } else {
-      "SelfLaunch"
+      "self_launch"
     }
   }
 
   def launchType_=(s:String) = {
     if(launchType != s) {
-      if(s == "SelfLaunch") {
+      if(s == "self_launch") {
         launch = null
       } else {
-        if(s == "WireLaunch") {
+        if(s == "wire_launch") {
           launch = new WireLaunch(this, DefaultsSingleton)
         } else {
           launch = new TowLaunch(this, DefaultsSingleton)

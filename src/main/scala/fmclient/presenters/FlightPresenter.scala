@@ -114,6 +114,21 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     }
   }
 
+  view.plane.reactions += {
+    case CreateEvent(str, old) => {
+      view.plane.setEnabled(false)
+      val bp = new PlaneBalloonPresenter(str, view.plane)
+      bp.reactions += {
+        case PlaneBalloonPresenter.OkEvent(o) => {
+          view.plane.selectedOption = o
+        }
+        case PlaneBalloonPresenter.CancelEvent() => {
+          view.plane.revertLast
+        }
+      }
+    }
+  }
+
   view.seat1.reactions += {
     case CreateEvent(str, old) => {
       view.seat1.setEnabled(false)
@@ -164,21 +179,21 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     super.updateView
     view.launchType.selection.item = LaunchItem(model.launchType)
     view.launchType.selection.item match {
-      case LaunchItem("WireLaunch") => {
+      case LaunchItem("wire_launch") => {
         towLaunchPresenter = null
         wireLaunchPresenter = new WireLaunchPresenter
         wireLaunchPresenter.model = model.launch.asInstanceOf[WireLaunch]
         view.launchPanel = wireLaunchPresenter.view
         wireLaunchPresenter.updateView
       }
-      case LaunchItem("TowLaunch") => {
+      case LaunchItem("tow_launch") => {
         wireLaunchPresenter = null
         towLaunchPresenter = new TowLaunchPresenter
         towLaunchPresenter.model = model.launch.asInstanceOf[TowLaunch]
         view.launchPanel = towLaunchPresenter.view
         towLaunchPresenter.updateView
       }
-      case LaunchItem(_) => { 
+      case LaunchItem(_) => {
         wireLaunchPresenter = null
         towLaunchPresenter = null
         view.launchPanel = new MigPanel("ins 0")

@@ -42,9 +42,9 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
   }
   val engineDuration = new MyFormattedTextField(TimeFormatterFactory)
   val controller = new AutoCompleter(new DefaultAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> true)))
-  val launchType = new ComboBox(List[LaunchItem](LaunchItem("SelfLaunch"),
-                                                  LaunchItem("WireLaunch"),
-                                                  LaunchItem("TowLaunch")))
+  val launchType = new ComboBox(List[LaunchItem](LaunchItem("self_launch"),
+                                                  LaunchItem("wire_launch"),
+                                                  LaunchItem("tow_launch")))
   protected var _launchPanel : MigPanel = _
   protected var launchPanelWrapper = new MigPanel("ins 0, fill")
   launchPanelWrapper.border = BorderFactory.createLineBorder(Color.black)
