@@ -4,6 +4,7 @@ package test.scala.specs.models
 import org.scalatest.{ Spec, BeforeAndAfterAll }
 import org.scalatest.matchers.ShouldMatchers
 import fmclient.models.{ FlightsTableModel, Flight, EntityMgr }
+import fmclient.models.repos.AllFlights
 
 class DbDependentSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
   override def beforeAll(configMap: Map[String, Any]) {
@@ -13,6 +14,7 @@ class DbDependentSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
   describe("A flight table model") {
     describe("filters") {
       it("should only return unfinished flights") {
+        AllFlights.all.map(_.delete)
         val m = new FlightsTableModel
         val f = new Flight
         //TODO stub the DB or create an own DB for test
