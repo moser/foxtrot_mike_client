@@ -5,7 +5,6 @@
   - Standardstartart, mögliche Startarten
   - Lizenzprüfung?
   - liabilities - balloon?
-- Hochladen: Wenn Flüge weg, FlightView disabled setzen
 - update/notify defaults#tow\_plane on down sync
 
 # Medium run

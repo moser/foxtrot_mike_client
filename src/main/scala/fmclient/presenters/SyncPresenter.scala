@@ -7,7 +7,7 @@ import swing.event._
 import scala.actors.Actor._
 import scala.swing.Dialog
 
-class SyncPresenter {
+class SyncPresenter(mp : MainPresenter) {
   val view = new SyncView
   val down = List(AllGroups.syncDown(_,_,_), AllAirfields.syncDown(_,_,_), AllPeople.syncDown(_,_,_), AllPlanes.syncDown(_,_,_), AllWireLaunchers.syncDown(_,_,_), AllCostHints.syncDown(_,_,_), AllLegalPlaneClasses.syncDown(_,_,_))
   val up = List(AllGroups.syncUp(_,_,_), AllAirfields.syncUp(_,_,_), AllPeople.syncUp(_,_,_), AllPlanes.syncUp(_,_,_), AllWireLaunchers.syncUp(_,_,_))
@@ -70,6 +70,7 @@ class SyncPresenter {
       if(dirUp) {
         AllFlights.syncUp(view.username.text, new String(view.password.password), progressUpdater)
         AllFlights.all.filter(_.status == "synced").foreach(_.delete)
+        mp.selectFirstOrNull
       }
       progressUpdater ! false
       DefaultsSingleton.update

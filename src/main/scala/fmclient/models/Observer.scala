@@ -12,15 +12,15 @@ trait Observalbe {
   def addObserver(o : Observer) : Unit = {
     observers = o :: observers
   }
-  
+
   protected def notifyCreated(a : BaseModel[_]) = {
     observers.foreach(_.created(a))
   }
-  
+
   protected def notifyUpdated(a : BaseModel[_]) = {
     observers.foreach(_.updated(a))
   }
-   
+
   protected def notifyRemoved(a : BaseModel[_]) = {
     observers.foreach(_.removed(a))
   }

@@ -14,7 +14,7 @@ class MainView extends MainFrame {
   private val colUnfinishedSelected = new Color(40, 40, 231)
 
   private val col = new Color(122, 231, 122)
-  private val colSelected = new Color(40, 180, 40)
+  private val colSelected = new Color(40, 210, 60)
 
   title = I18n("main.title")
   preferredSize = new Dimension(1000, 650)
