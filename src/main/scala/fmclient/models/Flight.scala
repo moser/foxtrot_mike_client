@@ -1,8 +1,10 @@
 package fmclient.models
 
 import javax.persistence._
-import dispatch.json.{JsString, JsValue}
+import dispatch.json.{JsString, JsValue, JsArray}
 import fmclient.models.repos.AllFlights
+import scala.collection.mutable.ArraySeq
+import scala.collection.immutable.List
 
 @Entity
 @DiscriminatorValue("F")
@@ -66,8 +68,16 @@ class Flight extends AbstractFlight {
     departureTime >= 0 && arrivalTime >= 0
   }
 
+  @Lob
+  var liabilities = ArraySeq[Liability]()
+
+  def proportionFor(fl : Liability) = {
+    fl.proportion.toFloat / liabilities.map(l => l.proportion.toFloat).sum
+  }
+
   override def jsonValues = {
-    val json = super.jsonValues ++ Map(JsString("cost_hint_id") -> idToJsonInt(costHint))
+    val json = super.jsonValues ++ Map(JsString("cost_hint_id") -> idToJsonInt(costHint)) ++
+                                   Map(JsString("liabilities_attributes") -> JsArray(List.concat(liabilities.map(e => e.toJson))))
     if(launch != null)
       json ++ Map[JsString, JsValue](JsString("launch_attributes") -> launch.toJson)
     else
