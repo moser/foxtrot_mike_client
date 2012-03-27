@@ -6,6 +6,8 @@
   - Lizenzprüfung?
   - liabilities - balloon?
 - update/notify defaults#tow\_plane on down sync
+- flight copy -> also copy n crew member
+- maximized window -> problem with autocompleter list position
 
 # Medium run
 - autocompleter

@@ -10,7 +10,7 @@ import java.awt.Color
 import com.wordpress.tips4java.ComponentBorder
 
 
-class TowLaunchView extends MigPanel("ins 0", "[80!]5[120!]5[120!]5[80!]3[80!]5[70!]3[70!]5[60!]") {
+class TowLaunchView extends MigPanel("ins 0, gap 4!, fill", "[gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 1]") {
   val planeRenderer = new PlaneRenderer
   val plane = new AutoCompleter(new DefaultAutoCompleterModel[Plane](TowPlanes, _.registration, Map("allowNil" -> false)), planeRenderer)
   val seat1 = new AutoCompleter(new DefaultAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> false)))
@@ -25,11 +25,15 @@ class TowLaunchView extends MigPanel("ins 0", "[80!]5[120!]5[120!]5[80!]3[80!]5[
     enabled = false
   }
 
-  peer.add(plane, "w 80!")
-  peer.add(seat1, "w 120!")
-  peer.add(to, "w 80!, skip 2")
-  add(arrivalTime, "skip 1, w 70!")
-  add(duration, "w 60!")
+  peer.add(plane, "w 80::")
+  peer.add(seat1, "w 110::, sg names, grow")
+  add(new Label(""), "sg names, grow")
+  add(new Label(""), "w 70::, sg airfields, grow")
+  peer.add(to, "sg airfields, grow")
+  add(new Label(""), "w 70::, sg times")
+  add(arrivalTime, "sg times")
+  add(duration, "w 60::, sg durations")
+  add(new Label(""), "sg names, grow, wrap")
 
   var _enabled = true
   override def enabled = _enabled

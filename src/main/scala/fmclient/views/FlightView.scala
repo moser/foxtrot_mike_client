@@ -20,7 +20,8 @@ class MyFormattedTextField(f: javax.swing.JFormattedTextField.AbstractFormatterF
   }
 }
 
-class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70!]3[70!]5[60!]5[120!]") {
+
+class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 1]") {
   val departureDate = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
@@ -47,9 +48,8 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
                                                   LaunchItem("tow_launch")))
   protected var _launchPanel : MigPanel = _
   protected var launchPanelWrapper = new MigPanel("ins 0, fill")
-  launchPanelWrapper.border = BorderFactory.createLineBorder(Color.black)
   def launchPanel = _launchPanel
-  def launchPanel_=(p : MigPanel) = { 
+  def launchPanel_=(p : MigPanel) = {
     if(_launchPanel != null) {
       launchPanelWrapper.remove(_launchPanel)
     }
@@ -87,16 +87,16 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
   add(new Label(I18n("duration")))
   add(new Label(I18n("controller")), "wrap")
 
-  add(departureDate, "w 70!")
-  peer.add(plane, "w 80!")
-  peer.add(seat1, "w 120!, sg names")
-  peer.add(seat2, "sg names")
-  peer.add(from, "w 80!, sg airfields")
-  peer.add(to, "sg airfields")
-  add(departureTime, "w 70!, sg times")
+  add(departureDate, "w 70::")
+  peer.add(plane, "w 80::")
+  peer.add(seat1, "w 110::, sg names, grow")
+  peer.add(seat2, "sg names, grow")
+  peer.add(from, "w 70::, sg airfields, grow")
+  peer.add(to, "sg airfields, grow")
+  add(departureTime, "w 70::, sg times")
   add(arrivalTime, "sg times")
-  add(duration, "w 60!, sg durations")
-  peer.add(controller, "sg names, wrap")
+  add(duration, "w 60::, sg durations")
+  peer.add(controller, "sg names, grow, wrap")
 
   add(launchType)
   add(launchPanelWrapper, "gap 0, grow, spanx 9, wrap")
@@ -119,11 +119,11 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
   controlPanel.add(btSave)
   controlPanel.add(btDelete)
   controlPanel.add(new Label(I18n("engine_duration")))
-  controlPanel.add(engineDuration, "w 60!")
+  controlPanel.add(engineDuration, "w 60:60:")
   controlPanel.add(new Label(I18n("cost_hint")))
   controlPanel.add(costHint)
   controlPanel.add(new Label(I18n("comment")))
-  controlPanel.add(comment, "w 150!")
+  controlPanel.add(comment, "w 150::, grow")
 
   var _enabled = true
   override def enabled = _enabled

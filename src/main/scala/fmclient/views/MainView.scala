@@ -18,6 +18,7 @@ class MainView extends MainFrame {
 
   title = I18n("main.title")
   preferredSize = new Dimension(1000, 650)
+  minimumSize = new Dimension(900, 450)
 
   val menuSync = new MenuItem(I18n("main.sync"))
   val actionsMenu = new Menu(I18n("main.actions_menu.title"))
