@@ -95,6 +95,7 @@ object AutoCompleter {
   }
   case class CreateEvent[T >: Null <: AnyRef](str : String, old : AutoCompleter.Option[T]) extends Event
   case class FocusLostEvent extends Event
+  case class SelectionChangedEvent[T >: Null <: AnyRef](before : AutoCompleter.Option[T], after : AutoCompleter.Option[T]) extends Event
 }
 
 /**
@@ -202,6 +203,9 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
     setCaretPosition(0)
     if(o.isInstanceOf[CreateOption[T]]) {
       publish(AutoCompleter.CreateEvent[T](o.asInstanceOf[CreateOption[T]].filterString, model.lastSelectedOption))
+    }
+    if(o != model.lastSelectedOption) {
+      publish(AutoCompleter.SelectionChangedEvent(model.lastSelectedOption, o))
     }
   }
 

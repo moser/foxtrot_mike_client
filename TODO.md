@@ -2,9 +2,8 @@
 - Fehlerbehandlung:
   - Logdatei mit Fehler und Stacktrace
 - Eingabe
-  - Standardstartart, mögliche Startarten
+  - mögliche Startarten
   - Lizenzprüfung?
-  - liabilities - balloon?
 - update/notify defaults#tow\_plane on down sync
 - flight copy -> also copy n crew member
 - maximized window -> problem with autocompleter list position

@@ -1,7 +1,7 @@
 package fmclient.presenters
 
 import fmclient.views.{ FlightView, MigPanel, MyFormattedTextField, AutoCompleter }
-import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel, Airfield, Liability, ProportionItem }
+import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel, Airfield, Liability, ProportionItem, Plane }
 import fmclient.models.repos.AllPeople
 import fmclient.views.AutoCompleter._
 import org.joda.time.DateTime
@@ -135,6 +135,12 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
         }
       }
     }
+    case SelectionChangedEvent(o, n) => {
+      if(o == null && n.isInstanceOf[RealOption[Plane]]) {
+        val p = n.asInstanceOf[RealOption[Plane]].get
+        view.launchType.selection.item = LaunchItem(p.defaultLaunchMethod)
+      }
+    }
   }
 
   view.seat1.reactions += {
@@ -205,7 +211,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     }
     reactions += {
       case SelectionChanged(_) => {
-        if(!liabilitiesUpdating) {
+        if(!liabilitiesUpdating && model != null) {
           updateLiabilitesModel
           updateLiabilitesView
         }
