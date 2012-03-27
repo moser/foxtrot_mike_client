@@ -1,6 +1,7 @@
 package fmclient.models
 
 import javax.persistence._
+import org.eclipse.persistence.annotations.PrivateOwned
 import dispatch.json.{JsString, JsValue, JsArray}
 import fmclient.models.repos.AllFlights
 import scala.collection.mutable.ArraySeq
@@ -12,6 +13,7 @@ class Flight extends AbstractFlight {
   addObserver(AllFlights)
 
   @OneToOne(fetch=FetchType.EAGER, mappedBy="flight", cascade = Array(CascadeType.ALL))
+  @PrivateOwned
   var launch : Launch = _
 
   @ManyToOne(fetch=FetchType.EAGER)
@@ -53,6 +55,8 @@ class Flight extends AbstractFlight {
   def launchType_=(s:String) = {
     if(launchType != s) {
       if(s == "self_launch") {
+        if(launch != null)
+          launch.delete
         launch = null
       } else {
         if(s == "wire_launch") {
