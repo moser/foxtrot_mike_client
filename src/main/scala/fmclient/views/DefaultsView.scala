@@ -29,6 +29,6 @@ class DefaultsView extends MigPanel("") {
   add(towPlane)
   add(towPilot)
   add(wireLauncher)
-  add(controller)
   add(operator)
+  add(controller)
 }
