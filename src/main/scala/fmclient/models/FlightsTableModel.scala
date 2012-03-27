@@ -29,7 +29,8 @@ class FlightsTableModel extends AbstractTableModel with Observer {
                   ("to", { f: Flight => f.to }),
                   ("departure_time", { f: Flight => timeFormatter.valueToString(int2Object(f.departureTime)) }),
                   ("arrival_time", { f: Flight => timeFormatter.valueToString(int2Object(f.arrivalTime)) }),
-                  ("duration", { f: Flight => f.durationString }))
+                  ("duration", { f: Flight => f.durationString }),
+                  ("controller", { f: Flight => f.controller }))
   var all : Seq[Flight] = Nil
   var update_all = true
   AllFlights.addObserver(this)
