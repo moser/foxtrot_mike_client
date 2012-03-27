@@ -1,7 +1,8 @@
 package fmclient.presenters
 
 import fmclient.views.{ FlightView, MigPanel, MyFormattedTextField, AutoCompleter }
-import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel, Airfield }
+import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel, Airfield, Liability, ProportionItem }
+import fmclient.models.repos.AllPeople
 import fmclient.views.AutoCompleter._
 import org.joda.time.DateTime
 import scala.swing.event._
@@ -9,6 +10,7 @@ import scala.swing.{Component, TextComponent}
 import java.util.Date
 import swing.Reactor
 import java.awt.{ Color, Component => AWTComponent }
+import scala.collection.mutable.ArraySeq
 
 
 class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightView] {
@@ -84,6 +86,12 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   mapViewOnly((m,v) => markIfInvalid(v.to, m.isToValid))
   mapViewOnly((m,v) => markIfInvalid(v.departureTime, m.isDepartureTimeValid))
   mapViewOnly((m,v) => v.engineDuration.enabled = m.engineDurationPossible)
+  map((m,v) => { //to model
+        updateLiabilitesModel
+      },
+      (m,v) => { //to view
+        updateLiabilitesView
+      })
 
 
   private def markIfInvalid(c : Component, valid : Boolean) : Unit = {
@@ -169,6 +177,42 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     }
   }
 
+  private var liabilitiesUpdating = false
+  val liabilitySelection = new Reactor {
+    for(i <- 0 to 3)
+      listenTo(view.liability(i))
+    reactions += {
+      case ActionEvent(c) => {
+        if(!liabilitiesUpdating) {
+          val i = view.liability.indexOf(c)
+          if(view.liability(i).selected) {
+            view.liablePerson(i).enabled = true
+            view.proportion(i).enabled = true
+            view.liablePerson(i).selection.item = view.liablePerson(i).model.getElementAt(0).asInstanceOf[Person]
+          } else {
+            updateLiabilitesModel
+            updateLiabilitesView
+          }
+        }
+      }
+    }
+  }
+
+  val liablePersonFocus = new Reactor {
+    for(i <- 0 to 3) {
+      listenTo(view.liablePerson(i).selection)
+      listenTo(view.proportion(i).selection)
+    }
+    reactions += {
+      case SelectionChanged(_) => {
+        if(!liabilitiesUpdating) {
+          updateLiabilitesModel
+          updateLiabilitesView
+        }
+      }
+    }
+  }
+
   view.from.reactions += {
     case CreateEvent(str, _) => {
       showAirfieldBalloon(view.from, str)
@@ -191,6 +235,48 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       case AirfieldBalloonPresenter.CancelEvent() => {
         c.revertLast
       }
+    }
+  }
+
+  def updateLiabilitesModel() {
+    var a = ArraySeq[Liability]()
+    for(i <- 0 to 3) {
+      if(view.liability(i).selected) {
+        a = a ++ ArraySeq(new Liability(view.liablePerson(i).selection.item.id, view.proportion(i).selection.item.p))
+      }
+    }
+    model.liabilities = a
+  }
+
+  def updateLiabilitesView() {
+    if(!liabilitiesUpdating) {
+      liabilitiesUpdating = true
+      var firstUnchecked = true
+      for(i <- 0 to 3) {
+        if(i < model.liabilities.length) {
+          view.liability(i).selected = true
+          view.liability(i).enabled = true
+          view.liablePerson(i).selection.item = AllPeople.find(model.liabilities(i).personId)
+          view.liablePerson(i).enabled = true
+          view.proportion(i).selection.item = new ProportionItem(model.liabilities(i).proportion)
+          view.proportion(i).enabled = true
+          view.realProportion(i).text = (model.proportionFor(model.liabilities(i)) * 100.0).toInt.toString + "%"
+        } else {
+          view.liability(i).selected = false
+          view.liability(i).enabled = false
+          val x : Person = null
+          view.liablePerson(i).selection.item = x
+          view.liablePerson(i).enabled = false
+          view.proportion(i).selection.item = new ProportionItem(1)
+          view.proportion(i).enabled = false
+          view.realProportion(i).text = ""
+          if(firstUnchecked) {
+            firstUnchecked = false
+            view.liability(i).enabled = true
+          }
+        }
+      }
+      liabilitiesUpdating = false
     }
   }
 

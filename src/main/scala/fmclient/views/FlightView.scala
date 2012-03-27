@@ -58,6 +58,17 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
     revalidate
   }
   launchPanel = new MigPanel("ins 0")
+  val liabilitiesPanel = new MigPanel("ins 0")
+  val liability = List(new CheckBox(), new CheckBox(), new CheckBox(), new CheckBox())
+  val liablePerson = List(new MyComboBox[Person](new MyComboBoxModel(AllPeople)),
+                          new MyComboBox[Person](new MyComboBoxModel(AllPeople)),
+                          new MyComboBox[Person](new MyComboBoxModel(AllPeople)),
+                          new MyComboBox[Person](new MyComboBoxModel(AllPeople)))
+  val proportion = List(new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))),
+                                  new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))),
+                                  new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))),
+                                  new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))))
+  val realProportion = List(new Label(""), new Label(""), new Label(""), new Label(""))
   val controlPanel = new MigPanel("ins 0")
   val btSave = new Button(I18n("save"))
   val btDelete = new Button(I18n("delete"))
@@ -89,6 +100,21 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
 
   add(launchType)
   add(launchPanelWrapper, "gap 0, grow, spanx 9, wrap")
+  add(liabilitiesPanel, "grow, spanx 10, wrap")
+  liabilitiesPanel.add(new Label(I18n("liabilities")))
+  for(i <- 0 to 3) {
+    liabilitiesPanel.add(liability(i))
+    liabilitiesPanel.add(liablePerson(i), "w 160::")
+    liabilitiesPanel.add(proportion(i))
+    if(i == 1) {
+      liabilitiesPanel.add(realProportion(i), "w 40::, wrap")
+      liabilitiesPanel.add(new Label(""))
+    } else {
+      liabilitiesPanel.add(realProportion(i), "w 40::")
+    }
+
+  }
+
   add(controlPanel, "spanx 10")
   controlPanel.add(btSave)
   controlPanel.add(btDelete)
@@ -122,5 +148,12 @@ class FlightView extends MigPanel("", "[70!]5[80!]5[120!]5[120!]5[80!]3[80!]5[70
     to.setEnabled(b)
 
     _launchPanel.enabled = b
+    if(!b) {
+      for(i <- 0 to 3) {
+        liability(i).enabled = b
+        liablePerson(i).enabled = b
+        proportion(i).enabled = b
+      }
+    }
   }
 }

@@ -26,6 +26,7 @@ object I18n {
       case "tow_plane" => "Schleppflugzeug"
       case "tow_pilot" => "Schlepppilot"
       case "airfield" => "Flugplatz"
+      case "liabilities" => "Bezahler"
       case "firstname" => "Vorname"
       case "lastname" => "Nachname"
       case "group" => "Gruppe"
