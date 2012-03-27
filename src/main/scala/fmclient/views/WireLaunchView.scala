@@ -5,7 +5,7 @@ import fmclient.models.repos._
 import fmclient.models._
 import fmclient.views.AutoCompleter.DefaultItemRenderer
 
-class WireLaunchView extends MigPanel("ins 0, gap 4!, fill", "[gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 1]") {
+class WireLaunchView extends MigPanel("ins 0, gap 4!, fill", "[gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 0][gp 1]") {
   val wireLauncher = new AutoCompleter(new DefaultAutoCompleterModel[WireLauncher](AllWireLaunchers, _.registration, Map("allowNil" -> false)))
   val operator = new AutoCompleter(new DefaultAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> false)))
 
@@ -16,7 +16,8 @@ class WireLaunchView extends MigPanel("ins 0, gap 4!, fill", "[gp 0][gp 1][gp 1]
   add(new Label(""), "sg airfields, grow")
   add(new Label(""), "w 70::, sg times")
   add(new Label(""), "sg times")
-  add(new Label(""), "w 60::, sg durations")
+  add(new Label(""), "w 55::, sg durations")
+  add(new Label(""), "sg durations")
   add(new Label(""), "sg names, grow, wrap")
 
   var _enabled = true

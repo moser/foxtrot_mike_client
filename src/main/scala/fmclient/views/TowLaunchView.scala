@@ -10,7 +10,7 @@ import java.awt.Color
 import com.wordpress.tips4java.ComponentBorder
 
 
-class TowLaunchView extends MigPanel("ins 0, gap 4!, fill", "[gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 1]") {
+class TowLaunchView extends MigPanel("ins 0, gap 4!, fill", "[gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 0][gp 1]") {
   val planeRenderer = new PlaneRenderer
   val plane = new AutoCompleter(new DefaultAutoCompleterModel[Plane](TowPlanes, _.registration, Map("allowNil" -> false)), planeRenderer)
   val seat1 = new AutoCompleter(new DefaultAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> false)))
@@ -32,7 +32,8 @@ class TowLaunchView extends MigPanel("ins 0, gap 4!, fill", "[gp 0][gp 1][gp 1][
   peer.add(to, "sg airfields, grow")
   add(new Label(""), "w 70::, sg times")
   add(arrivalTime, "sg times")
-  add(duration, "w 60::, sg durations")
+  add(duration, "w 55::, sg durations")
+  add(new Label(""), "sg durations")
   add(new Label(""), "sg names, grow, wrap")
 
   var _enabled = true

@@ -17,7 +17,7 @@ object I18n {
       case "from" => "Von"
       case "to" => "Nach"
       case "duration" => "Dauer"
-      case "engine_duration" => "Motorlaufzeit"
+      case "engine_duration" => "Motor"
       case "controller" => "Flugleiter"
       case "comment" => "Kommentar"
       case "cost_hint" => "Kostengruppe"
@@ -47,7 +47,7 @@ object I18n {
 
       case "wire_launch.short" => "W"
       case "tow_launch.short" => "F"
-      case "self_launch.short" => ""
+      case "self_launch.short" => "E"
 
       case "sync.title" => "Synchronisation"
       case "username" => "Benutzername"

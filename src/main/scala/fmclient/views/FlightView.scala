@@ -21,7 +21,7 @@ class MyFormattedTextField(f: javax.swing.JFormattedTextField.AbstractFormatterF
 }
 
 
-class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 1]") {
+class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 0][gp 1]") {
   val departureDate = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
@@ -85,6 +85,7 @@ class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 
   add(new Label(I18n("departure_time")))
   add(new Label(I18n("arrival_time")))
   add(new Label(I18n("duration")))
+  add(new Label(I18n("engine_duration")))
   add(new Label(I18n("controller")), "wrap")
 
   add(departureDate, "w 70::")
@@ -95,12 +96,13 @@ class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 
   peer.add(to, "sg airfields, grow")
   add(departureTime, "w 70::, sg times")
   add(arrivalTime, "sg times")
-  add(duration, "w 60::, sg durations")
+  add(duration, "w 55::, sg durations")
+  add(engineDuration, "sg durations")
   peer.add(controller, "sg names, grow, wrap")
 
   add(launchType)
-  add(launchPanelWrapper, "gap 0, grow, spanx 9, wrap")
-  add(liabilitiesPanel, "grow, spanx 10, wrap")
+  add(launchPanelWrapper, "gap 0, grow, spanx, wrap")
+  add(liabilitiesPanel, "grow, spanx, wrap")
   liabilitiesPanel.add(new Label(I18n("liabilities")))
   for(i <- 0 to 3) {
     liabilitiesPanel.add(liability(i))
@@ -118,8 +120,6 @@ class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 
   add(controlPanel, "spanx 10")
   controlPanel.add(btSave)
   controlPanel.add(btDelete)
-  controlPanel.add(new Label(I18n("engine_duration")))
-  controlPanel.add(engineDuration, "w 60:60:")
   controlPanel.add(new Label(I18n("cost_hint")))
   controlPanel.add(costHint)
   controlPanel.add(new Label(I18n("comment")))
@@ -134,6 +134,7 @@ class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 
     departureTime.enabled = b
     btArrivalTime.enabled = b
     arrivalTime.enabled = b
+    engineDuration.enabled = b
     launchType.enabled = b
     btSave.enabled = b
     btDelete.enabled = b
