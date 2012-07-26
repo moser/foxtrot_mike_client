@@ -11,6 +11,7 @@ import java.util.Date
 import swing.Reactor
 import java.awt.{ Color, Component => AWTComponent }
 import scala.collection.mutable.ArraySeq
+import javax.swing.SwingUtilities
 
 
 class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightView] {
@@ -108,9 +109,11 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
 
   view.launchType.selection.reactions += {
     case SelectionChanged(_) => {
-      updateModel
-      model.launchType = view.launchType.selection.item.back
-      updateView
+      if(!updatingView) {
+        updateModel
+        model.launchType = view.launchType.selection.item.back
+        updateView
+      }
     }
   }
 
@@ -135,10 +138,18 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
         }
       }
     }
-    case SelectionChangedEvent(o, n) => {
-      if(o == null && n.isInstanceOf[RealOption[Plane]]) {
-        val p = n.asInstanceOf[RealOption[Plane]].get
-        view.launchType.selection.item = LaunchItem(p.defaultLaunchMethod)
+    case SelectionChangedEvent(_, n) => {
+      if(!updatingView && model.plane == null && n.isInstanceOf[RealOption[Plane]]) {
+        SwingUtilities.invokeLater(new Runnable {
+          def run {
+            val p = n.asInstanceOf[RealOption[Plane]].get
+            //view.launchType.selection.item = LaunchItem(p.defaultLaunchMethod)
+            //updateModel
+            model.plane = p
+            model.launchType = p.defaultLaunchMethod
+            updateView
+          }
+        })
       }
     }
   }
@@ -292,29 +303,34 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     if(towLaunchPresenter != null) { towLaunchPresenter.updateModel }
   }
 
+  private var updatingView = false
   override def updateView = {
-    super.updateView
-    view.launchType.selection.item = LaunchItem(model.launchType)
-    view.launchType.selection.item match {
-      case LaunchItem("wire_launch") => {
-        towLaunchPresenter = null
-        wireLaunchPresenter = new WireLaunchPresenter
-        wireLaunchPresenter.model = model.launch.asInstanceOf[WireLaunch]
-        view.launchPanel = wireLaunchPresenter.view
-        wireLaunchPresenter.updateView
+    if(!updatingView) {
+      updatingView = true
+      super.updateView
+      view.launchType.selection.item = LaunchItem(model.launchType)
+      view.launchType.selection.item match {
+        case LaunchItem("wire_launch") => {
+          towLaunchPresenter = null
+          wireLaunchPresenter = new WireLaunchPresenter
+          wireLaunchPresenter.model = model.launch.asInstanceOf[WireLaunch]
+          view.launchPanel = wireLaunchPresenter.view
+          wireLaunchPresenter.updateView
+        }
+        case LaunchItem("tow_launch") => {
+          wireLaunchPresenter = null
+          towLaunchPresenter = new TowLaunchPresenter
+          towLaunchPresenter.model = model.launch.asInstanceOf[TowLaunch]
+          view.launchPanel = towLaunchPresenter.view
+          towLaunchPresenter.updateView
+        }
+        case LaunchItem(_) => {
+          wireLaunchPresenter = null
+          towLaunchPresenter = null
+          view.launchPanel = new MigPanel("ins 0")
+        }
       }
-      case LaunchItem("tow_launch") => {
-        wireLaunchPresenter = null
-        towLaunchPresenter = new TowLaunchPresenter
-        towLaunchPresenter.model = model.launch.asInstanceOf[TowLaunch]
-        view.launchPanel = towLaunchPresenter.view
-        towLaunchPresenter.updateView
-      }
-      case LaunchItem(_) => {
-        wireLaunchPresenter = null
-        towLaunchPresenter = null
-        view.launchPanel = new MigPanel("ins 0")
-      }
+      updatingView = false
     }
   }
 
