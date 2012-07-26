@@ -46,19 +46,19 @@ class MainView extends MainFrame {
         }
       } else {
         if(isSelected) {
-          if(!flightsTableModel.get(row).finished) {
-            c.background = colUnfinishedSelected
-          } else if(!flightsTableModel.get(row).isValid) {
+          if(!flightsTableModel.get(row).isValid) {
             c.background = colInvalidSelected
+          } else if(!flightsTableModel.get(row).finished) {
+            c.background = colUnfinishedSelected
           } else {
             c.background = colSelected
           }
           c.foreground = selectionForeground
         } else {
-          if(!flightsTableModel.get(row).finished) {
-            c.background = colUnfinished
-          } else if(!flightsTableModel.get(row).isValid) {
+          if(!flightsTableModel.get(row).isValid) {
             c.background = colInvalid
+          } else if(!flightsTableModel.get(row).finished) {
+            c.background = colUnfinished
           } else {
             c.background = col
           }
@@ -71,6 +71,7 @@ class MainView extends MainFrame {
   val unfinishedOnly = new CheckBox(I18n("flying-only"))
   val problemsOnly = new CheckBox(I18n("with-problems-only"))
   val colored = new CheckBox(I18n("colored"))
+  colored.selected = true
   val btNew = new Button(I18n("new"))
   val btCopy = new Button(I18n("copy")) {
     enabled = false
