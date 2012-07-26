@@ -32,10 +32,10 @@ class Flight extends AbstractFlight {
     this()
     copyFrom(f)
     f.launchType match {
-      case "WireLaunch" => {
+      case "wire_launch" => {
         launch = new WireLaunch(this, f.launch.asInstanceOf[WireLaunch])
       }
-      case "TowLaunch" => {
+      case "tow_launch" => {
         launch = new TowLaunch(this, f.launch.asInstanceOf[TowLaunch])
       }
       case _ => {}
@@ -54,7 +54,7 @@ class Flight extends AbstractFlight {
 
   def launchType_=(s:String) = {
     if(launchType != s) {
-      if(s == "self_launch") {
+      if(s == "self_launch" || s == "self") {
         if(launch != null)
           launch.delete
         launch = null
