@@ -7,8 +7,8 @@ import swing.event._
 import scala.actors.Actor._
 import scala.swing.Dialog
 
-class SyncPresenter(mp : MainPresenter) {
-  val view = new SyncView
+class SyncPresenter(view0 : SyncView, mp : MainPresenter) {
+  val view = view0
   val down = List(AllGroups.syncDown(_,_,_), AllAirfields.syncDown(_,_,_), AllPeople.syncDown(_,_,_), AllPlanes.syncDown(_,_,_), AllWireLaunchers.syncDown(_,_,_), AllCostHints.syncDown(_,_,_), AllLegalPlaneClasses.syncDown(_,_,_))
   val up = List(AllGroups.syncUp(_,_,_), AllAirfields.syncUp(_,_,_), AllPeople.syncUp(_,_,_), AllPlanes.syncUp(_,_,_), AllWireLaunchers.syncUp(_,_,_))
 
@@ -30,13 +30,18 @@ class SyncPresenter(mp : MainPresenter) {
     Config.lastUser = view.username.text
     view.enabled = false
     view.progress.value = 0
+    view.info.text = ""
     var s = down
     if(dirUp) s = up
+    mp.view.enabled = false
     var progressUpdater = actor {
       var done = false
       loopWhile(!done) {
         receive {
-          case a : Double => view.progress.value += (100 / s.length * a).toInt
+          case SyncEvent(act, obj, prog) => {
+            view.info.text = "" + act + " " + obj + "\n" + view.info.text
+            view.progress.value += (100 / s.length * prog).toInt
+          }
           case false => {
             view.progress.value = 100
             done = true
@@ -74,16 +79,9 @@ class SyncPresenter(mp : MainPresenter) {
       }
       progressUpdater ! false
       DefaultsSingleton.update
+      mp.view.enabled = true
     }
     progressUpdater.start
     backgroundSync.start
-  }
-
-  view.btNo.reactions += {
-    case ButtonClicked(_) => {
-      if(view.enabled) {
-        view.close
-      }
-    }
   }
 }

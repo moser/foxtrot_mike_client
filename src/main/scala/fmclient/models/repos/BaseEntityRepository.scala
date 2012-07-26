@@ -7,6 +7,8 @@ import fmclient.models.{EntityMgr, BaseModel, Observer, Observalbe, Config}
 import dispatch._
 import scala.actors.Actor
 
+case class SyncEvent(action : String, str : String, progress : Double)
+
 abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.reflect.Manifest[T]) extends Observer with Observalbe {
   lazy val allQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x ORDER BY " + orderBy)
   lazy val firstQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x").setMaxResults(1)
@@ -36,16 +38,18 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
     val req : Request = :/(Config.server, Config.port) / (toResource + ".json") as_!(username, password) gzip
     val remote = http(req ># (list ! obj))
     remote.foreach((o:JsObject) => {
-      progressUpdater ! (1.0 / remote.length.toDouble)
       val id = extractId(o)
       if(find(id) == null) { //entity is new
-        m.erasure.getConstructor(classOf[JsObject]).newInstance(o).asInstanceOf[T].save
+        val r = m.erasure.getConstructor(classOf[JsObject]).newInstance(o).asInstanceOf[T].save
+        progressUpdater ! SyncEvent("create", r.toString, (1.0 / remote.length.toDouble))
       } else {
         val r = find(id)
         r.update(o)
         r.save
+        progressUpdater ! SyncEvent("update", r.toString, (1.0 / remote.length.toDouble))
       }
     })
+    http.shutdown
   }
 
   def syncUp(username : String, password : String, progressUpdater : Actor) = {
@@ -53,11 +57,12 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
     val req : Request = :/(Config.server, Config.port) / (toResource + ".json") << Map("json" -> "true") as_!(username, password) 
     val sync = all.filter(_.status == "local")
     sync.foreach(e => {
-      progressUpdater ! (1.0 / sync.length.toDouble)
       http(req << Map(toJsonClass + "_json" -> e.toJson.toString) >- ((x : String) => {
         if(x == "OK") e.status = "synced"
       }))
+      progressUpdater ! SyncEvent("upload", e.toString, (1.0 / sync.length.toDouble))
     })
+    http.shutdown
   }
 
   def toResource =  toJsonClass + "s"

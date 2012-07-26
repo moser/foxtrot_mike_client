@@ -20,13 +20,6 @@ class MainView extends MainFrame {
   preferredSize = new Dimension(1000, 650)
   minimumSize = new Dimension(900, 450)
 
-  val menuSync = new MenuItem(I18n("main.sync"))
-  val actionsMenu = new Menu(I18n("main.actions_menu.title"))
-  actionsMenu.contents += menuSync
-
-  menuBar = new MenuBar
-  menuBar.contents += actionsMenu
-
   val tabs = new TabbedPane
   val flightsTableModel = new FlightsTableModel
   val flightsTable = new Table {
@@ -87,14 +80,29 @@ class MainView extends MainFrame {
 
   val flightPanel = new FlightView
   val defaultsPanel = new DefaultsView
+  val syncPanel = new SyncView
 
   tabs.pages += new TabbedPane.Page(I18n("flight"), flightPanel)
   tabs.pages += new TabbedPane.Page(I18n("defaults"), defaultsPanel)
+  tabs.pages += new TabbedPane.Page(I18n("sync"), syncPanel)
 
   contents = new SplitPane {
     dividerSize = 12
     orientation = Orientation.Horizontal
     rightComponent = flightsPanel
     leftComponent = tabs
+  }
+
+  private var _enabled = true
+  def enabled = _enabled
+  def enabled_=(b : Boolean) = {
+    _enabled = b
+    btNew.enabled = b
+    btCopy.enabled = b && flightsTable.selection.rows.size > 0
+    unfinishedOnly.enabled = b
+    problemsOnly.enabled = b
+    colored.enabled = b
+    flightsTable.enabled = b
+    tabs.enabled = b
   }
 }

@@ -17,7 +17,7 @@ class MainPresenter extends AbstractPresenter {
   view.centerOnScreen
   var fp = new FlightPresenter(view.flightPanel)
   var dp = new DefaultsPresenter(view.defaultsPanel)
-  val sp = new SyncPresenter(this)
+  val sp = new SyncPresenter(view.syncPanel, this)
 
   private var updating = false
   view.flightsTable.selection.reactions += {
@@ -87,12 +87,6 @@ class MainPresenter extends AbstractPresenter {
     }
   }
 
-  view.menuSync.reactions += {
-    case ButtonClicked(_) => {
-      sp.view.open
-    }
-  }
-
   private def selectOrNull(i : Int) {
     updating = true
     if(i >= 0 && view.flightsTableModel.getRowCount > i)  {
@@ -115,6 +109,4 @@ class MainPresenter extends AbstractPresenter {
     fp.shutdown
     EntityMgr.close
   }
-
-  sp.view.open
 }
