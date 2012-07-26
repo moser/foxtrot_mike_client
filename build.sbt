@@ -43,3 +43,21 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "1.6.1" % "test"
 parallelExecution in Test := false
 
 seq(assemblySettings: _*)
+
+mergeStrategy in assembly := { 
+  case n if n.startsWith("META-INF/ECLIPSEF.RSA") => MergeStrategy.discard
+  case n if n.startsWith("META-INF/ECLIPSEF.SF") => MergeStrategy.discard
+  case n if n.startsWith("META-INF/MANIFEST.MF") => MergeStrategy.discard
+  case n if n.startsWith("META-INF/NOTICE.txt") => MergeStrategy.discard
+  case n if n.startsWith("META-INF/NOTICE") => MergeStrategy.discard
+  case n if n.startsWith("META-INF/LICENSE.txt") => MergeStrategy.discard
+  case n if n.startsWith("META-INF/LICENSE") => MergeStrategy.discard
+  case n if n.startsWith("readme.html") => MergeStrategy.discard
+  case n if n.startsWith("readme.txt") => MergeStrategy.discard
+  case n if n.startsWith("library.properties") => MergeStrategy.discard
+  case n if n.startsWith("license.html") => MergeStrategy.discard
+  case n if n.startsWith("about.html") => MergeStrategy.discard
+  case _ => MergeStrategy.deduplicate
+}
+
+packageOptions in assembly += Package.ManifestAttributes("SplashScreen-Image" -> "splash.png")
