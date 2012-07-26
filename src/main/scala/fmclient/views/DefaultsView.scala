@@ -19,15 +19,17 @@ class DefaultsView extends MigPanel("") {
   add(new Label(I18n("departure_date")))
   add(new Label(I18n("airfield")))
   add(new Label(I18n("tow_plane")))
-  add(new Label(I18n("tow_pilot")))
-  add(new Label(I18n("wire_launcher")))
-  add(new Label(I18n("operator")))
-  add(new Label(I18n("controller")), "wrap")
+  add(new Label(I18n("tow_pilot")), "wrap")
 
   add(date, "w 70!")
   add(airfield)
   add(towPlane)
-  add(towPilot)
+  add(towPilot, "wrap")
+
+  add(new Label(I18n("wire_launcher")))
+  add(new Label(I18n("operator")))
+  add(new Label(I18n("controller")), "wrap")
+
   add(wireLauncher)
   add(operator)
   add(controller)
