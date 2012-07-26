@@ -198,14 +198,14 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
   private def pSelectedOption = model.selectedOption
 
   private def pSelectedOption_=(o : AutoCompleter.Option[T]) {
+    val lastSelection = model.lastSelectedOption
     model.selectedOption = o
     setText(itemRenderer.renderForTextfield(o))
     setCaretPosition(0)
     if(o.isInstanceOf[CreateOption[T]]) {
       publish(AutoCompleter.CreateEvent[T](o.asInstanceOf[CreateOption[T]].filterString, model.lastSelectedOption))
-    }
-    if(o != model.lastSelectedOption) {
-      publish(AutoCompleter.SelectionChangedEvent(model.lastSelectedOption, o))
+    } else {
+      publish(AutoCompleter.SelectionChangedEvent(lastSelection, o))
     }
   }
 
