@@ -3,11 +3,12 @@ package fmclient.models
 import javax.persistence._
 import dispatch.json.{JsObject, JsString, JsFalse, JsTrue}
 import dispatch.json.Js._
-import fmclient.models.repos.{AllPlanes, AllGroups, AllLegalPlaneClasses}
+import fmclient.models.repos.{AllPlanes, AllGroups, AllLegalPlaneClasses, TowPlanes}
 
 @Entity
 class Plane extends BaseModel[String] with UUIDHelper {
   addObserver(AllPlanes)
+  addObserver(TowPlanes)
 
   @Id
   var id : String = createUUID
