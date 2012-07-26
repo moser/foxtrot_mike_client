@@ -30,11 +30,13 @@ class SyncPresenter(mp : MainPresenter) {
     Config.lastUser = view.username.text
     view.enabled = false
     view.progress.value = 0
+    var s = down
+    if(dirUp) s = up
     var progressUpdater = actor {
       var done = false
       loopWhile(!done) {
         receive {
-          case a : Double => view.progress.value += (100 / up.length * a).toInt
+          case a : Double => view.progress.value += (100 / s.length * a).toInt
           case false => {
             view.progress.value = 100
             done = true
@@ -45,8 +47,6 @@ class SyncPresenter(mp : MainPresenter) {
     }
     var backgroundSync = actor {
       var cont = true
-      var s = down
-      if(dirUp) s = up
       s.foreach(r => {
         if(cont)
           try {
