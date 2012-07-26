@@ -25,18 +25,17 @@ class PlaneBalloonPresenter(str : String, val attach : JComponent, view0: PlaneB
   map((m,v) => m.legalPlaneClass = v.legalPlaneClass.selection.item, (m,v) => v.legalPlaneClass.selection.item = m.legalPlaneClass)
   map((m,v) => {
       v.defaultLaunchMethod.selection.item match {
-        case LaunchItem("self_launch") => m.defaultLaunchMethod = "self"
         case LaunchItem(str) => m.defaultLaunchMethod = str
       }
     },
     (m,v) => {
       m.defaultLaunchMethod match {
-        case "self" => v.defaultLaunchMethod.selection.item = LaunchItem("self_launch")
         case str => v.defaultLaunchMethod.selection.item = LaunchItem(str)
       }
     })
   map((m,v) => m.hasEngine = v.hasEngine.selected, (m,v) => v.hasEngine.selected = m.hasEngine)
   map((m,v) => m.canFlyWithoutEngine = v.canFlyWithoutEngine.selected, (m,v) => v.canFlyWithoutEngine.selected = m.canFlyWithoutEngine)
+  map((m,v) => m.selflaunching = v.selflaunching.selected, (m,v) => v.selflaunching.selected = m.selflaunching)
   map((m,v) => m.canTow = v.canTow.selected, (m,v) => v.canTow.selected = m.canTow)
   map((m,v) => m.canBeTowed = v.canBeTowed.selected, (m,v) => v.canBeTowed.selected = m.canBeTowed)
   map((m,v) => m.canBeWireLaunched = v.canBeWireLaunched.selected, (m,v) => v.canBeWireLaunched.selected = m.canBeWireLaunched)

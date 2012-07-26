@@ -28,6 +28,7 @@ class Plane extends BaseModel[String] with UUIDHelper {
   var defaultLaunchMethod = ""
   var hasEngine = false
   var canFlyWithoutEngine = false
+  var selflaunching = false
   var canTow = false
   var canBeTowed = false
   var canBeWireLaunched = false
@@ -66,6 +67,7 @@ class Plane extends BaseModel[String] with UUIDHelper {
         JsString("default_launch_method") -> JsString(defaultLaunchMethod),
         JsString("has_engine") -> booleanToJson(hasEngine),
         JsString("can_fly_without_engine") -> booleanToJson(canFlyWithoutEngine),
+        JsString("selflaunching") -> booleanToJson(selflaunching),
         JsString("can_tow") -> booleanToJson(canTow),
         JsString("can_be_towed") -> booleanToJson(canBeTowed),
         JsString("can_be_wire_launched") -> booleanToJson(canBeWireLaunched),

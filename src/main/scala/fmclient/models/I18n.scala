@@ -38,6 +38,7 @@ object I18n {
       case "legal_plane_class" => "Flugzeugklasse"
       case "has_engine" => "Motorisiert"
       case "can_fly_without_engine" => "Kann motorlos fliegen"
+      case "selflaunching" => "Eigenstartfähig"
       case "can_tow" => "Kann schleppen"
       case "can_be_towed" => "Kann im F-Schlepp starten"
       case "can_be_wire_launched" => "Kann an der Winde starten"
