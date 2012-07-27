@@ -145,6 +145,7 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
     plane = f.plane
     seat1 = f.seat1
     seat2 = f.seat2
+    seat2Number = f.seat2Number
     from = f.from
     to = f.to
     controller = f.controller

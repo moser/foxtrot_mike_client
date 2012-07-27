@@ -1,11 +1,6 @@
 # Before release
 - Fehlerbehandlung:
   - Logdatei mit Fehler und Stacktrace
-- Eingabe
-  - mögliche Startarten
-  - Lizenzprüfung?
-- flight copy
-  - also copy n crew member
 - maximized window -> problem with autocompleter list position
   - only linux?
 - move config into jar (jar is then self contained)
@@ -13,6 +8,8 @@
   - show server in sync ui
 
 # Medium run
+- Eingabe
+  - Lizenzprüfung?
 - autocompleter
   scroll marked element to visible
 - persist defaults
