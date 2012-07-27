@@ -40,7 +40,8 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
     remote.foreach((o:JsObject) => {
       val id = extractId(o)
       if(find(id) == null) { //entity is new
-        val r = m.erasure.getConstructor(classOf[JsObject]).newInstance(o).asInstanceOf[T].save
+        val r = m.erasure.getConstructor(classOf[JsObject]).newInstance(o).asInstanceOf[T]
+        r.save
         progressUpdater ! SyncEvent("create", r.toString, (1.0 / remote.length.toDouble))
       } else {
         val r = find(id)
