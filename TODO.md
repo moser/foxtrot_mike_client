@@ -4,11 +4,13 @@
 - Eingabe
   - mögliche Startarten
   - Lizenzprüfung?
-- update/notify defaults#tow\_plane on down sync
 - flight copy
   - also copy n crew member
 - maximized window -> problem with autocompleter list position
   - only linux?
+- move config into jar (jar is then self contained)
+  - save last user in database
+  - show server in sync ui
 
 # Medium run
 - autocompleter
