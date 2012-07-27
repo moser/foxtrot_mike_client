@@ -1,6 +1,6 @@
 package fmclient.presenters
 
-import fmclient.views.{ FlightView, MigPanel, MyFormattedTextField, AutoCompleter }
+import fmclient.views.{ FlightView, MigPanel, MyFormattedTextField, AutoCompleter, Colors }
 import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel, Airfield, Liability, ProportionItem, Plane }
 import fmclient.models.repos.AllPeople
 import fmclient.views.AutoCompleter._
@@ -81,11 +81,15 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   map((m,v) => m.departureTime = v.departureTime.peer.getValue.asInstanceOf[Int], (m,v) => v.departureTime.peer.setValue(m.departureTime))
   map((m,v) => m.engineDuration = v.engineDuration.peer.getValue.asInstanceOf[Int], (m,v) => v.engineDuration.peer.setValue(m.engineDuration))
   mapViewOnly((m,v) => v.duration.text = m.durationString)
+
   mapViewOnly((m,v) => markIfInvalid(v.plane, m.isPlaneValid))
   mapViewOnly((m,v) => markIfInvalid(v.seat1, m.isSeat1Valid))
   mapViewOnly((m,v) => markIfInvalid(v.from, m.isFromValid))
   mapViewOnly((m,v) => markIfInvalid(v.to, m.isToValid))
   mapViewOnly((m,v) => markIfInvalid(v.departureTime, m.isDepartureTimeValid))
+
+  mapViewOnly((m,v) => markIfHasProblems(v.launchType, m.launchTypeHasProblems))
+
   mapViewOnly((m,v) => v.engineDuration.enabled = m.engineDurationPossible)
   map((m,v) => { //to model
         updateLiabilitesModel
@@ -101,7 +105,19 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
 
   private def markIfInvalid(c : AWTComponent, valid : Boolean) : Unit = {
     if(!valid) {
-      c.setBackground(new Color(231, 122, 122)) //TODO create an object that holds all the used colors
+      c.setBackground(Colors.colInvalid)
+    } else {
+      c.setBackground(null)
+    }
+  }
+
+  private def markIfHasProblems(c : Component, hasProblems : Boolean) : Unit = {
+    markIfHasProblems(c.peer, hasProblems)
+  }
+
+  private def markIfHasProblems(c : AWTComponent, hasProblems : Boolean) : Unit = {
+    if(hasProblems) {
+      c.setBackground(Colors.colProblematic)
     } else {
       c.setBackground(null)
     }

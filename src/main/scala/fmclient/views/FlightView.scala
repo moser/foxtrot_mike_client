@@ -64,10 +64,11 @@ class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 
                           new MyComboBox[Person](new MyComboBoxModel(AllPeople)),
                           new MyComboBox[Person](new MyComboBoxModel(AllPeople)),
                           new MyComboBox[Person](new MyComboBoxModel(AllPeople)))
-  val proportion = List(new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))),
-                                  new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))),
-                                  new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))),
-                                  new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))))
+  val proportion = List(
+         new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))),
+         new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))),
+         new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))),
+         new ComboBox(List[ProportionItem](ProportionItem(1), ProportionItem(2), ProportionItem(3), ProportionItem(4))))
   val realProportion = List(new Label(""), new Label(""), new Label(""), new Label(""))
   val controlPanel = new MigPanel("ins 0")
   val btSave = new Button(I18n("save"))

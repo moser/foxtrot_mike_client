@@ -54,6 +54,7 @@ class Plane extends BaseModel[String] with UUIDHelper {
 
     hasEngine = ('has_engine ! bool)(o)
     canFlyWithoutEngine = ('can_fly_without_engine ! bool)(o)
+    selflaunching = ('selflaunching ! bool)(o)
     canTow = ('can_tow ! bool)(o)
     canBeTowed = ('can_be_towed ! bool)(o)
     canBeWireLaunched = ('can_be_wire_launched ! bool)(o)
@@ -80,4 +81,12 @@ class Plane extends BaseModel[String] with UUIDHelper {
       JsTrue
     else
       JsFalse
+
+  def possibleLaunchMethods = {
+    var r = List[String]()
+    if(selflaunching) { r = r :+ "self_launch" }
+    if(canBeTowed) { r = r :+ "tow_launch" }
+    if(canBeWireLaunched) { r = r :+ "wire_launch" }
+    r
+  }
 }

@@ -132,6 +132,14 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
   def isToValid = to != null
   def isDepartureTimeValid = departureTime >= 0
 
+  def hasProblems = {
+    !problematicFields.isEmpty
+  }
+
+  def problematicFields = {
+    List[String]()
+  }
+
   protected def copyFrom(f : AbstractFlight) = {
     departureDate = f.departureDate
     plane = f.plane

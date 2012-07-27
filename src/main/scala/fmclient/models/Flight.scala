@@ -87,4 +87,14 @@ class Flight extends AbstractFlight {
     else
       json
   }
+
+  override def problematicFields = {
+    var r = List[String]()
+    if(launchTypeHasProblems) { r = r :+ "launchType" }
+    r
+  }
+
+  def launchTypeHasProblems = {
+    plane != null && plane.possibleLaunchMethods.indexOf(launchType) == -1
+  }
 }

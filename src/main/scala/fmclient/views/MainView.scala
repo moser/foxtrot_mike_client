@@ -4,18 +4,8 @@ import swing._
 import swing.event._
 import fmclient.models.I18n
 import fmclient.models.FlightsTableModel
-import java.awt.Color
 
 class MainView extends MainFrame {
-  private val colInvalid = new Color(231, 122, 122)
-  private val colInvalidSelected = new Color(231, 40, 40)
-
-  private val colUnfinished = new Color(122, 122, 231)
-  private val colUnfinishedSelected = new Color(40, 40, 231)
-
-  private val col = new Color(122, 231, 122)
-  private val colSelected = new Color(40, 210, 60)
-
   title = I18n("main.title")
   preferredSize = new Dimension(1000, 650)
   minimumSize = new Dimension(900, 450)
@@ -39,21 +29,26 @@ class MainView extends MainFrame {
         }
       } else {
         if(isSelected) {
-          if(!flightsTableModel.get(row).isValid) {
-            c.background = colInvalidSelected
-          } else if(!flightsTableModel.get(row).finished) {
-            c.background = colUnfinishedSelected
-          } else {
-            c.background = colSelected
-          }
           c.foreground = selectionForeground
+          if(!flightsTableModel.get(row).isValid) {
+            c.background = Colors.colInvalidSelected
+          } else if(flightsTableModel.get(row).hasProblems) {
+            c.background = Colors.colProblematicSelected
+            c.foreground = foreground
+          } else if(!flightsTableModel.get(row).finished) {
+            c.background = Colors.colUnfinishedSelected
+          } else {
+            c.background = Colors.colSelected
+          }
         } else {
           if(!flightsTableModel.get(row).isValid) {
-            c.background = colInvalid
+            c.background = Colors.colInvalid
+          } else if(flightsTableModel.get(row).hasProblems) {
+            c.background = Colors.colProblematic
           } else if(!flightsTableModel.get(row).finished) {
-            c.background = colUnfinished
+            c.background = Colors.colUnfinished
           } else {
-            c.background = col
+            c.background = Colors.col
           }
           c.foreground = foreground
         }
