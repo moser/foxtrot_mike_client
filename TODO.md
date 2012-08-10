@@ -9,7 +9,6 @@
 - create on
   - winch
   - operator
-  - tow plane
 - refresh flights table after upload
 - button on time fields in flights table to set to now
 

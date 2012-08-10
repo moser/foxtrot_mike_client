@@ -4,6 +4,7 @@ import fmclient.views.TowLaunchView
 import fmclient.models.TowLaunch
 import scala.swing.event._
 import swing.Reactor
+import fmclient.views.AutoCompleter._
 
 
 class TowLaunchPresenter(view0: TowLaunchView) extends BasePresenter[TowLaunch, TowLaunchView] {
@@ -29,5 +30,55 @@ class TowLaunchPresenter(view0: TowLaunchView) extends BasePresenter[TowLaunch, 
 
   val timeSetter = new TimeSetter(this) { 
     add(view.btArrivalTime, view.arrivalTime)
+  }
+  
+  view.plane.reactions += {
+    case CreateEvent(c, str, old) => {
+      view.plane.setEnabled(false)
+      val bp = new PlaneBalloonPresenter(str, view.plane)
+      bp.reactions += {
+        case PlaneBalloonPresenter.OkEvent(o) => {
+          view.plane.selectedOption = o
+        }
+        case PlaneBalloonPresenter.CancelEvent() => {
+          view.plane.revertLast
+        }
+      }
+    }
+  }
+
+  val seatCreate = new Reactor {
+    listenTo(view.seat1)
+    reactions += {
+      case CreateEvent(c, str, old) => {
+        c.setEnabled(false)
+        val bp = new PersonBalloonPresenter(str, c)
+        bp.reactions += {
+          case PersonBalloonPresenter.OkEvent(o) => {
+            c.selectedOption = o
+          }
+          case PersonBalloonPresenter.CancelEvent() => {
+            c.revertLast
+          }
+        }
+      }
+    }
+  }
+
+  val airfieldCreate = new Reactor {
+    listenTo(view.to)
+    reactions += {
+      case CreateEvent(c, str, _) => {
+        val bp = new AirfieldBalloonPresenter(str, c)
+        bp.reactions += {
+          case AirfieldBalloonPresenter.OkEvent(o) => {
+            c.selectedOption = o
+          }
+          case AirfieldBalloonPresenter.CancelEvent() => {
+            c.revertLast
+          }
+        }
+      }
+    }
   }
 }
