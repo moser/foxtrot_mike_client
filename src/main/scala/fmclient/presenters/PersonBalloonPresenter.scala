@@ -18,9 +18,9 @@ class PersonBalloonPresenter(str : String, val attach : JComponent, view0: Perso
   var model : Person = new Person
   
   var spl = str.split(" ")
-  view.firstname.text = spl(0)
+  view.lastname.text = spl(0)
   if(spl.length > 1) {
-    view.lastname.text = spl(1)
+    view.firstname.text = spl(1)
   }
   
   map((m,v) => m.firstname = v.firstname.text, (m,v) => v.firstname.text = m.firstname)

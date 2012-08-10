@@ -86,14 +86,17 @@ object AutoCompleter {
 
   class DefaultItemRenderer[T >: Null <: AnyRef] extends AutoCompleterItemRenderer[T] {
     override def renderForTextfield(o : AutoCompleter.Option[T]) = {
-      o.toStringForTextfield
+      if(o != null)
+        o.toStringForTextfield
+      else
+        ""
     }
 
     override def renderForList(o : AutoCompleter.Option[T], replace : String) = {
       html(mark(o.toStringForList, replace))
     }
   }
-  case class CreateEvent[T >: Null <: AnyRef](str : String, old : AutoCompleter.Option[T]) extends Event
+  case class CreateEvent[T >: Null <: AnyRef](component : AutoCompleter[T], str : String, old : AutoCompleter.Option[T]) extends Event
   case class FocusLostEvent extends Event
   case class SelectionChangedEvent[T >: Null <: AnyRef](before : AutoCompleter.Option[T], after : AutoCompleter.Option[T]) extends Event
 }
@@ -203,7 +206,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
     setText(itemRenderer.renderForTextfield(o))
     setCaretPosition(0)
     if(o.isInstanceOf[CreateOption[T]]) {
-      publish(AutoCompleter.CreateEvent[T](o.asInstanceOf[CreateOption[T]].filterString, model.lastSelectedOption))
+      publish(AutoCompleter.CreateEvent[T](this, o.asInstanceOf[CreateOption[T]].filterString, model.lastSelectedOption))
     } else {
       publish(AutoCompleter.SelectionChangedEvent(lastSelection, o))
     }

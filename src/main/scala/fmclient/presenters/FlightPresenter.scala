@@ -142,7 +142,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   }
 
   view.plane.reactions += {
-    case CreateEvent(str, old) => {
+    case CreateEvent(c, str, old) => {
       view.plane.setEnabled(false)
       val bp = new PlaneBalloonPresenter(str, view.plane)
       bp.reactions += {
@@ -170,16 +170,19 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
     }
   }
 
-  view.seat1.reactions += {
-    case CreateEvent(str, old) => {
-      view.seat1.setEnabled(false)
-      val bp = new PersonBalloonPresenter(str, view.seat1)
-      bp.reactions += {
-        case PersonBalloonPresenter.OkEvent(o) => {
-          view.seat1.selectedOption = o
-        }
-        case PersonBalloonPresenter.CancelEvent() => {
-          view.seat1.revertLast
+  val seatCreate = new Reactor {
+    listenTo(view.seat1, view.seat2, view.controller)
+    reactions += {
+      case CreateEvent(c, str, old) => {
+        c.setEnabled(false)
+        val bp = new PersonBalloonPresenter(str, c)
+        bp.reactions += {
+          case PersonBalloonPresenter.OkEvent(o) => {
+            c.selectedOption = o
+          }
+          case PersonBalloonPresenter.CancelEvent() => {
+            c.revertLast
+          }
         }
       }
     }
@@ -245,28 +248,20 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       }
     }
   }
-
-  view.from.reactions += {
-    case CreateEvent(str, _) => {
-      showAirfieldBalloon(view.from, str)
-    }
-  }
-
-  view.to.reactions += {
-    case CreateEvent(str, _) => {
-      showAirfieldBalloon(view.to, str)
-    }
-  }
-
-  def showAirfieldBalloon(c : AutoCompleter[Airfield], str : String) {
-    c.setEnabled(false)
-    val bp = new AirfieldBalloonPresenter(str, c)
-    bp.reactions += {
-      case AirfieldBalloonPresenter.OkEvent(o) => {
-        c.selectedOption = o
-      }
-      case AirfieldBalloonPresenter.CancelEvent() => {
-        c.revertLast
+  
+  val airfieldCreate = new Reactor {
+    listenTo(view.from, view.to)
+    reactions += {
+      case CreateEvent(c, str, _) => {
+        val bp = new AirfieldBalloonPresenter(str, c)
+        bp.reactions += {
+          case AirfieldBalloonPresenter.OkEvent(o) => {
+            c.selectedOption = o
+          }
+          case AirfieldBalloonPresenter.CancelEvent() => {
+            c.revertLast
+          }
+        }
       }
     }
   }

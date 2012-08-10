@@ -6,6 +6,12 @@
 - move config into jar (jar is then self contained)
   - save last user in database
   - show server in sync ui
+- create on
+  - winch
+  - operator
+  - tow plane
+- refresh flights table after upload
+- button on time fields in flights table to set to now
 
 # Medium run
 - Eingabe
