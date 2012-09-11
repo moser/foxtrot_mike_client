@@ -3,7 +3,7 @@ package fmclient.models.repos
 import scalaj.collection.Imports._
 import dispatch.json.JsHttp._
 import dispatch.json.JsObject
-import fmclient.models.{EntityMgr, BaseModel, Observer, Observalbe, Config}
+import fmclient.models.{EntityMgr, BaseModel, Observer, Observalbe, Config, I18n}
 import dispatch._
 import scala.actors.Actor
 
@@ -42,12 +42,12 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
       if(find(id) == null) { //entity is new
         val r = m.erasure.getConstructor(classOf[JsObject]).newInstance(o).asInstanceOf[T]
         r.save
-        progressUpdater ! SyncEvent("create", r.toString, (1.0 / remote.length.toDouble))
+        progressUpdater ! SyncEvent(I18n("sync.create"), r.toString, (1.0 / remote.length.toDouble))
       } else {
         val r = find(id)
         r.update(o)
         r.save
-        progressUpdater ! SyncEvent("update", r.toString, (1.0 / remote.length.toDouble))
+        progressUpdater ! SyncEvent(I18n("sync.update"), r.toString, (1.0 / remote.length.toDouble))
       }
     })
     http.shutdown
@@ -61,7 +61,7 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
       http(req << Map(toJsonClass + "_json" -> e.toJson.toString) >- ((x : String) => {
         if(x == "OK") e.status = "synced"
       }))
-      progressUpdater ! SyncEvent("upload", e.toString, (1.0 / sync.length.toDouble))
+      progressUpdater ! SyncEvent(I18n("sync.upload"), e.toString, (1.0 / sync.length.toDouble))
     })
     http.shutdown
   }
