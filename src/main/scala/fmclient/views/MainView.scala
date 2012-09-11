@@ -61,6 +61,8 @@ class MainView extends MainFrame {
   val colored = new CheckBox(I18n("colored"))
   colored.selected = true
   val btNew = new Button(I18n("new"))
+  btNew.mnemonic = scala.swing.event.Key.N
+  btNew.peer.setDisplayedMnemonicIndex(0)
   val btCopy = new Button(I18n("copy")) {
     enabled = false
   }
