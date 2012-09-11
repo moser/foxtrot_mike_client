@@ -73,7 +73,7 @@ object I18n {
       case _ => s
     }
     for(i <- interpolation) {
-      res = res.replaceFirst("%%", i.toString)
+      res = res.replaceFirst("%%", i.toString.replace("\\", ""))
     }
     res
   }

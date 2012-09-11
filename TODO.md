@@ -8,18 +8,15 @@
   - show server in sync ui
 - create on
   - winch
-  - operator
 - refresh flights table after upload
 - button on time fields in flights table to set to now
 
 # Medium run
 - Eingabe
   - Lizenzprüfung?
-- autocompleter
-  scroll marked element to visible
 - persist defaults
 - autocompleter
-  - regex escape special characters
+  - scroll marked element to visible
   - regex "v m" => "(v).\* (m)"
 - Specs
   - OutOfMemoryError (PermGen space erhöhen?)
