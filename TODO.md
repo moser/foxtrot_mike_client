@@ -12,9 +12,9 @@
 - button on time fields in flights table to set to now
 
 # Medium run
+- delete local data (flights, everything)
 - Eingabe
   - Lizenzprüfung?
-- persist defaults
 - autocompleter
   - scroll marked element to visible
   - regex "v m" => "(v).\* (m)"

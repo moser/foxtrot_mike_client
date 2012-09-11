@@ -21,6 +21,7 @@
      <class>fmclient.models.Group</class>
      <class>fmclient.models.CostHint</class>
      <class>fmclient.models.LegalPlaneClass</class>
+     <class>fmclient.models.Attribute</class>
      <properties>
          <property name="javax.persistence.logging.level" value="INFO"/>
          <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
