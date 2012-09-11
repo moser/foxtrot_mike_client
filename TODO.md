@@ -4,7 +4,6 @@
 - maximized window -> problem with autocompleter list position
   - only linux?
 - move config into jar (jar is then self contained)
-  - save last user in database
   - show server in sync ui
 - create on
   - winch
