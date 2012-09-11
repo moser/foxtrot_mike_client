@@ -51,12 +51,16 @@ object I18n {
       case "tow_launch.short" => "F"
       case "self_launch.short" => "E"
 
-      case "sync.title" => "Synchronisation"
+      case "sync" => "Synchronisation"
       case "username" => "Benutzername"
       case "password" => "Passwort"
       case "sync.down" => "Daten herunterladen"
       case "sync.up" => "Flüge hochladen"
-      case "close" => "Schließen"
+
+      case "error" => "Fehler"
+      case "error.connection" => "Verbindung fehlgeschlagen. Bitte prüfen Sie die Netzwerkverbindung. Dieser Fehler kann auch am Server liegen."
+      case "error.access_denied" => "Zugriff verweigert! Bitte prüfen Sie die Zugangsdaten."
+      case "error.unknown_error" => "Unbekannter Fehler: "
 
       case "ok" => "Ok"
       case "cancel" => "Abbrechen"
