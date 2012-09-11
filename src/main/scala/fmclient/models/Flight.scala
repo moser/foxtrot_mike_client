@@ -97,4 +97,17 @@ class Flight extends AbstractFlight {
   def launchTypeHasProblems = {
     plane != null && plane.possibleLaunchMethods.indexOf(launchType) == -1
   }
+
+  override def toString = {
+    var r  = "" 
+    if(plane != null)
+      r += plane.toString + " "
+    if(seat1 != null)
+      r += seat1.toString + " "
+    if(departureTime >= 0) 
+      r += String.format("%d:%02d", (departureTime / 60).asInstanceOf[AnyRef], (departureTime % 60).asInstanceOf[AnyRef]) + " "
+    if(arrivalTime >= 0) 
+      r += String.format("%d:%02d", (arrivalTime / 60).asInstanceOf[AnyRef], (arrivalTime % 60).asInstanceOf[AnyRef])
+    r
+  }
 }
