@@ -58,7 +58,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   map((m,v) => { //to model
         if(v.seat2.selectedOption.isInstanceOf[RealOption[Person]] || v.seat2.selectedOption.isInstanceOf[NilOption[Person]]) {
           m.seat2 = v.seat2.selectedOption.get
-          m.seat2Number = -1
+          m.seat2Number = 0
         } else if(v.seat2.selectedOption.isInstanceOf[Seat2ACModel.NumberOption]) {
           m.seat2 = null
           m.seat2Number = v.seat2.selectedOption.asInstanceOf[Seat2ACModel.NumberOption].n

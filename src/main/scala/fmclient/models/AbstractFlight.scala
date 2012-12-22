@@ -30,7 +30,7 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
   @JoinColumn(name="seat2_id")
   var seat2 : Person = _
 
-  var seat2Number : Integer = -1
+  var seat2Number : Integer = 0
 
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="from_id")
@@ -99,16 +99,21 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
 
   override def jsonValues : Map[JsString, JsValue] = {
     Map(JsString("plane_id") -> idToJson(plane),
-        JsString("seat1_id") -> (if(seat1Unknown) JsString("unknown") else idToJson(seat1)),
-        JsString("seat2_id") -> (if(seat2Number <= 0) idToJson(seat2) else JsString("+" + seat2Number)),
+        JsString("seat1_person_id") -> (if(seat1Unknown) JsString("unknown") else idToJson(seat1)),
+        JsString("seat2_person_id") -> idToJson(seat2),
+        JsString("seat2_n") -> JsNumber(seat2Number),
         JsString("from_id") -> idToJson(from),
         JsString("to_id") -> idToJson(to),
         JsString("controller_id") -> idToJson(controller),
         JsString("engine_duration") -> JsNumber(engineDuration),
-        JsString("arrival_time") -> JsNumber(arrivalTime),
-        JsString("departure_time") -> JsNumber(departureTime),
+        JsString("arrival_i") -> JsNumber(arrivalTime),
+        JsString("departure_i") -> JsNumber(departureTime),
         JsString("departure_date") -> JsString(dt(departureDate).toString("yyyy-MM-dd")),
         JsString("comment") -> JsString(comment))
+  }
+  
+  override def toJson : JsObject = {
+    JsObject(jsonValues);
   }
 
   override def isValid = {
