@@ -36,4 +36,9 @@ class WireLaunch extends Launch {
         JsString("wire_launcher_id") -> idToJson(wireLauncher))
         //JsString("operator_id") -> idToJson(operator)) //TODO implement on server side
   }
+  
+  override def toJson : JsObject = {
+    JsObject(jsonValues);
+  }
+
 }
