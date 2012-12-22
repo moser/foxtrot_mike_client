@@ -51,31 +51,24 @@ class SyncPresenter(view0 : SyncView, mp : MainPresenter) {
       }
     }
     var backgroundSync = actor {
-      var cont = true
-      s.foreach(r => {
-        if(cont)
-          try {
-            r(view.username.text, new String(view.password.password), progressUpdater)
-          } catch {
-            case e:org.apache.http.conn.HttpHostConnectException => {
-              Dialog.showMessage(null, I18n("error.connection"), I18n("error"), Dialog.Message.Error)
-              cont = false
-            }
-            case dispatch.StatusCode(401, _) => {
-              Dialog.showMessage(null, I18n("error.access_denied"), I18n("error"), Dialog.Message.Error)
-              cont = false
-            }
-            case e : Throwable => {
-              Dialog.showMessage(null, I18n("error.unknown_error") + e.toString, I18n("error"), Dialog.Message.Error)
-              e.printStackTrace
-              cont = false
-            }
-          }
-      })
-      if(dirUp) {
-        AllFlights.syncUp(view.username.text, new String(view.password.password), progressUpdater)
-        AllFlights.all.filter(_.status == "synced").foreach(_.delete)
-        mp.selectFirstOrNull
+      try {
+        s.foreach(r => r(view.username.text, new String(view.password.password), progressUpdater))
+        if(dirUp) {
+          AllFlights.syncUp(view.username.text, new String(view.password.password), progressUpdater)
+          AllFlights.all.filter(_.status == "synced").foreach(_.delete)
+          mp.selectFirstOrNull
+        }
+      } catch {
+        case e:org.apache.http.conn.HttpHostConnectException => {
+          Dialog.showMessage(null, I18n("error.connection"), I18n("error"), Dialog.Message.Error)
+        }
+        case dispatch.StatusCode(401, _) => {
+          Dialog.showMessage(null, I18n("error.access_denied"), I18n("error"), Dialog.Message.Error)
+        }
+        case e : Throwable => {
+          Dialog.showMessage(null, I18n("error.unknown_error") + e.getMessage().split("\n")(0), I18n("error"), Dialog.Message.Error)
+          e.printStackTrace
+        }
       }
       progressUpdater ! false
       DefaultsSingleton.update
