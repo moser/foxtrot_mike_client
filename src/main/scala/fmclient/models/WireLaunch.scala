@@ -33,8 +33,8 @@ class WireLaunch extends Launch {
   
   override def jsonValues = {
     Map(JsString("type") -> JsString("WireLaunch"),
-        JsString("wire_launcher_id") -> idToJson(wireLauncher))
-        //JsString("operator_id") -> idToJson(operator)) //TODO implement on server side
+        JsString("wire_launcher_id") -> idToJson(wireLauncher),
+        JsString("operator_id") -> idToJson(operator))
   }
   
   override def toJson : JsObject = {
