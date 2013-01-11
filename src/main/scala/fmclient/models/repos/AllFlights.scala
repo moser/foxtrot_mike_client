@@ -4,4 +4,6 @@ import fmclient.models.{EntityMgr, Flight}
 
 object AllFlights extends BaseStringIndexedEntityRepository[Flight] {
   override val orderBy = "x.pDepartureDate, x.pDepartureTime ASC"
+
+  override def modelsToSyncUp = super.modelsToSyncUp.filter(_.isValid)
 }
