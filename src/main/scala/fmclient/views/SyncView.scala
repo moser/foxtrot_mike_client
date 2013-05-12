@@ -13,7 +13,7 @@ class SyncView extends MigPanel("fill", "[180][180][grow]") {
     max = 100
   }
   val info = new TextArea() {
-    editable = false
+    enabled = false
   }
   add(new Label(I18n("username")))
   add(username, "w 150, sg a")
