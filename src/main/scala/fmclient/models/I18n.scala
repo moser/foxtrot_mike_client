@@ -61,6 +61,7 @@ object I18n {
       case "error.connection" => "Verbindung fehlgeschlagen. Bitte prüfen Sie die Netzwerkverbindung. Dieser Fehler kann auch am Server liegen."
       case "error.access_denied" => "Zugriff verweigert! Bitte prüfen Sie die Zugangsdaten."
       case "error.unknown_error" => "Unbekannter Fehler: "
+      case "error.unprocessable" => "Der Server hat folgende Änderung abgelehnt:"
       
       case "sync.create" => "Neu"
       case "sync.update" => "Aktualisiert"

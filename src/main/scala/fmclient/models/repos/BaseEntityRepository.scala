@@ -60,11 +60,18 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
     val req : Request = :/(Config.server, Config.port) / (toResource + ".json") << Map("json" -> "true") as_!(username, password) 
     val sync = modelsToSyncUp
     sync.foreach(e => {
+      try {
       http(req << Map(toJsonClass + "_json" -> e.toJson.toString) >- ((x : String) => {
         e.status = "synced"
         e.save
       }))
       progressUpdater ! SyncEvent(I18n("sync.upload"), e.toString, (1.0 / sync.length.toDouble))
+      } catch {
+        case error @ dispatch.StatusCode(422, _) => {
+          progressUpdater ! SyncEvent(I18n("error.unprocessable"), e.toString, (1.0 / sync.length.toDouble))
+          throw error
+        }
+      }
     })
     http.shutdown
   }
