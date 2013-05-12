@@ -1,0 +1,2 @@
+#!/bin/bash
+scp "target/Foxtrot Mike Client-assembly-1.0.jar" root@vielsmaier.net:/var/rails/fm/current/public
