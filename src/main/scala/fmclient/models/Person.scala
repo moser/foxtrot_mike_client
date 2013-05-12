@@ -42,4 +42,15 @@ class Person extends BaseModel[String] with UUIDHelper {
         JsString("lastname") -> JsString(lastname),
         JsString("group_id") -> idToJsonInt(group))
   }
+
+
+  override def invalidFields = {
+    var r = List[String]()
+    if(!firstnameValid) { r = r :+ "firstname" }
+    if(!lastnameValid) { r = r :+ "lastname" }
+    r
+  }
+
+  def firstnameValid = firstname != null && firstname.length > 2
+  def lastnameValid = lastname != null && lastname.length > 2
 }

@@ -1,7 +1,7 @@
 package fmclient.views
 
 import swing._
-import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.awt.Insets
 import javax.swing.{JFormattedTextField, Icon, BorderFactory}
 import fmclient.models.repos._
@@ -22,7 +22,7 @@ class MyFormattedTextField(f: javax.swing.JFormattedTextField.AbstractFormatterF
 
 
 class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 0][gp 1]") {
-  val departureDate = new FormattedTextField(DateFormat.getDateInstance(DateFormat.SHORT)) {
+  val departureDate = new FormattedTextField(new SimpleDateFormat("dd.MM.yyyy")) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
   val plane = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Plane](AllPlanes, _.registration, Map("allowNil" -> false)), new PlaneRenderer)

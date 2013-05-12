@@ -6,6 +6,8 @@ import dispatch.json.{JsString, JsValue, JsArray}
 import fmclient.models.repos.AllFlights
 import scala.collection.mutable.ArraySeq
 import scala.collection.immutable.List
+import org.joda.time.{Days, DateMidnight}
+import java.util.Date
 
 @Entity
 @DiscriminatorValue("F")
@@ -91,11 +93,17 @@ class Flight extends AbstractFlight {
   override def problematicFields = {
     var r = List[String]()
     if(launchTypeHasProblems) { r = r :+ "launchType" }
+    if(departureDateHasProblems) { r = r :+ "departureDate" }
     r
   }
 
   def launchTypeHasProblems = {
     plane != null && plane.possibleLaunchMethods.indexOf(launchType) == -1
+  }
+
+  def departureDateHasProblems = {
+    val diff = Days.daysBetween(new DateMidnight(departureDate), new DateMidnight(new Date())).getDays() 
+    departureDate != null && (diff > 10 || diff < 0)
   }
 
   override def toString = {

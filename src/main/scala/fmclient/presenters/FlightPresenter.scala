@@ -6,10 +6,8 @@ import fmclient.models.repos.AllPeople
 import fmclient.views.AutoCompleter._
 import org.joda.time.DateTime
 import scala.swing.event._
-import scala.swing.{Component, TextComponent}
 import java.util.Date
 import swing.Reactor
-import java.awt.{ Color, Component => AWTComponent }
 import scala.collection.mutable.ArraySeq
 import javax.swing.SwingUtilities
 
@@ -89,6 +87,7 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   mapViewOnly((m,v) => markIfInvalid(v.departureTime, m.isDepartureTimeValid))
 
   mapViewOnly((m,v) => markIfHasProblems(v.launchType, m.launchTypeHasProblems))
+  mapViewOnly((m,v) => markIfHasProblems(v.departureDate, m.departureDateHasProblems))
 
   mapViewOnly((m,v) => v.engineDuration.enabled = m.engineDurationPossible)
   map((m,v) => { //to model
@@ -98,30 +97,6 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
         updateLiabilitesView
       })
 
-
-  private def markIfInvalid(c : Component, valid : Boolean) : Unit = {
-    markIfInvalid(c.peer, valid)
-  }
-
-  private def markIfInvalid(c : AWTComponent, valid : Boolean) : Unit = {
-    if(!valid) {
-      c.setBackground(Colors.colInvalid)
-    } else {
-      c.setBackground(null)
-    }
-  }
-
-  private def markIfHasProblems(c : Component, hasProblems : Boolean) : Unit = {
-    markIfHasProblems(c.peer, hasProblems)
-  }
-
-  private def markIfHasProblems(c : AWTComponent, hasProblems : Boolean) : Unit = {
-    if(hasProblems) {
-      c.setBackground(Colors.colProblematic)
-    } else {
-      c.setBackground(null)
-    }
-  }
 
   view.launchType.selection.reactions += {
     case SelectionChanged(_) => {

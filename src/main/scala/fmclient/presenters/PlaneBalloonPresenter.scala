@@ -41,12 +41,19 @@ class PlaneBalloonPresenter(str : String, val attach : JComponent, view0: PlaneB
   map((m,v) => m.canBeWireLaunched = v.canBeWireLaunched.selected, (m,v) => v.canBeWireLaunched.selected = m.canBeWireLaunched)
   map((m,v) => m.defaultEngineDurationToDuration = v.defaultEngineDurationToDuration.selected, (m,v) => v.defaultEngineDurationToDuration.selected = m.defaultEngineDurationToDuration)
 
+  mapViewOnly((m,v) => markIfInvalid(v.registration, m.registrationValid))
+  mapViewOnly((m,v) => markIfInvalid(v.make, m.makeValid))
+
   view.btOk.reactions += {
     case ButtonClicked(_) => {
       updateModel
-      model.save
-      destroy
-      publish(PlaneBalloonPresenter.OkEvent(model))
+      if(!model.isValid)
+        updateView
+      else {
+        model.save
+        destroy
+        publish(PlaneBalloonPresenter.OkEvent(model))
+      }
     }
   }
 

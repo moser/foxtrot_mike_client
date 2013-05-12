@@ -89,4 +89,14 @@ class Plane extends BaseModel[String] with UUIDHelper {
     if(canBeWireLaunched) { r = r :+ "wire_launch" }
     r
   }
+
+  override def invalidFields = {
+    var r = List[String]()
+    if(!registrationValid) { r = r :+ "registration" }
+    if(!makeValid) { r = r :+ "make" }
+    r
+  }
+
+  def registrationValid = registration != null && registration.length > 2
+  def makeValid = make != null && make.length > 2
 }

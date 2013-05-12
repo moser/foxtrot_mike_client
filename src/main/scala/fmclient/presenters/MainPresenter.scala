@@ -54,7 +54,7 @@ class MainPresenter extends AbstractPresenter {
         f.save
         view.flightsTable.selection.rows.clear
         view.flightsTable.selection.rows.add(view.flightsTableModel.indexOf(f))
-        view.flightPanel.departureDate.requestFocusInWindow
+        view.flightPanel.departureTime.requestFocusInWindow
       }
     }
   }

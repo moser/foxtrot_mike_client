@@ -9,6 +9,7 @@
   - winch
 - refresh flights table after upload
 - button on time fields in flights table to set to now
+- array index OOB after upload
 
 # Medium run
 - delete local data (flights, everything)

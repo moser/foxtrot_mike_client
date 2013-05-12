@@ -25,14 +25,21 @@ class PersonBalloonPresenter(str : String, val attach : JComponent, view0: Perso
   
   map((m,v) => m.firstname = v.firstname.text, (m,v) => v.firstname.text = m.firstname)
   map((m,v) => m.lastname = v.lastname.text, (m,v) => v.lastname.text = m.lastname)
-   map((m,v) => m.group = v.group.selection.item, (m,v) => v.group.selection.item = m.group)
+  map((m,v) => m.group = v.group.selection.item, (m,v) => v.group.selection.item = m.group)
+
+  mapViewOnly((m,v) => markIfInvalid(v.firstname, m.firstnameValid))
+  mapViewOnly((m,v) => markIfInvalid(v.lastname, m.lastnameValid))
   
   view.btOk.reactions += {
     case ButtonClicked(_) => {
       updateModel
-      model.save
-      destroy
-      publish(PersonBalloonPresenter.OkEvent(model))
+      if(!model.isValid)
+        updateView
+      else {
+        model.save
+        destroy
+        publish(PersonBalloonPresenter.OkEvent(model))
+      }
     }
   }
   
