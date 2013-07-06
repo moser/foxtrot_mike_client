@@ -2,10 +2,12 @@ package fmclient.presenters
 
 import fmclient.views.SyncView
 import fmclient.models.repos._
-import fmclient.models.{I18n, Config, DefaultsSingleton}
+import fmclient.models.{I18n, Config, DefaultsSingleton, Print}
+import fmclient.models.Print._
 import swing.event._
 import scala.actors.Actor._
 import scala.swing.Dialog
+import java.util.Date
 
 class SyncPresenter(view0 : SyncView, mp : MainPresenter) {
   val view = view0
@@ -13,6 +15,8 @@ class SyncPresenter(view0 : SyncView, mp : MainPresenter) {
   val up = List(AllGroups.syncUp(_,_,_), AllAirfields.syncUp(_,_,_), AllPeople.syncUp(_,_,_), AllPlanes.syncUp(_,_,_), AllWireLaunchers.syncUp(_,_,_))
 
   view.username.text = Config.lastUser
+  view.date.peer.setValue(DefaultsSingleton.date)
+  view.airfield.selectedOption = DefaultsSingleton.airfield
 
   view.btDown.reactions += {
     case ButtonClicked(_) => {
@@ -23,6 +27,19 @@ class SyncPresenter(view0 : SyncView, mp : MainPresenter) {
   view.btUp.reactions += {
     case ButtonClicked(_) => {
       sync(true)
+    }
+  }
+
+  view.btPrint.reactions += {
+    case ButtonClicked(_) => {
+      try {
+        Print.getPdf(view.username.text, new String(view.password.password), view.airfield.selectedOption.get, view.date.peer.getValue.asInstanceOf[Date])
+      } catch {
+        case HttpCode(_) => {
+          Dialog.showMessage(null, I18n("error.connection"), I18n("error"), Dialog.Message.Error)
+        }
+      }
+       
     }
   }
 

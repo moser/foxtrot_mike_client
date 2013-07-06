@@ -22,6 +22,8 @@ libraryDependencies += "net.databinder" %% "dispatch-http" % "0.8.6"
 
 libraryDependencies += "net.databinder" %% "dispatch-http-json" % "0.8.6"
 
+libraryDependencies += "org.scalaj" %% "scalaj-http" % "0.3.2"
+
 libraryDependencies += "org.scala-lang" % "scala-library" % "2.9.1"
 
 libraryDependencies += "org.scala-tools.time" %% "time" % "0.5"

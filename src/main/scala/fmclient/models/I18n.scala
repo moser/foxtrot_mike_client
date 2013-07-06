@@ -56,6 +56,7 @@ object I18n {
       case "password" => "Passwort"
       case "sync.down" => "Daten herunterladen"
       case "sync.up" => "Flüge hochladen"
+      case "sync.print" => "Hauptflugbuch drucken"
 
       case "error" => "Fehler"
       case "error.connection" => "Verbindung fehlgeschlagen. Bitte prüfen Sie die Netzwerkverbindung. Dieser Fehler kann auch am Server liegen."

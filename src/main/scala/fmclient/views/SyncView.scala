@@ -1,9 +1,19 @@
 package fmclient.views
 
 import swing._
-import fmclient.models.I18n
+import java.text.SimpleDateFormat
+import fmclient.models.repos._
+import fmclient.models._
+import fmclient.views.AutoCompleter._
 
 class SyncView extends MigPanel("fill", "[180][180][grow]") {
+  val date = new FormattedTextField(new SimpleDateFormat("dd.MM.yyyy")) {
+    focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
+  }
+  val airfieldRenderer = new AirfieldRenderer
+  val airfield = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
+  val btPrint = new Button(I18n("sync.print"))
+
   val username = new TextField()
   val password = new PasswordField()
   val btUp = new Button(I18n("sync.up"))
@@ -20,9 +30,12 @@ class SyncView extends MigPanel("fill", "[180][180][grow]") {
   add(new ScrollPane(info), "spany 3, grow, wrap")
   add(new Label(I18n("password")))
   add(password, "wrap, sg a")
-  add(btUp)
-  add(btDown, "wrap")
+  add(btDown)
+  add(btUp, "wrap")
   add(progress, "span, grow, h 25")
+  add(date, "w 70::, sg foo")
+  peer.add(airfield, "sg foo")
+  add(btPrint, "wrap")
   
   private var _enabled = true
   override def enabled = _enabled
