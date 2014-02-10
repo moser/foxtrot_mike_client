@@ -36,7 +36,7 @@ class PlaneBalloonView(attach : JComponent) extends BalloonView(attach) {
   add(new Label(I18n("legal_plane_class")).peer)
   add(legalPlaneClass.peer, "w 150")
   add(new Label(I18n("default_launch_method")).peer)
-  add(defaultLaunchMethod.peer, "w 150")
+  add(defaultLaunchMethod.peer)
   add(hasEngine.peer, "skip 1")
   add(canFlyWithoutEngine.peer, "skip 1")
   add(selflaunching.peer, "skip 1")

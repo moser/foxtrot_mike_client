@@ -111,10 +111,10 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
   addFocusListener(this)
   getDocument().addDocumentListener(this)
   setSize(new Dimension(20, 100))
-  private val popupListModel = new DefaultListModel
-  private val popupList = new JList(popupListModel)
+  private val popupListModel = new DefaultListModel[AutoCompleter.Option[T]]
+  private val popupList = new JList[AutoCompleter.Option[T]](popupListModel)
   popupList.setCellRenderer(new DefaultListCellRenderer() {
-    override def getListCellRendererComponent(list : JList,  value : Any, i : Int, selected : Boolean, cellHasFocus : Boolean) = {
+    override def getListCellRendererComponent(list : JList[AutoCompleter.Option[T]],  value : Any, i : Int, selected : Boolean, cellHasFocus : Boolean) = {
       val l = super.getListCellRendererComponent(list, value, i, selected, cellHasFocus).asInstanceOf[JLabel]
       l.setText(itemRenderer.renderForList(value.asInstanceOf[AutoCompleter.Option[T]], AutoCompleter.this.getText))
       l
@@ -196,7 +196,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
     if(popupList.getSelectedValue != null) pSelectedOption = popupList.getSelectedValue.asInstanceOf[AutoCompleter.Option[T]]
   }
 
-  def listCellRenderer_=(l : ListCellRenderer) = popupList.setCellRenderer(l)
+  def listCellRenderer_=(l : ListCellRenderer[AutoCompleter.Option[T]]) = popupList.setCellRenderer(l)
 
   private def pSelectedOption = model.selectedOption
 

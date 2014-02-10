@@ -18,5 +18,5 @@ object Seat1ACModel {
 }
 
 class Seat1ACModel extends EnabledOnlyAutoCompleterModel[Person](AllPeople, _.name, Map("allowNil" -> false)) {
-  override def syntheticOptions = List(new Seat1ACModel.UnknownPersonOption)
+  //override def syntheticOptions = List(new Seat1ACModel.UnknownPersonOption)
 }
