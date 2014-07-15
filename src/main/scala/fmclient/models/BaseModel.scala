@@ -24,13 +24,15 @@ abstract class BaseModel[T] extends Observalbe {
       notifyCreated(this)
   }
   def isPersisted = EntityMgr.em.find(this.getClass, id) != null
-  def delete = {
+  def delete { delete(true) }
+  def delete(notify : Boolean) {
     if(isPersisted) {
       beforeDelete
       EntityMgr.withTransaction(_.remove(this))
       afterDelete
       deleted_ = true
-      notifyRemoved(this)
+      if(notify)
+        notifyRemoved(this)
     }
   }
   

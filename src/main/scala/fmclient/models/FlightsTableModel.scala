@@ -59,6 +59,10 @@ class FlightsTableModel extends AbstractTableModel with Observer {
     getAll(i)
   }
 
+  def invalidate {
+    update_all = true
+  }
+
   def getAll = {
     if(update_all) {
       def departureTimeX(f:Flight) = if(f.departureTime > 0) f.departureTime else 1441

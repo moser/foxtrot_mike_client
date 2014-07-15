@@ -78,7 +78,8 @@ class SyncPresenter(view0 : SyncView, mp : MainPresenter) {
       } finally {
         updater.done()
         DefaultsSingleton.update
-        AllFlights.all.filter(_.status == "synced").foreach(_.delete)
+        AllFlights.all.filter(_.status == "synced").foreach(_.delete(false))
+        mp.invalidateFTM
         SwingUtilities.invokeLater(new Runnable {
           override def run {
             mp.selectFirstOrNull

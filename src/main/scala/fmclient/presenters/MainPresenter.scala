@@ -87,6 +87,10 @@ class MainPresenter extends AbstractPresenter {
     }
   }
 
+  def invalidateFTM {
+    view.flightsTableModel.invalidate
+  }
+
   private def selectOrNull(i : Int) {
     updating = true
     if(i >= 0 && view.flightsTableModel.getRowCount > i)  {
