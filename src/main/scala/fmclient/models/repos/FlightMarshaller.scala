@@ -9,6 +9,7 @@ object FlightMarshaller extends Marshaller[Flight] {
 
   def marshal(o : Flight) = {
     var values = (
+      ("id" -> o.id) ~
       flightToJson(o) ~
       ("cost_hint_id" -> idToJson(o.costHint)) ~
       ("liabilities_attributes" ->
@@ -35,7 +36,6 @@ object FlightMarshaller extends Marshaller[Flight] {
 
   private def flightToJson(o : AbstractFlight) = {
     (
-      ("id" -> o.id) ~
       ("plane_id" -> idToJson(o.plane)) ~
       ("seat1_person_id" -> idToJson(o.seat1)) ~
       ("seat2_person_id" -> idToJson(o.seat2)) ~
