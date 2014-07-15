@@ -7,14 +7,16 @@ import java.awt.Color
 import net.java.balloontip.CustomFlexBalloonTip
 import net.java.balloontip.FlexBalloonTip.{ Orientation, AttachLocation }
 import net.java.balloontip.styles.RoundedBalloonStyle
-import javax.swing.JComponent
+import javax.swing.{JComponent, JComboBox, DefaultComboBoxModel}
 import net.miginfocom.swing.MigLayout
+import scalaj.collection.Imports._
 
 class PlaneBalloonView(attach : JComponent) extends BalloonView(attach) {
+  val l = List(LaunchItem("self_launch"), LaunchItem("wire_launch"), LaunchItem("tow_launch"))
   val registration = new TextField
   val make = new TextField
   val group = new MyComboBox[Group](new MyComboBoxModel(AllGroups))
-  val defaultLaunchMethod = new ComboBox(List[LaunchItem](LaunchItem("self_launch"), LaunchItem("wire_launch"), LaunchItem("tow_launch")))
+  val defaultLaunchMethod = new MyComboBox(new DefaultComboBoxModel(new java.util.Vector(l.asJava)))
   val legalPlaneClass = new MyComboBox[LegalPlaneClass](new MyComboBoxModel(AllLegalPlaneClasses))
   val hasEngine = new CheckBox(I18n("has_engine"))
   val canFlyWithoutEngine = new CheckBox(I18n("can_fly_without_engine"))

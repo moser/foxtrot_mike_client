@@ -11,8 +11,8 @@ class MyComboBoxModel[T <: BaseModel[_]](a : BaseEntityRepository[T, _]) extends
   def this(a : BaseEntityRepository[T, _], includeNull : Boolean) {
     this(a)
     if(includeNull) {
-      addElement(null)
-      setSelectedItem(null)
+      addElement(null.asInstanceOf[T])
+      setSelectedItem(null.asInstanceOf[T])
     }
   }
   def created(m : BaseModel[_]) = {

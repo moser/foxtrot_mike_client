@@ -4,12 +4,15 @@ import java.awt.event.{FocusEvent, FocusListener, KeyEvent, KeyListener, MouseEv
 import javax.swing.event.{DocumentEvent, DocumentListener}
 import java.awt.{Color, Dimension, Point, Container}
 import scala.math.{min, max}
-import javax.swing._
 import scala.swing.event.Event
 import scala.swing.Publisher
 import fmclient.models.DefaultAutoCompleterModel.CreateOption
 import java.util.regex.Pattern
 import scala.util.matching.{ Regex => SRegex }
+import javax.swing.{JTextField, JPopupMenu, JLayeredPane, JScrollPane,
+                    DefaultListModel, DefaultListCellRenderer, SwingUtilities,
+                    ListCellRenderer, ScrollPaneConstants, JList, JLabel,
+                    ListSelectionModel}
 
 object AutoCompleter {
   trait AutoCompleterModel[T >: Null <: AnyRef] {
@@ -101,25 +104,34 @@ object AutoCompleter {
   case class SelectionChangedEvent[T >: Null <: AnyRef](before : AutoCompleter.Option[T], after : AutoCompleter.Option[T]) extends Event
 }
 
+
+class MyCellRenderer[T >: Null <: AnyRef](itemRenderer : AutoCompleter.AutoCompleterItemRenderer[T])
+  extends JLabel with ListCellRenderer[AutoCompleter.Option[T]] {
+  private var txt = ""
+  override def getListCellRendererComponent(list : JList[_ <: AutoCompleter.Option[T]], value : AutoCompleter.Option[T], i : Int, selected : Boolean, cellHasFocus : Boolean) : java.awt.Component = {
+    setText(itemRenderer.renderForList(value.asInstanceOf[AutoCompleter.Option[T]], txt))
+    this
+  }
+
+  def updateText(str : String) = { txt = str }
+}
+
 /**
  * Documentation is for the weak and timid ;-)
  *
  * @author moser
  */
-class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterModel[T], itemRenderer : AutoCompleter.AutoCompleterItemRenderer[T]) extends JTextField with FocusListener with KeyListener with MouseListener with DocumentListener with Publisher {
+class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterModel[T],
+  itemRenderer : AutoCompleter.AutoCompleterItemRenderer[T])
+  extends JTextField with FocusListener with KeyListener with MouseListener with DocumentListener with Publisher {
   addKeyListener(this)
   addFocusListener(this)
   getDocument().addDocumentListener(this)
   setSize(new Dimension(20, 100))
-  private val popupListModel = new DefaultListModel
-  private val popupList = new JList(popupListModel)
-  popupList.setCellRenderer(new DefaultListCellRenderer() {
-    override def getListCellRendererComponent(list : JList,  value : Any, i : Int, selected : Boolean, cellHasFocus : Boolean) = {
-      val l = super.getListCellRendererComponent(list, value, i, selected, cellHasFocus).asInstanceOf[JLabel]
-      l.setText(itemRenderer.renderForList(value.asInstanceOf[AutoCompleter.Option[T]], AutoCompleter.this.getText))
-      l
-    }
-  })
+  private val popupListModel = new DefaultListModel[AutoCompleter.Option[T]]
+  private val popupList = new JList[AutoCompleter.Option[T]](popupListModel)
+  private val cellRenderer = new MyCellRenderer[T](itemRenderer)
+  popupList.setCellRenderer(cellRenderer)
   private val popup = new JPopupMenu();
   popup.setPopupSize(new Dimension(120, 80))
   val popupScrollPane = new JScrollPane(popupList)
@@ -196,7 +208,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
     if(popupList.getSelectedValue != null) pSelectedOption = popupList.getSelectedValue.asInstanceOf[AutoCompleter.Option[T]]
   }
 
-  def listCellRenderer_=(l : ListCellRenderer) = popupList.setCellRenderer(l)
+  def listCellRenderer_=(l : ListCellRenderer[AutoCompleter.Option[T]]) = popupList.setCellRenderer(l)
 
   private def pSelectedOption = model.selectedOption
 
@@ -268,6 +280,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
       reset
       hidePopup
     }
+    cellRenderer.updateText(getText)
   }
 
   override def mouseClicked(e : MouseEvent) {

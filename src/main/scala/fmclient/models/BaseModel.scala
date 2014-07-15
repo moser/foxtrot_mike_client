@@ -1,7 +1,5 @@
 package fmclient.models
 
-import dispatch.json.{JsObject, JsString, JsValue, JsNull, JsNumber}
-import dispatch.json.Js._
 import java.util.Date
 import javax.persistence._
 
@@ -45,49 +43,9 @@ abstract class BaseModel[T] extends Observalbe {
   def beforeDelete = {}
   def afterDelete = {}
 
-  def this(o:JsObject) {
-    this()
-    update(o)
-  }
-
-  final def update(o:JsObject) : Unit = {
-    //assert(id.equals(('id ! str)(o))) //hmm
-    // id = ('id ! str)(o)
-    pUpdate(o)
-    status = "remote"
-  }
-  protected def pUpdate(o:JsObject) : Unit
-  
-  def toJson : JsObject = {
-    JsObject(Map(JsString("id") -> JsString(id)) ++ jsonValues);
-  }
-  
-  def jsonValues : Map[JsString, JsValue]
-
   @Temporal(TemporalType.TIMESTAMP)
   var created_at : Date = new Date
   @Temporal(TemporalType.TIMESTAMP)
   var updated_at : Date = new Date
-  
-  protected def stringToJson(s: String) = {
-    if(s == null) 
-      JsNull
-    else
-      JsString(s)
-  }
-  
-  protected def idToJson(o : { def id : String }) = {
-    if(o == null)
-      JsNull
-    else
-      JsString(o.id)
-  }
-  
-  protected def idToJsonInt(o : { def id : Int }) = {
-    if(o == null)
-      JsNull
-    else
-      JsNumber(o.id)
-  }
 }
 

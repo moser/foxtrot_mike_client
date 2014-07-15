@@ -1,15 +1,12 @@
 package fmclient.models.repos
 
 import scalaj.collection.Imports._
-import dispatch.json.JsHttp._
-import dispatch.json.JsObject
 import fmclient.models.{EntityMgr, BaseModel, Observer, Observalbe, Config, I18n}
-import dispatch._
-import scala.actors.Actor
-
-case class SyncEvent(action : String, str : String, progress : Double)
+import net.liftweb.json._
+import scalaj.http._
 
 abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.reflect.Manifest[T]) extends Observer with Observalbe {
+
   lazy val allQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x ORDER BY " + orderBy)
   lazy val firstQuery = EntityMgr.em.createQuery("SELECT x FROM " + m.erasure.getSimpleName + " x").setMaxResults(1)
 
@@ -20,11 +17,9 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
 
   def find(id: PKT): T = EntityMgr.em.find(m.erasure, id).asInstanceOf[T]
 
-  def extractId(o : JsObject) : PKT
-
   def all : Seq[T] = {
     if(dirty)
-      cache = allQuery.getResultList.asInstanceOf[java.util.List[T]].asScala //.asInstanceOf[List[T]]
+      cache = allQuery.getResultList.asInstanceOf[java.util.List[T]].asScala
     cache
   }
 
@@ -33,47 +28,72 @@ abstract class BaseEntityRepository[T <: BaseModel[PKT], PKT](implicit m:scala.r
     if(r.size > 0) Option(r.get(0).asInstanceOf[T]) else None
   }
 
-  def syncDown(username: String, password: String, progressUpdater : Actor) = {
-    val http = new Http
-    val req : Request = :/(Config.server, Config.port) / (toResource + ".json") as_!(username, password) gzip
-    val remote = http(req ># (list ! obj))
-    remote.foreach((o:JsObject) => {
-      val id = extractId(o)
-      if(find(id) == null) { //entity is new
-        val r = m.erasure.getConstructor(classOf[JsObject]).newInstance(o).asInstanceOf[T]
-        r.save
-        progressUpdater ! SyncEvent(I18n("sync.create"), r.toString, (1.0 / remote.length.toDouble))
-      } else {
-        val r = find(id)
-        r.update(o)
-        r.save
-        progressUpdater ! SyncEvent(I18n("sync.update"), r.toString, (1.0 / remote.length.toDouble))
+  def marshaller : Marshaller[T]
+
+  def syncDown(username: String, password: String, sync : (String, String, Double) => Unit) = {
+    val json = Http(s"http://${Config.server}:${Config.port}/${toResource}.json")
+               .option(HttpOptions.connTimeout(10000))
+               .option(HttpOptions.readTimeout(50000))
+               .auth(username, password)
+               .asString
+    val pjson = parse(json)
+    pjson match {
+      case list : JArray => {
+        val count = list.arr.length.toDouble
+        list.arr.foreach((j) =>
+          j match {
+            case jsobj : JObject => {
+              try {
+              val obj = marshaller.unmarshalJson(jsobj)
+              val existing = find(obj.id)
+              if(existing != null) {
+                marshaller.update(existing, obj)
+                existing.status = "remote"
+                existing.save
+                sync(I18n("sync.update"), existing.toString, (1.0 / count))
+              } else {
+                obj.status = "remote"
+                obj.save
+                sync(I18n("sync.create"), obj.toString, (1.0 / count))
+              }
+              } catch {
+                case e : Exception => {
+                  println(e)
+                  e.printStackTrace
+                }
+              }
+            }
+            case _ => throw new Exception("Expected js object")
+          }
+        )
       }
-    })
-    http.shutdown
+      case _ => throw new Exception("Expected js array")
+    }
   }
 
   def modelsToSyncUp = all.filter(_.status == "local")
 
-  def syncUp(username : String, password : String, progressUpdater : Actor) = {
-    val http = new Http
-    val req : Request = :/(Config.server, Config.port) / (toResource + ".json") << Map("json" -> "true") as_!(username, password) 
-    val sync = modelsToSyncUp
-    sync.foreach(e => {
+  def syncUp(username : String, password : String, sync : (String, String, Double) => Unit) = {
+    val req = Http.post(s"http://${Config.server}:${Config.port}/${toResource}.json")
+                  .option(HttpOptions.connTimeout(10000))
+                  .option(HttpOptions.readTimeout(50000))
+                  .auth(username, password)
+                  .params("json" -> "true")
+    val syncable = modelsToSyncUp
+    val count = syncable.length.toDouble
+    syncable.foreach(obj => {
       try {
-      http(req << Map(toJsonClass + "_json" -> e.toJson.toString) >- ((x : String) => {
-        e.status = "synced"
-        e.save
-      }))
-      progressUpdater ! SyncEvent(I18n("sync.upload"), e.toString, (1.0 / sync.length.toDouble))
+        val res = req.params(toJsonClass + "_json" -> compact(render(marshaller.marshal(obj)))).asString
+        obj.status = "synced"
+        obj.save
+        sync(I18n("sync.upload"), obj.toString, (1.0 / count))
       } catch {
-        case error @ dispatch.StatusCode(422, _) => {
-          progressUpdater ! SyncEvent(I18n("error.unprocessable"), e.toString, (1.0 / sync.length.toDouble))
-          throw error
+        case e : Exception => {
+          sync(I18n("error.unprocessable"), e.toString, (1.0 / count))
+          throw e
         }
       }
     })
-    http.shutdown
   }
 
   def toResource =  toJsonClass + "s"

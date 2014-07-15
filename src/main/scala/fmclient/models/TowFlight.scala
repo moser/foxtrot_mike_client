@@ -2,7 +2,6 @@ package fmclient.models
 
 import javax.persistence._
 import java.util.Date
-import dispatch.json.{JsObject, JsString}
 
 @Entity
 @DiscriminatorValue("T")
@@ -34,13 +33,4 @@ class TowFlight extends AbstractFlight {
   override def departureTime_=(i : Int) = { /*ignore*/ }
 
   override def durationString = if(duration >= 0) String.format("%d:%02d", (duration / 60).asInstanceOf[AnyRef], (duration % 60).asInstanceOf[AnyRef]) else ""
-  override protected def pUpdate(o:JsObject) = {} //tow flights are not syncedDown  
-  
-  override def jsonValues = {
-    val s = super.jsonValues
-    s + (JsString("controller_id") -> idToJson(towLaunch.flight.controller)) +
-        (JsString("from_id") -> idToJson(towLaunch.flight.from)) +
-        (JsString("departure_date") -> JsString(dt(departureDate).toString("yyyy-MM-dd")))
-  }
 }
-

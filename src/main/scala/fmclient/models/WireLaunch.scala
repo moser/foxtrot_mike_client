@@ -1,7 +1,6 @@
 package fmclient.models
 
 import javax.persistence._
-import dispatch.json.{JsObject, JsString}
 
 @Entity
 @DiscriminatorValue("W")
@@ -30,15 +29,4 @@ class WireLaunch extends Launch {
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="operator_id")
   var operator : Person = _
-  
-  override def jsonValues = {
-    Map(JsString("type") -> JsString("WireLaunch"),
-        JsString("wire_launcher_id") -> idToJson(wireLauncher),
-        JsString("operator_id") -> idToJson(operator))
-  }
-  
-  override def toJson : JsObject = {
-    JsObject(jsonValues);
-  }
-
 }

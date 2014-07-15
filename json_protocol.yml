@@ -1,0 +1,43 @@
+Plane:
+  id: String
+  registration: String
+  make: String
+  competition_sign: String
+  default_launch_method: String
+  has_engine: Boolean
+  can_fly_without_engine: Boolean
+  selflaunching: Boolean
+  can_tow: Boolean
+  can_be_towed: Boolean
+  can_be_wire_launched: Boolean
+  default_engine_duration_to_duration: Boolean
+  disabled: Boolean
+  legal_plane_class_id:
+    type: Int
+    repository: AllLegalPlaneClasses
+  group_id:
+    type: Int
+    repository: AllGroups
+Person:
+  id: String
+  firstname: String
+  lastname: String
+  group_id:
+    type: Int
+    repository: AllGroups
+WireLauncher:
+  id: String
+  registration: String
+Group:
+  id: Int
+  name: String
+LegalPlaneClass:
+  id: Int
+  name: String
+CostHint:
+  id: Int
+  name: String
+Airfield:
+  id: String
+  name: String
+  registration: String

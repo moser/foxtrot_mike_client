@@ -2,9 +2,9 @@ package specs.models
 
 import org.scalatest.matchers.ShouldMatchers
 import fmclient.models.LessSuckingTimeFormatter
-import org.scalatest.{BeforeAndAfterEach, Spec}
+import org.scalatest.{BeforeAndAfterEach, FunSpec}
 
-class TimeFormatterSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
+class TimeFormatterSpec extends FunSpec with ShouldMatchers with BeforeAndAfterEach {
   var tf : LessSuckingTimeFormatter = _
   override def beforeEach() {
     tf = new LessSuckingTimeFormatter

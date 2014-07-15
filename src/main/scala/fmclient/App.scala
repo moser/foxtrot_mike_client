@@ -2,7 +2,7 @@ package fmclient
 
 import fmclient.presenters.MainPresenter
 import swing._
-import org.scala_tools.time.Imports._
+import org.joda.time.DateTimeZone
 import java.util.TimeZone
 
 object App extends SwingApplication {

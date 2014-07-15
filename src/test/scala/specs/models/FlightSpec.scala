@@ -1,11 +1,11 @@
 package specs.models
 
-import org.scalatest.Spec
+import org.scalatest.FunSpec
 import org.scalatest.matchers.ShouldMatchers
 import fmclient.models.{Airfield, Flight, Person, Plane}
 import org.joda.time.DateTime
 
-class FlightSpec extends Spec with ShouldMatchers {
+class FlightSpec extends FunSpec with ShouldMatchers {
   describe("A flight") {
     it("should copy some attributes from another flight") {
       val f0 = new Flight

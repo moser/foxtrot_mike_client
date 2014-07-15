@@ -1,13 +1,13 @@
 // vim: set ts=2 sw=2 et:
 package test.scala.specs.models
 
-import org.scalatest.{ Spec, BeforeAndAfterAll }
+import org.scalatest.{ FunSpec, BeforeAndAfterAll }
 import org.scalatest.matchers.ShouldMatchers
 import fmclient.models.{ FlightsTableModel, Flight, EntityMgr }
 import fmclient.models.repos.AllFlights
 
-class DbDependentSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
-  override def beforeAll(configMap: Map[String, Any]) {
+class DbDependentSpec extends FunSpec with ShouldMatchers with BeforeAndAfterAll {
+  override def beforeAll() {
     EntityMgr.init(true)
   }
 
@@ -30,7 +30,7 @@ class DbDependentSpec extends Spec with ShouldMatchers with BeforeAndAfterAll {
     }
   }
 
-  override def afterAll(configMap: Map[String, Any]) {
+  override def afterAll() {
     EntityMgr.close
   }
 }

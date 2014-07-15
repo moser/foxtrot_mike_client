@@ -1,7 +1,6 @@
 package fmclient.models
 
 import javax.persistence._
-import dispatch.json.JsObject
 import fmclient.models.repos.AllAttributes
 
 @Entity
@@ -20,11 +19,4 @@ class Attribute extends BaseModel[String] {
   var status = "local"
 
   override def toString = id + ": " + value
-
-  override protected def pUpdate(o:JsObject) = {}
-
-  override def jsonValues = {
-    Map()
-  }
-
 }

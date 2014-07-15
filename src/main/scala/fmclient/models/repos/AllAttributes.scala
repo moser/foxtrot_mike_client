@@ -4,6 +4,7 @@ import fmclient.models.Attribute
 
 object AllAttributes extends BaseStringIndexedEntityRepository[Attribute] {
   override val orderBy = "x.id ASC"
+  override val marshaller = null
 
   def read(id : String) = {
     val o = find(id)

@@ -3,7 +3,6 @@ package fmclient.models
 import javax.persistence._
 import org.joda.time.DateTime
 import java.util.Date
-import dispatch.json.{JsObject, JsString, JsNumber, JsValue}
 
 @Entity
 @Inheritance
@@ -95,26 +94,6 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
   }
 
   def durationString = if(duration >= 0) String.format("%d:%02d", (duration / 60).asInstanceOf[AnyRef], (duration % 60).asInstanceOf[AnyRef]) else ""
-  override protected def pUpdate(o:JsObject) = {} //flights are not syncedDown
-
-  override def jsonValues : Map[JsString, JsValue] = {
-    Map(JsString("plane_id") -> idToJson(plane),
-        JsString("seat1_person_id") -> (if(seat1Unknown) JsString("unknown") else idToJson(seat1)),
-        JsString("seat2_person_id") -> idToJson(seat2),
-        JsString("seat2_n") -> JsNumber(seat2Number),
-        JsString("from_id") -> idToJson(from),
-        JsString("to_id") -> idToJson(to),
-        JsString("controller_id") -> idToJson(controller),
-        JsString("engine_duration") -> JsNumber(engineDuration),
-        JsString("arrival_i") -> JsNumber(arrivalTime),
-        JsString("departure_i") -> JsNumber(departureTime),
-        JsString("departure_date") -> JsString(dt(departureDate).toString("yyyy-MM-dd")),
-        JsString("comment") -> JsString(comment))
-  }
-  
-  override def toJson : JsObject = {
-    JsObject(jsonValues);
-  }
 
   override def isValid = {
     invalidFields.isEmpty
