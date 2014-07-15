@@ -11,8 +11,6 @@ object Config {
       AllAttributes.write("lastUser", value)
   }
 
-  //val server = "fm.ssv-cham.de"
-  //val port = 80
-  val server = "localhost"
-  val port = 3000
+  val server = "fm.ssv-cham.de"
+  val port = 80
 }
