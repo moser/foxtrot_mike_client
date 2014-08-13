@@ -108,7 +108,14 @@ object AutoCompleter {
 class MyCellRenderer[T >: Null <: AnyRef](itemRenderer : AutoCompleter.AutoCompleterItemRenderer[T])
   extends JLabel with ListCellRenderer[AutoCompleter.Option[T]] {
   private var txt = ""
+
+  setOpaque(true)
+
   override def getListCellRendererComponent(list : JList[_ <: AutoCompleter.Option[T]], value : AutoCompleter.Option[T], i : Int, selected : Boolean, cellHasFocus : Boolean) : java.awt.Component = {
+    if(selected)
+      setBackground(Colors.labelBgSelected)
+    else
+      setBackground(Colors.labelBg)
     setText(itemRenderer.renderForList(value.asInstanceOf[AutoCompleter.Option[T]], txt))
     this
   }

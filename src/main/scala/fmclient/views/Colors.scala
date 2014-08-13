@@ -13,4 +13,7 @@ object Colors {
 
   val col = new Color(122, 231, 122)
   val colSelected = new Color(40, 210, 60)
+
+  val labelBg = new Color(255, 255, 255)
+  val labelBgSelected = new Color(50, 60, 250)
 }
