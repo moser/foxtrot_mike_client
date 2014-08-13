@@ -23,8 +23,6 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
   @JoinColumn(name="seat1_id")
   var seat1 : Person = _
 
-  var seat1Unknown = false
-
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="seat2_id")
   var seat2 : Person = _

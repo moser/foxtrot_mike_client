@@ -37,20 +37,10 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
   map((m,v) => m.plane = v.plane.selectedOption.get, (m,v) => v.plane.selectedOption = m.plane)
 
   map((m,v) => { //to model
-        if(v.seat1.selectedOption.isInstanceOf[RealOption[Person]]) {
-          m.seat1 = v.seat1.selectedOption.get
-          m.seat1Unknown = false
-        } else if(v.seat1.selectedOption.isInstanceOf[Seat1ACModel.UnknownPersonOption]) {
-          m.seat1 = null
-          m.seat1Unknown = true
-        }
+        m.seat1 = v.seat1.selectedOption.get
       },
       (m,v) => { //to view
-        if(!m.seat1Unknown) {
-          v.seat1.selectedOption = m.seat1
-        } else {
-          v.seat1.selectedOption = new Seat1ACModel.UnknownPersonOption
-        }
+        v.seat1.selectedOption = m.seat1
       })
 
   map((m,v) => { //to model

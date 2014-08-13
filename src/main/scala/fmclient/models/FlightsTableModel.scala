@@ -13,12 +13,7 @@ class FlightsTableModel extends AbstractTableModel with Observer {
   def int2Object(o: Int): Object = o.asInstanceOf[AnyRef]
   val cols : List[(String, Flight => Object)] = List(("departure_date", { f : Flight => dateFormatter.format(f.departureDate) }),
                   ("plane", { f: Flight => f.plane }),
-                  ("seat1", { f: Flight => {
-                      if(!f.seat1Unknown)
-                        f.seat1
-                      else
-                        I18n("unknown_person")
-                  } }),
+                  ("seat1", { f: Flight => f.seat1 }),
                   ("seat2", { f: Flight => {
                       if(f.seat2Number <= 0)
                         f.seat2
