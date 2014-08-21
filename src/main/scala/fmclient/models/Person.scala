@@ -19,6 +19,10 @@ class Person extends BaseModel[String] with UUIDHelper {
   @JoinColumn(name="group_id")
   var group : Group = _
 
+  // Map of legal plane class IDs and the highest level
+  // from the licenses.
+  var licenseLevels = Map[Int, Int]()
+
   def name = lastname + " " + firstname
   override def toString = name
 

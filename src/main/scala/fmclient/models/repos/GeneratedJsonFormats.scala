@@ -82,6 +82,7 @@ object GeneratedJsonConverters {
       local.firstname = remote.firstname
       local.lastname = remote.lastname
       local.group = remote.group
+      local.licenseLevels = remote.licenseLevels
     }
     def unmarshalJson(value: JValue) = {
       val res = new Person()
@@ -89,6 +90,18 @@ object GeneratedJsonConverters {
       res.firstname = (value \ "firstname").extract[String]
       res.lastname = (value \ "lastname").extract[String]
       res.group = AllGroups.find((value \ "group_id").extract[Int])
+ res.licenseLevels = Map[Int, Int]()
+ (value \ "licenses").extract[List[JValue]].foreach((license) => {
+ val levelNr = (license \ "level").extract[String] match {
+ case "instructor" => 0
+ case "normal" => 1
+ case "trainee" => 2
+ }
+ (license \ "legal_plane_class_ids").extract[List[JValue]].foreach((id) => {
+ val classId = id.extract[Int]
+ res.licenseLevels = res.licenseLevels + (classId -> Math.min(levelNr, res.licenseLevels.getOrElse(classId, levelNr)))
+ })
+ })
       res
     }
   }

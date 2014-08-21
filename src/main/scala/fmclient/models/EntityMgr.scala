@@ -7,6 +7,8 @@ object EntityMgr {
   private var emf : EntityManagerFactory = _
   private var _em : EntityManager = _
 
+  val schemaVersion = "2"
+
   def em = { 
     init(false)
     _em
@@ -16,7 +18,7 @@ object EntityMgr {
 
   def init(test:Boolean) = {
     if (!initialized) {
-      var properties = Map("javax.persistence.jdbc.url" -> ("jdbc:h2:" + System.getProperty("user.dir") + "/data"))
+      var properties = Map("javax.persistence.jdbc.url" -> ("jdbc:h2:" + System.getProperty("user.dir") + "/data.v" + schemaVersion))
       if(test) {
         properties = Map("javax.persistence.jdbc.url" -> ("jdbc:h2:mem:test"))
       }

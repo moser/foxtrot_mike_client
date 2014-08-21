@@ -6,6 +6,10 @@ def camelcase(s)
   res[0].downcase + res[1..-1]
 end
 
+def newline(s)
+  s.gsub('\n', "\n")
+end
+
 def generate(infile, outpath="src/main/scala/models/generated")
   input = YAML.load_file(infile)
   out = STDOUT
@@ -30,14 +34,18 @@ def generate(infile, outpath="src/main/scala/models/generated")
     out.puts "      ("
     out.puts('        ' + mappings.map { |field, type|
       if type.is_a?(Hash)
-        fk = camelcase(field)
-        assoc = fk[0..-3]
-        "(\"#{field}\" -> o.#{assoc}.id)"
+        if field == '_extra'
+          # noop
+        else
+          fk = camelcase(field)
+          assoc = fk[0..-3]
+          "(\"#{field}\" -> o.#{assoc}.id)"
+        end
       else
         fieldcc = camelcase(field)
         "(\"#{field}\" -> o.#{fieldcc})"
       end
-    }.join(" ~\n        "))
+    }.compact.join(" ~\n        "))
     
     out.puts "      )"
     out.puts "    }"
@@ -46,10 +54,14 @@ def generate(infile, outpath="src/main/scala/models/generated")
     out.puts "      assert(local.id == remote.id)"
     mappings.each do |field, type|
       if type.is_a?(Hash)
-        fk = camelcase(field)
-        assoc = fk[0..-3]
-        type, repository = type['type'], type['repository']
-        out.puts "      local.#{assoc} = remote.#{assoc}"
+        if field == '_extra'
+          out.puts newline(type['update'] || "")
+        else
+          fk = camelcase(field)
+          assoc = fk[0..-3]
+          type, repository = type['type'], type['repository']
+          out.puts "      local.#{assoc} = remote.#{assoc}"
+        end
       else
         fieldcc = camelcase(field)
         out.puts "      local.#{fieldcc} = remote.#{fieldcc}"
@@ -61,10 +73,14 @@ def generate(infile, outpath="src/main/scala/models/generated")
     out.puts "      val res = new #{model}()"
     mappings.each do |field, type|
       if type.is_a?(Hash)
-        fk = camelcase(field)
-        assoc = fk[0..-3]
-        type, repository = type['type'], type['repository']
-        out.puts "      res.#{assoc} = #{repository}.find((value \\ \"#{field}\").extract[#{type}])"
+        if field == '_extra'
+          out.puts newline(type['unmarshall'] || "")
+        else
+          fk = camelcase(field)
+          assoc = fk[0..-3]
+          type, repository = type['type'], type['repository']
+          out.puts "      res.#{assoc} = #{repository}.find((value \\ \"#{field}\").extract[#{type}])"
+        end
       else
         fieldcc = camelcase(field)
         out.puts "      res.#{fieldcc} = (value \\ \"#{field}\").extract[#{type}]"

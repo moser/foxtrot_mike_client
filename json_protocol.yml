@@ -25,6 +25,21 @@ Person:
   group_id:
     type: Int
     repository: AllGroups
+  _extra:
+    update: "      local.licenseLevels = remote.licenseLevels"
+    unmarshall: '
+      res.licenseLevels = Map[Int, Int]()\n
+      (value \ "licenses").extract[List[JValue]].foreach((license) => {\n
+        val levelNr = (license \ "level").extract[String] match {\n
+          case "instructor" => 0\n
+          case "normal" => 1\n
+          case "trainee" => 2\n
+        }\n
+        (license \ "legal_plane_class_ids").extract[List[JValue]].foreach((id) => {\n
+          val classId = id.extract[Int]\n
+          res.licenseLevels = res.licenseLevels + (classId -> Math.min(levelNr, res.licenseLevels.getOrElse(classId, levelNr)))\n
+        })\n
+      })'
 WireLauncher:
   id: String
   registration: String
