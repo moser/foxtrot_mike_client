@@ -15,14 +15,7 @@ object DefaultAutoCompleterModel {
 
 class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEntityRepository[T, _], extract : T => String, options_ : Map[String, Boolean] = Map()) extends AutoCompleter.AutoCompleterModel[T] with Publisher {
   val options = Map("allowNil" -> true, "allowCreate" -> true) ++ options_
-  var dirty = true
-  var pFilteredOptions: Seq[AutoCompleter.Option[T]] = List()
-
-//  override def filterString = filterString_
-  override def filterString_=(s:String) = {
-    pFilterString = s
-    dirty = true
-  }
+  var filterString = ""
 
   def syntheticOptions : Seq[AutoCompleter.SyntheticOption[T]] = List()
 
@@ -45,24 +38,17 @@ class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEnti
   }
 
   override def filteredOptions = {
-    if(dirty) {
-      val p = Pattern.compile(filterString.toLowerCase, Pattern.LITERAL)
-      pFilteredOptions = extractMatchingFromCollection(p)
-      pFilteredOptions = pFilteredOptions ++ syntheticOptions.filter(_.matches(p))
-      if(options("allowCreate") && pFilteredOptions.length == 0 &&
-        !(selectedOption.isInstanceOf[AutoCompleter.NilOption[T]] &&
-        filterString.equals(selectedOption.toString))) {
-        pFilteredOptions = pFilteredOptions ++ List(new DefaultAutoCompleterModel.CreateOption[T](filterString).asInstanceOf[AutoCompleter.Option[T]])
-      }
-      if(filterString.equals("") && options("allowNil")) {
-        pFilteredOptions = List(new AutoCompleter.NilOption[T].asInstanceOf[AutoCompleter.Option[T]]) ++ pFilteredOptions
-      }
-      dirty = false
+    val p = Pattern.compile(filterString.toLowerCase, Pattern.LITERAL)
+    var result : Seq[AutoCompleter.Option[T]] = extractMatchingFromCollection(p)
+    result = result ++ syntheticOptions.filter(_.matches(p))
+    if(options("allowCreate") && result.length == 0 &&
+      !(selectedOption.isInstanceOf[AutoCompleter.NilOption[T]] &&
+      filterString.equals(selectedOption.toString))) {
+      result = result ++ List(new DefaultAutoCompleterModel.CreateOption[T](filterString).asInstanceOf[AutoCompleter.Option[T]])
     }
-    pFilteredOptions
-  }
-
-  override def forceUpdate {
-    dirty = true
+    if(filterString.equals("") && options("allowNil")) {
+      result = List(new AutoCompleter.NilOption[T].asInstanceOf[AutoCompleter.Option[T]]) ++ result
+    }
+    result
   }
 }

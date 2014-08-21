@@ -16,11 +16,10 @@ import javax.swing.{JTextField, JPopupMenu, JLayeredPane, JScrollPane,
 
 object AutoCompleter {
   trait AutoCompleterModel[T >: Null <: AnyRef] {
-    protected var pFilterString : String = ""
     protected var pSelectedOption: AutoCompleter.Option[T] = new AutoCompleter.NilOption
     protected var pLastSelectedOption : AutoCompleter.Option[T] = _
-    def filterString = pFilterString
-    def filterString_=(s:String) = pFilterString = s
+    def filterString : String
+    def filterString_=(s:String)
     def selectedOption = pSelectedOption
     def selectedOption_=(obj : AutoCompleter.Option[T]) = {
       if(pSelectedOption.isInstanceOf[AutoCompleter.RealOption[T]]) {
@@ -30,7 +29,6 @@ object AutoCompleter {
     }
     def lastSelectedOption = pLastSelectedOption
     def filteredOptions : Seq[Option[T]]
-    def forceUpdate : Unit
   }
 
   class Option[T >: Null <: AnyRef] {
@@ -252,7 +250,6 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
 
   override def focusGained(e : FocusEvent) {
     selectAll
-    model.forceUpdate
     updatePopup
   }
 
