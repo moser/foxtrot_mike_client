@@ -21,16 +21,18 @@ class MyFormattedTextField(f: javax.swing.JFormattedTextField.AbstractFormatterF
 }
 
 
-class FlightView extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 0][gp 1]") {
+class FlightView(seat1Model : AutoCompleterModel[Person], seat2Model : AutoCompleterModel[Person])
+extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp 0][gp 0][gp 0][gp 1]") {
   val departureDate = new FormattedTextField(new SimpleDateFormat("dd.MM.yyyy")) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
   val plane = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Plane](AllPlanes, _.registration, Map("allowNil" -> false)), new PlaneRenderer)
-  val seat1 = new AutoCompleter(new Seat1ACModel)
-  val seat2 = new AutoCompleter(new Seat2ACModel)
+  val seat1 = new AutoCompleter(seat1Model)
+  val seat2 = new AutoCompleter(seat2Model)
   val airfieldRenderer = new AirfieldRenderer
-  val from = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
-  val to = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
+  val airfieldModel = new EnabledOnlyAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false))
+  val from = new AutoCompleter(airfieldModel, airfieldRenderer)
+  val to = new AutoCompleter(airfieldModel, airfieldRenderer)
 
   val btDepartureTime = new InnerButton()
   val departureTime = new MyFormattedTextField(TimeFormatterFactory)

@@ -12,9 +12,10 @@ import scala.collection.mutable.ArraySeq
 import javax.swing.SwingUtilities
 
 
-class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightView] {
-  def this() = this(new FlightView())
-  var view = view0
+class FlightPresenter extends BasePresenter[Flight, FlightView] {
+  val seat1Model = new Seat1ACModel
+  val seat2Model = new Seat2ACModel
+  var view = new FlightView(seat1Model, seat2Model)
   protected var _model : Flight = _
   def model = _model
   def model_=(f:Flight) = {
@@ -315,5 +316,9 @@ class FlightPresenter(view0: FlightView) extends BasePresenter[Flight, FlightVie
       updateModel
       model.save
     }
+  }
+
+  def requestFocus {
+    view.departureDate.requestFocusInWindow
   }
 }

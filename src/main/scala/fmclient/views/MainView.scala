@@ -5,7 +5,7 @@ import swing.event._
 import fmclient.models.I18n
 import fmclient.models.FlightsTableModel
 
-class MainView extends MainFrame {
+class MainView(val flightPanel : FlightView) extends MainFrame {
   title = I18n("main.title")
   preferredSize = new Dimension(1000, 650)
   minimumSize = new Dimension(900, 450)
@@ -75,7 +75,6 @@ class MainView extends MainFrame {
     add(new ScrollPane(flightsTable), "gap 0, span, w 100%")
   }
 
-  val flightPanel = new FlightView
   val defaultsPanel = new DefaultsView
   val syncPanel = new SyncView
 

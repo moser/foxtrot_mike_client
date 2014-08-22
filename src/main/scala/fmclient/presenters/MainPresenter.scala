@@ -5,7 +5,13 @@ import scala.swing.event._
 import fmclient.models.{DefaultsSingleton, Flight, EntityMgr}
 
 class MainPresenter extends AbstractPresenter {
-  val view = new MainView()
+  private var updating = false
+  val flightPresenter = new FlightPresenter()
+
+  val view = new MainView(flightPresenter.view)
+
+  val defaultsPresenter = new DefaultsPresenter(view.defaultsPanel)
+  val syncPresenter = new SyncPresenter(view.syncPanel, this)
 
   view.reactions += {
     case WindowClosed(view) => {
@@ -15,11 +21,7 @@ class MainPresenter extends AbstractPresenter {
 
   view.visible = true
   view.centerOnScreen
-  var fp = new FlightPresenter(view.flightPanel)
-  var dp = new DefaultsPresenter(view.defaultsPanel)
-  val sp = new SyncPresenter(view.syncPanel, this)
 
-  private var updating = false
   view.flightsTable.selection.reactions += {
     case TableRowsSelected(_, r, false) => {
       if(!view.flightsTable.selection.rows.isEmpty && !updating) {
@@ -30,7 +32,7 @@ class MainPresenter extends AbstractPresenter {
 
   view.flightsTable.reactions += {
     case TableChanged(_) => {
-      var i = view.flightsTableModel.indexOf(fp.model)
+      var i = view.flightsTableModel.indexOf(flightPresenter.model)
       if(i >= 0 && view.flightsTableModel.getRowCount > i) {
         view.flightsTable.selection.rows.add(i)
       }
@@ -43,25 +45,25 @@ class MainPresenter extends AbstractPresenter {
       f.save
       view.flightsTable.selection.rows.clear
       view.flightsTable.selection.rows.add(view.flightsTableModel.indexOf(f))
-      view.flightPanel.departureDate.requestFocusInWindow
+      flightPresenter.requestFocus
     }
   }
 
   view.btCopy.reactions += {
     case ButtonClicked(_) => {
-      if(fp.model != null) {
-        val f = new Flight(fp.model)
+      if(flightPresenter.model != null) {
+        val f = new Flight(flightPresenter.model)
         f.save
         view.flightsTable.selection.rows.clear
         view.flightsTable.selection.rows.add(view.flightsTableModel.indexOf(f))
-        view.flightPanel.departureTime.requestFocusInWindow
+        flightPresenter.requestFocus
       }
     }
   }
 
-  fp.view.btDelete.reactions += {
+  flightPresenter.view.btDelete.reactions += {
     case ButtonClicked(_) => {
-      fp.model.delete
+      flightPresenter.model.delete
       view.flightsTable.selection.rows.clear
       selectFirstOrNull
     }
@@ -94,11 +96,11 @@ class MainPresenter extends AbstractPresenter {
   private def selectOrNull(i : Int) {
     updating = true
     if(i >= 0 && view.flightsTableModel.getRowCount > i)  {
-      fp.model = view.flightsTableModel.getAll.apply(i)
+      flightPresenter.model = view.flightsTableModel.getAll.apply(i)
       view.flightsTable.selection.rows.add(i)
       view.btCopy.enabled = true
     } else {
-      fp.model = null
+      flightPresenter.model = null
       view.flightsTable.selection.rows.dropWhile((i) => true)
       view.btCopy.enabled = false
     }
@@ -110,7 +112,7 @@ class MainPresenter extends AbstractPresenter {
   }
 
   private def shutdown = {
-    fp.shutdown
+    flightPresenter.shutdown
     EntityMgr.close
   }
 }
