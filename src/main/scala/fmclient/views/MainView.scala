@@ -10,6 +10,8 @@ class MainView(val flightPanel : FlightView) extends MainFrame {
   preferredSize = new Dimension(1000, 650)
   minimumSize = new Dimension(900, 450)
 
+  var currentIdx = -1
+
   val tabs = new TabbedPane
   val flightsTableModel = new FlightsTableModel
   val flightsTable = new Table {
@@ -19,27 +21,19 @@ class MainView(val flightPanel : FlightView) extends MainFrame {
 
     override def rendererComponent(isSelected: Boolean, focused: Boolean, row: Int, column: Int): Component = {
       val c = super.rendererComponent(isSelected, focused, row, column)
+      val editing = row == currentIdx  // always mark the currently edited flight
       if(!colored.selected) {
-        if(isSelected) {
-          c.background = selectionBackground
+        if(editing || isSelected) {
+          c.background = Colors.flightEditing
           c.foreground = selectionForeground
         } else {
           c.background = background
           c.foreground = foreground
         }
       } else {
-        if(isSelected) {
+        if(editing || isSelected) {
+          c.background = Colors.flightEditing
           c.foreground = selectionForeground
-          if(!flightsTableModel.get(row).isValid) {
-            c.background = Colors.colInvalidSelected
-          } else if(flightsTableModel.get(row).hasProblems) {
-            c.background = Colors.colProblematicSelected
-            c.foreground = foreground
-          } else if(!flightsTableModel.get(row).finished) {
-            c.background = Colors.colUnfinishedSelected
-          } else {
-            c.background = Colors.colSelected
-          }
         } else {
           if(!flightsTableModel.get(row).isValid) {
             c.background = Colors.colInvalid

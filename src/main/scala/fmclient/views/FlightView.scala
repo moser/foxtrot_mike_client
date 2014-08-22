@@ -79,6 +79,14 @@ extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp
   val costHint = new MyComboBox[CostHint](new MyComboBoxModel(AllCostHints, true))
   val comment = new TextField
 
+  def colorMark = {
+    val colorMark = new Label("")
+    colorMark.opaque = true
+    colorMark.background = Colors.flightEditing
+    colorMark
+  }
+  add(colorMark, "w 7, dock west, gapright 2")
+  add(colorMark, "w 7, dock east, gapleft 2")
   add(new Label(I18n("departure_date")))
   add(new Label(I18n("plane")))
   add(new Label(I18n("seat1")))

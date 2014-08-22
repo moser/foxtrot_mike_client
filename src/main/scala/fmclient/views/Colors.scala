@@ -2,18 +2,16 @@ package fmclient.views
 import java.awt.Color
 
 object Colors {
-  val colProblematic = new Color(231, 254, 86)
-  val colProblematicSelected = new Color(231, 255, 28)
+  val flightEditing = new Color(142, 68, 173)
 
-  val colInvalid = new Color(231, 122, 122)
-  val colInvalidSelected = new Color(231, 40, 40)
+  val colProblematic = new Color(241, 196, 15)
 
-  val colUnfinished = new Color(122, 122, 231)
-  val colUnfinishedSelected = new Color(40, 40, 231)
+  val colInvalid = new Color(231, 76, 60)
 
-  val col = new Color(122, 231, 122)
-  val colSelected = new Color(40, 210, 60)
+  val colUnfinished = new Color(52, 152, 219)
+
+  val col = new Color(46, 204, 113)
 
   val labelBg = new Color(255, 255, 255)
-  val labelBgSelected = new Color(50, 60, 250)
+  val labelBgSelected = new Color(41, 128, 185)
 }

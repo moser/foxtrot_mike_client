@@ -97,10 +97,12 @@ class MainPresenter extends AbstractPresenter {
     updating = true
     if(i >= 0 && view.flightsTableModel.getRowCount > i)  {
       flightPresenter.model = view.flightsTableModel.getAll.apply(i)
+      view.currentIdx = i
       view.flightsTable.selection.rows.add(i)
       view.btCopy.enabled = true
     } else {
       flightPresenter.model = null
+      view.currentIdx = -1
       view.flightsTable.selection.rows.dropWhile((i) => true)
       view.btCopy.enabled = false
     }
