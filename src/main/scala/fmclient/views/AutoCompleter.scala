@@ -7,6 +7,7 @@ import scala.math.{min, max}
 import scala.swing.event.Event
 import scala.swing.Publisher
 import fmclient.models.DefaultAutoCompleterModel.CreateOption
+import fmclient.models.I18n
 import java.util.regex.Pattern
 import scala.util.matching.{ Regex => SRegex }
 import javax.swing.{JTextField, JPopupMenu, JLayeredPane, JScrollPane,
@@ -16,19 +17,10 @@ import javax.swing.{JTextField, JPopupMenu, JLayeredPane, JScrollPane,
 
 object AutoCompleter {
   trait AutoCompleterModel[T >: Null <: AnyRef] {
-    protected var pSelectedOption: AutoCompleter.Option[T] = new AutoCompleter.NilOption
-    protected var pLastSelectedOption : AutoCompleter.Option[T] = _
     def filterString : String
     def filterString_=(s:String)
-    def selectedOption = pSelectedOption
-    def selectedOption_=(obj : AutoCompleter.Option[T]) = {
-      if(pSelectedOption.isInstanceOf[AutoCompleter.RealOption[T]]) {
-        pLastSelectedOption = pSelectedOption
-      }
-      pSelectedOption = obj
-    }
-    def lastSelectedOption = pLastSelectedOption
     def filteredOptions : Seq[Option[T]]
+
   }
 
   class Option[T >: Null <: AnyRef] {
@@ -39,8 +31,9 @@ object AutoCompleter {
   }
 
   class NilOption[T >: Null <: AnyRef] extends AutoCompleter.SyntheticOption[T] {
-    override def toStringForList = "-"
+    override def toStringForList = s"[${I18n("nobody")}]"
     override def toStringForTextfield = ""
+    override def matches(p : Pattern) = p.matcher(toStringForList.toLowerCase).find
     override def equals(o:Any) = {
       o.isInstanceOf[NilOption[T]]
     }
@@ -148,6 +141,11 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
   popupList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
   popupList.setFocusable(false)
   private var topLevelContainer : JLayeredPane = null
+
+
+
+  protected var pSelectedOption: AutoCompleter.Option[T] = new AutoCompleter.NilOption
+  protected var pLastSelectedOption : AutoCompleter.Option[T] = _
   private var previousText = ""
 
   def this(m : AutoCompleter.AutoCompleterModel[T]) {
@@ -193,11 +191,11 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
   }
 
   def reset {
-    pSelectedOption = pSelectedOption
+    selectedOption = pSelectedOption
   }
 
   def revertLast {
-    selectedOption = model.lastSelectedOption
+    selectedOption = pLastSelectedOption
   }
 
   private def moveSelected(d : Int) {
@@ -210,33 +208,28 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
   }
 
   private def selectCurrentElement {
-    if(popupList.getSelectedValue != null) pSelectedOption = popupList.getSelectedValue.asInstanceOf[AutoCompleter.Option[T]]
+    if(popupList.getSelectedValue != null) selectedOption = popupList.getSelectedValue.asInstanceOf[AutoCompleter.Option[T]]
   }
 
   def listCellRenderer_=(l : ListCellRenderer[AutoCompleter.Option[T]]) = popupList.setCellRenderer(l)
 
-  private def pSelectedOption = model.selectedOption
-
-  private def pSelectedOption_=(o : AutoCompleter.Option[T]) {
-    val lastSelection = model.lastSelectedOption
-    model.selectedOption = o
-    setText(itemRenderer.renderForTextfield(o))
-    setCaretPosition(0)
-    if(o.isInstanceOf[CreateOption[T]]) {
-      publish(AutoCompleter.CreateEvent[T](this, o.asInstanceOf[CreateOption[T]].filterString, model.lastSelectedOption))
-    } else {
-      publish(AutoCompleter.SelectionChangedEvent(lastSelection, o))
-    }
-  }
 
   def selectedOption : AutoCompleter.Option[T] = pSelectedOption
-
-  def selectedOption_=(o : T) {
-    selectedOption = if(o != null) new AutoCompleter.RealOption[T](o) else new AutoCompleter.NilOption[T]()
+  def selectedOption_=(obj : T) {
+    selectedOption = if(obj != null) new AutoCompleter.RealOption[T](obj) else new AutoCompleter.NilOption[T]()
   }
-
-  def selectedOption_=(o : AutoCompleter.Option[T]) {
-    pSelectedOption = o
+  def selectedOption_=(opt : AutoCompleter.Option[T]) {
+    if(pSelectedOption.isInstanceOf[AutoCompleter.RealOption[T]]) {
+      pLastSelectedOption = pSelectedOption
+    }
+    pSelectedOption = opt
+    setText(itemRenderer.renderForTextfield(opt))
+    setCaretPosition(0)
+    if(opt.isInstanceOf[CreateOption[T]]) {
+      publish(AutoCompleter.CreateEvent[T](this, opt.asInstanceOf[CreateOption[T]].filterString, pLastSelectedOption))
+    } else {
+      publish(AutoCompleter.SelectionChangedEvent(pLastSelectedOption, opt))
+    }
   }
 
   override def focusLost(e : FocusEvent) {

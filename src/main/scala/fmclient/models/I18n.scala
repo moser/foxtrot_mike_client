@@ -10,7 +10,7 @@ object I18n {
       case "departure_date" => "Datum"
       case "plane" => "Flugzeug"
       case "seat1" => "Pilot/Schüler"
-      case "unknown_person" => "Pilot"
+      case "nobody" => "Niemand"
       case "seat2" => "Begleiter/Lehrer"
       case "departure_time" => "Abflug"
       case "arrival_time" => "Ankunft"
