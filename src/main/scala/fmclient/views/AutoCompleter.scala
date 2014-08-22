@@ -247,6 +247,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
   private def updateFilter {
     if (!getText.equals(previousText)) {
       previousText = getText
+      cellRenderer.updateText(getText)
       if(hasFocus) updatePopup
     }
   }
@@ -274,7 +275,6 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
       reset
       hidePopup
     }
-    cellRenderer.updateText(getText)
   }
 
   override def mouseClicked(e : MouseEvent) {
