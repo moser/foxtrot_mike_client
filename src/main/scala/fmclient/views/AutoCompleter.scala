@@ -17,9 +17,7 @@ import javax.swing.{JTextField, JPopupMenu, JLayeredPane, JScrollPane,
 
 object AutoCompleter {
   trait AutoCompleterModel[T >: Null <: AnyRef] {
-    def filterString : String
-    def filterString_=(s:String)
-    def filteredOptions : Seq[Option[T]]
+    def filteredOptions(search : String) : Seq[Option[T]]
 
   }
 
@@ -175,7 +173,7 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
     } else {
       popupListModel.removeAllElements
       var i = 0
-      model.filteredOptions.foreach(o => {
+      model.filteredOptions(getText).foreach(o => {
         popupListModel.add(i, o)
         i = i + 1
       })
@@ -249,7 +247,6 @@ class AutoCompleter[T >: Null <: AnyRef](model : AutoCompleter.AutoCompleterMode
   private def updateFilter {
     if (!getText.equals(previousText)) {
       previousText = getText
-      model.filterString = previousText
       if(hasFocus) updatePopup
     }
   }

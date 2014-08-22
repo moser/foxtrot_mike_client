@@ -16,7 +16,6 @@ object DefaultAutoCompleterModel {
 class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEntityRepository[T, _], extract : T => String, options_ : Map[String, Boolean] = Map()) extends AutoCompleter.AutoCompleterModel[T] with Publisher {
   val options = Map("allowNil" -> true, "allowCreate" -> true) ++ options_
   val nilOption = new AutoCompleter.NilOption[T]
-  var filterString = ""
 
   def syntheticOptions : Seq[AutoCompleter.SyntheticOption[T]] = List()
 
@@ -38,13 +37,13 @@ class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEnti
     extractMatching(p, collection.all)
   }
 
-  override def filteredOptions = {
-    val p = Pattern.compile(filterString.toLowerCase, Pattern.LITERAL)
+  override def filteredOptions(search : String) = {
+    val p = Pattern.compile(search.toLowerCase, Pattern.LITERAL)
     var result : Seq[AutoCompleter.Option[T]] = extractMatchingFromCollection(p)
     result = result ++ syntheticOptions.filter(_.matches(p))
     if(options("allowCreate") && result.length == 0)
-      result = result ++ List(new DefaultAutoCompleterModel.CreateOption[T](filterString).asInstanceOf[AutoCompleter.Option[T]])
-    if((filterString.equals("") || nilOption.matches(p)) && options("allowNil"))
+      result = result ++ List(new DefaultAutoCompleterModel.CreateOption[T](search).asInstanceOf[AutoCompleter.Option[T]])
+    if((search.equals("") || nilOption.matches(p)) && options("allowNil"))
       result = List(nilOption) ++ result
     result
   }
