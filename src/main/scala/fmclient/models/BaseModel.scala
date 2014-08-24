@@ -6,6 +6,8 @@ import javax.persistence._
 abstract class BaseModel[T] extends Observalbe {
   private var deleted_ = false
   def deleted = deleted_
+  def disabled : Boolean
+  def disabled_=(b : Boolean) : Unit
   def id : T
   def id_=(s: T) : Unit
   def status : String
@@ -49,5 +51,7 @@ abstract class BaseModel[T] extends Observalbe {
   var created_at : Date = new Date
   @Temporal(TemporalType.TIMESTAMP)
   var updated_at : Date = new Date
+
+  def sortingKey = toString
 }
 

@@ -11,6 +11,7 @@ class CostHint extends BaseModel[Int] {
   var id : Int = _
   var name : String = ""
   var status = "local"
+  var disabled = false
 
   override def toString = {
     name

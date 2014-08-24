@@ -13,6 +13,7 @@ class Group extends BaseModel[Int] with UUIDHelper {
 
   var name = ""
   var status = "local"
+  var disabled = false
 
   override def toString = name
 }

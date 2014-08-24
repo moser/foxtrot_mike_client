@@ -12,4 +12,5 @@ abstract class Launch extends BaseModel[String] with UUIDHelper {
   @JoinColumn(name="flight_id")
   var flight : Flight = _
   var status = "local"
+  var disabled = false
 }

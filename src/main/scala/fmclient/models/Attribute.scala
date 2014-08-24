@@ -17,6 +17,7 @@ class Attribute extends BaseModel[String] {
   var id : String = ""
   var value = ""
   var status = "local"
+  var disabled = false
 
   override def toString = id + ": " + value
 }

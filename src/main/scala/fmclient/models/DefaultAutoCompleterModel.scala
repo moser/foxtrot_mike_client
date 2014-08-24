@@ -13,38 +13,43 @@ object DefaultAutoCompleterModel {
   }
 }
 
-class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](collection : BaseEntityRepository[T, _], extract : T => String, options_ : Map[String, Boolean] = Map()) extends AutoCompleter.AutoCompleterModel[T] with Publisher {
+class DefaultAutoCompleterModel[T >: Null <: BaseModel[_]](
+  val collection : BaseEntityRepository[T, _],
+  extract : T => String,
+  options_ : Map[String, Boolean] = Map())
+extends AutoCompleter.AutoCompleterModel[T] with Publisher {
   val options = Map("allowNil" -> true, "allowCreate" -> true) ++ options_
   val nilOption = new AutoCompleter.NilOption[T]
 
   def syntheticOptions : Seq[AutoCompleter.SyntheticOption[T]] = List()
 
   def extractMatching(p : Pattern, s: Seq[T]) = {
-    var n = 0
-    var i = s.toIterator
-    var r = Seq[T]()
-    while(i.hasNext && n < 15) {
-      var e = i.next
-      if(p.matcher(extract(e).toLowerCase).find) {
-        r = r :+ e
-        n += 1
-      }
-    }
-    r.map(new AutoCompleter.RealOption[T](_))
+    s.filter((e) => p.matcher(extract(e).toLowerCase).find).map(new AutoCompleter.RealOption[T](_))
   }
 
   def extractMatchingFromCollection(p : Pattern) = {
     extractMatching(p, collection.all)
   }
 
+  def sortOptions(seq : Seq[AutoCompleter.RealOption[T]]) = seq
+
   override def filteredOptions(search : String) = {
     val p = Pattern.compile(search.toLowerCase, Pattern.LITERAL)
-    var result : Seq[AutoCompleter.Option[T]] = extractMatchingFromCollection(p)
+
+    var result : Seq[AutoCompleter.Option[T]] = sortOptions(extractMatchingFromCollection(p))
+
+    // limit
+    result = result.take(15)
+    // append synthetic options
     result = result ++ syntheticOptions.filter(_.matches(p))
+    // append create option
     if(options("allowCreate") && result.length == 0)
       result = result ++ List(new DefaultAutoCompleterModel.CreateOption[T](search).asInstanceOf[AutoCompleter.Option[T]])
+    // prepend nil option
     if((search.equals("") || nilOption.matches(p)) && options("allowNil"))
       result = List(nilOption) ++ result
+
     result
   }
+
 }

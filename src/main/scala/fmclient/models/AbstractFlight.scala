@@ -42,6 +42,7 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
   var controller : Person = _
 
   var status = "local"
+  var disabled = false
   var comment = ""
   private var pEngineDuration = 0
 

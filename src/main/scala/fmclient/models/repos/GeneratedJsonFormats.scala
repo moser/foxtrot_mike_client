@@ -73,6 +73,7 @@ object GeneratedJsonConverters {
         ("id" -> o.id) ~
         ("firstname" -> o.firstname) ~
         ("lastname" -> o.lastname) ~
+        ("disabled" -> o.disabled) ~
         ("group_id" -> o.group.id)
       )
     }
@@ -81,6 +82,7 @@ object GeneratedJsonConverters {
       local.id = remote.id
       local.firstname = remote.firstname
       local.lastname = remote.lastname
+      local.disabled = remote.disabled
       local.group = remote.group
       local.licenseLevels = remote.licenseLevels
     }
@@ -89,6 +91,7 @@ object GeneratedJsonConverters {
       res.id = (value \ "id").extract[String]
       res.firstname = (value \ "firstname").extract[String]
       res.lastname = (value \ "lastname").extract[String]
+      res.disabled = (value \ "disabled").extract[Boolean]
       res.group = AllGroups.find((value \ "group_id").extract[Int])
  res.licenseLevels = Map[Int, Int]()
  (value \ "licenses").extract[List[JValue]].foreach((license) => {
@@ -186,7 +189,8 @@ object GeneratedJsonConverters {
       (
         ("id" -> o.id) ~
         ("name" -> o.name) ~
-        ("registration" -> o.registration)
+        ("registration" -> o.registration) ~
+        ("disabled" -> o.disabled)
       )
     }
     def update(local : Airfield, remote : Airfield) {
@@ -194,12 +198,14 @@ object GeneratedJsonConverters {
       local.id = remote.id
       local.name = remote.name
       local.registration = remote.registration
+      local.disabled = remote.disabled
     }
     def unmarshalJson(value: JValue) = {
       val res = new Airfield()
       res.id = (value \ "id").extract[String]
       res.name = (value \ "name").extract[String]
       res.registration = (value \ "registration").extract[String]
+      res.disabled = (value \ "disabled").extract[Boolean]
       res
     }
   }

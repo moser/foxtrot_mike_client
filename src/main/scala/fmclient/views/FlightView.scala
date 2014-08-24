@@ -26,11 +26,12 @@ extends MigPanel("fillx, gap 4!", "[gp 0][gp 0][gp 1][gp 1][gp 1][gp 1][gp 0][gp
   val departureDate = new FormattedTextField(new SimpleDateFormat("dd.MM.yyyy")) {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
-  val plane = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Plane](AllPlanes, _.registration, Map("allowNil" -> false)), new PlaneRenderer)
-  val seat1 = new AutoCompleter(seat1Model)
-  val seat2 = new AutoCompleter(seat2Model)
+  val plane = new AutoCompleter(new EnabledFirstAutoCompleterModel[Plane](AllPlanes, _.registration, Map("allowNil" -> false)), new PlaneRenderer)
+  val personRenderer = new PersonRenderer
+  val seat1 = new AutoCompleter(seat1Model, personRenderer)
+  val seat2 = new AutoCompleter(seat2Model, personRenderer)
   val airfieldRenderer = new AirfieldRenderer
-  val airfieldModel = new EnabledOnlyAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false))
+  val airfieldModel = new EnabledFirstAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false))
   val from = new AutoCompleter(airfieldModel, airfieldRenderer)
   val to = new AutoCompleter(airfieldModel, airfieldRenderer)
 

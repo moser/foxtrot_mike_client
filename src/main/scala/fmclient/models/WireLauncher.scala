@@ -11,6 +11,7 @@ class WireLauncher extends BaseModel[String] with UUIDHelper {
   var id = createUUID
   var registration = ""
   var status = "local"
+  var disabled = false
 
   override def toString = registration
 }

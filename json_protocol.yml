@@ -22,6 +22,7 @@ Person:
   id: String
   firstname: String
   lastname: String
+  disabled: Boolean
   group_id:
     type: Int
     repository: AllGroups
@@ -56,3 +57,4 @@ Airfield:
   id: String
   name: String
   registration: String
+  disabled: Boolean

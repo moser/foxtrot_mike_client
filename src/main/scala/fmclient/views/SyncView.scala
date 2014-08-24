@@ -11,7 +11,7 @@ class SyncView extends MigPanel("fill", "[180][180][grow]") {
     focusLostBehavior = FormattedTextField.FocusLostBehavior.CommitOrRevert
   }
   val airfieldRenderer = new AirfieldRenderer
-  val airfield = new AutoCompleter(new EnabledOnlyAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
+  val airfield = new AutoCompleter(new EnabledFirstAutoCompleterModel[Airfield](AllAirfields, (o:Airfield) => o.name + " " + o.registration, Map("allowNil" -> false)), airfieldRenderer)
   val btPrint = new Button(I18n("sync.print"))
 
   val username = new TextField()

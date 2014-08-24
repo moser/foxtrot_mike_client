@@ -12,6 +12,7 @@ class LegalPlaneClass extends BaseModel[Int] {
 
   var name : String = ""
   var status = "local"
+  var disabled = false
 
   override def toString = {
     name

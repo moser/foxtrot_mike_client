@@ -18,7 +18,6 @@ import javax.swing.{JTextField, JPopupMenu, JLayeredPane, JScrollPane,
 object AutoCompleter {
   trait AutoCompleterModel[T >: Null <: AnyRef] {
     def filteredOptions(search : String) : Seq[Option[T]]
-
   }
 
   class Option[T >: Null <: AnyRef] {

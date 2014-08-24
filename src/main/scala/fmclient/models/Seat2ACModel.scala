@@ -21,7 +21,7 @@ object Seat2ACModel {
   }
 }
 
-class Seat2ACModel extends EnabledOnlyAutoCompleterModel[Person](AllPeople, _.name) {
+class Seat2ACModel extends EnabledFirstAutoCompleterModel[Person](AllPeople, _.name) {
   override def syntheticOptions = List(new Seat2ACModel.NumberOption(1),
                                        new Seat2ACModel.NumberOption(2),
                                        new Seat2ACModel.NumberOption(3))
