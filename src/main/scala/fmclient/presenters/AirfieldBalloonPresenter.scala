@@ -21,13 +21,18 @@ class AirfieldBalloonPresenter(str : String, val attach : JComponent, view0: Air
 
   map((m,v) => m.name = v.name.text, (m,v) => v.name.text = m.name)
   map((m,v) => m.registration = v.registration.text, (m,v) => v.registration.text = m.registration)
+  mapViewOnly((m,v) => markIfInvalid(v.name, m.nameValid))
 
   view.btOk.reactions += {
     case ButtonClicked(_) => {
       updateModel
-      model.save
-      destroy
-      publish(AirfieldBalloonPresenter.OkEvent(model))
+      if(!model.isValid)
+        updateView
+      else {
+        model.save
+        destroy
+        publish(AirfieldBalloonPresenter.OkEvent(model))
+      }
     }
   }
 

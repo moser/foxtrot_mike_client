@@ -21,4 +21,12 @@ class Airfield extends BaseModel[String] with UUIDHelper {
     else
       registration
   }
+
+  override def invalidFields = {
+    var r = List[String]()
+    if(nameValid) { r = r :+ "name" }
+    r
+  }
+
+  def nameValid = name == null || name.length < 3
 }

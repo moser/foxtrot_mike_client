@@ -15,6 +15,7 @@ class PlaneBalloonView(attach : JComponent) extends BalloonView(attach) {
   val l = List(LaunchItem("self_launch"), LaunchItem("wire_launch"), LaunchItem("tow_launch"))
   val registration = new TextField
   val make = new TextField
+  val seatCount = new MyComboBox(new DefaultComboBoxModel(new java.util.Vector(List(1,2,3,4).asJava)))
   val group = new MyComboBox[Group](new MyComboBoxModel(AllGroups))
   val defaultLaunchMethod = new MyComboBox(new DefaultComboBoxModel(new java.util.Vector(l.asJava)))
   val legalPlaneClass = new MyComboBox[LegalPlaneClass](new MyComboBoxModel(AllLegalPlaneClasses))
@@ -29,10 +30,12 @@ class PlaneBalloonView(attach : JComponent) extends BalloonView(attach) {
   val btCancel = new Button(I18n("cancel"))
   setLayout(new MigLayout("fill, wrap 2"))
   add(new Label(I18n("plane_balloon.title")).peer, "span 2")
-  add(new Label(I18n("registration")).peer)
+  add(new Label(I18n("registration") + " *").peer)
   add(registration.peer, "w 200")
-  add(new Label(I18n("make")).peer)
+  add(new Label(I18n("make") + " *").peer)
   add(make.peer, "w 200")
+  add(new Label(I18n("seat_count")).peer)
+  add(seatCount.peer, "w 50")
   add(new Label(I18n("group")).peer)
   add(group.peer, "w 150")
   add(new Label(I18n("legal_plane_class")).peer)

@@ -21,6 +21,7 @@ class PlaneBalloonPresenter(str : String, val attach : JComponent, view0: PlaneB
 
   map((m,v) => m.registration = v.registration.text, (m,v) => v.registration.text = m.registration)
   map((m,v) => m.make = v.make.text, (m,v) => v.make.text = m.make)
+  map((m,v) => m.seatCount = v.seatCount.selection.item, (m,v) => v.seatCount.selection.item = m.seatCount)
   map((m,v) => m.group = v.group.selection.item, (m,v) => v.group.selection.item = m.group)
   map((m,v) => m.legalPlaneClass = v.legalPlaneClass.selection.item, (m,v) => v.legalPlaneClass.selection.item = m.legalPlaneClass)
   map((m,v) => {
