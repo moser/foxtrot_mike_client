@@ -11,7 +11,7 @@ import java.util.Date
 
 class SyncPresenter(view0 : SyncView, mp : MainPresenter) {
   val view = view0
-  val down = List(AllGroups.syncDown(_,_,_), AllAirfields.syncDown(_,_,_), AllPeople.syncDown(_,_,_), AllPlanes.syncDown(_,_,_), AllWireLaunchers.syncDown(_,_,_), AllCostHints.syncDown(_,_,_), AllLegalPlaneClasses.syncDown(_,_,_))
+  val down = List(AllGroups.syncDown(_,_,_), AllLegalPlaneClasses.syncDown(_,_,_), AllAirfields.syncDown(_,_,_), AllPeople.syncDown(_,_,_), AllPlanes.syncDown(_,_,_), AllWireLaunchers.syncDown(_,_,_), AllCostHints.syncDown(_,_,_))
   val up = List(AllGroups.syncUp(_,_,_), AllAirfields.syncUp(_,_,_), AllPeople.syncUp(_,_,_), AllPlanes.syncUp(_,_,_), AllWireLaunchers.syncUp(_,_,_), AllFlights.syncUp(_,_,_))
 
   view.username.text = Config.lastUser
