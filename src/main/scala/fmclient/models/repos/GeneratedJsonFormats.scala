@@ -25,6 +25,7 @@ object GeneratedJsonConverters {
         ("can_be_wire_launched" -> o.canBeWireLaunched) ~
         ("default_engine_duration_to_duration" -> o.defaultEngineDurationToDuration) ~
         ("disabled" -> o.disabled) ~
+        ("seat_count" -> o.seatCount) ~
         ("legal_plane_class_id" -> o.legalPlaneClass.id) ~
         ("group_id" -> o.group.id)
       )
@@ -44,6 +45,7 @@ object GeneratedJsonConverters {
       local.canBeWireLaunched = remote.canBeWireLaunched
       local.defaultEngineDurationToDuration = remote.defaultEngineDurationToDuration
       local.disabled = remote.disabled
+      local.seatCount = remote.seatCount
       local.legalPlaneClass = remote.legalPlaneClass
       local.group = remote.group
     }
@@ -62,6 +64,7 @@ object GeneratedJsonConverters {
       res.canBeWireLaunched = (value \ "can_be_wire_launched").extract[Boolean]
       res.defaultEngineDurationToDuration = (value \ "default_engine_duration_to_duration").extract[Boolean]
       res.disabled = (value \ "disabled").extract[Boolean]
+      res.seatCount = (value \ "seat_count").extract[Int]
       res.legalPlaneClass = AllLegalPlaneClasses.find((value \ "legal_plane_class_id").extract[Int])
       res.group = AllGroups.find((value \ "group_id").extract[Int])
       res

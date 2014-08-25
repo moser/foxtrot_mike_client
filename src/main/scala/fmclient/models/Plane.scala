@@ -23,6 +23,7 @@ class Plane extends BaseModel[String] with UUIDHelper {
   @JoinColumn(name="legal_plane_class_id")
   var legalPlaneClass : LegalPlaneClass = _
 
+  var seatCount = 1
   var competitionSign = ""
   var defaultLaunchMethod = ""
   var hasEngine = false

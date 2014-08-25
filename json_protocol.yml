@@ -12,6 +12,7 @@ Plane:
   can_be_wire_launched: Boolean
   default_engine_duration_to_duration: Boolean
   disabled: Boolean
+  seat_count: Int
   legal_plane_class_id:
     type: Int
     repository: AllLegalPlaneClasses

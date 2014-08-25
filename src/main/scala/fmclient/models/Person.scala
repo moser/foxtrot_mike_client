@@ -23,6 +23,9 @@ class Person extends BaseModel[String] with UUIDHelper {
   // from the licenses.
   var licenseLevels = Map[Int, Int]()
 
+  // Levels: 0 = Instructor, 1 = Normal, 2 = Trainee, default = 3 = No license at all
+  def licenseLevel(legalPlaneClassId : Int, default : Int = 3) = licenseLevels.getOrElse(legalPlaneClassId, default)
+
   def name = lastname + " " + firstname
   override def toString = name
 

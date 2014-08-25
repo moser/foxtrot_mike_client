@@ -13,8 +13,8 @@ import javax.swing.SwingUtilities
 
 
 class FlightPresenter extends BasePresenter[Flight, FlightView] {
-  val seat1Model = new Seat1ACModel
-  val seat2Model = new Seat2ACModel
+  val seat1Model = new Seat1ACModel(() => model)
+  val seat2Model = new Seat2ACModel(() => model)
   var view = new FlightView(seat1Model, seat2Model)
   protected var _model : Flight = _
   def model = _model
