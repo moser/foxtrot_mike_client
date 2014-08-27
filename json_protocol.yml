@@ -12,6 +12,7 @@ Plane:
   can_be_wire_launched: Boolean
   default_engine_duration_to_duration: Boolean
   disabled: Boolean
+  deleted: Boolean
   seat_count: Int
   legal_plane_class_id:
     type: Int
@@ -24,6 +25,7 @@ Person:
   firstname: String
   lastname: String
   disabled: Boolean
+  deleted: Boolean
   group_id:
     type: Int
     repository: AllGroups
@@ -59,3 +61,4 @@ Airfield:
   name: String
   registration: String
   disabled: Boolean
+  deleted: Boolean

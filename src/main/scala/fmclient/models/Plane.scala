@@ -34,6 +34,7 @@ class Plane extends BaseModel[String] with UUIDHelper {
   var canBeWireLaunched = false
   var defaultEngineDurationToDuration = false
   var disabled = false
+  var deleted = false
 
   override def toString = registration
 

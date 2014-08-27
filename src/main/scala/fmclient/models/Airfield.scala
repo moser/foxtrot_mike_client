@@ -14,6 +14,7 @@ class Airfield extends BaseModel[String] with UUIDHelper {
   var name : String = ""
   var status = "local"
   var disabled = false
+  var deleted = false
 
   override def toString = {
     if(registration == null || registration.equals(""))

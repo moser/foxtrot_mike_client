@@ -45,6 +45,7 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
   var disabled = false
   var comment = ""
   private var pEngineDuration = 0
+  var deleted = false
 
   def engineDuration = {
     if(plane != null && plane.hasEngine) {
@@ -132,5 +133,9 @@ abstract class AbstractFlight extends BaseModel[String] with UUIDHelper {
     from = f.from
     to = f.to
     controller = f.controller
+  }
+
+  override def afterDelete {
+    deleted = true
   }
 }

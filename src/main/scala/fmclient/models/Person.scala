@@ -14,6 +14,7 @@ class Person extends BaseModel[String] with UUIDHelper {
   var lastname = ""
   var status = "local"
   var disabled = false
+  var deleted = false
 
   @ManyToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="group_id")

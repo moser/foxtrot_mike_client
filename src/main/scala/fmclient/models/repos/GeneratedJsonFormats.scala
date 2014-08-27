@@ -25,6 +25,7 @@ object GeneratedJsonConverters {
         ("can_be_wire_launched" -> o.canBeWireLaunched) ~
         ("default_engine_duration_to_duration" -> o.defaultEngineDurationToDuration) ~
         ("disabled" -> o.disabled) ~
+        ("deleted" -> o.deleted) ~
         ("seat_count" -> o.seatCount) ~
         ("legal_plane_class_id" -> o.legalPlaneClass.id) ~
         ("group_id" -> o.group.id)
@@ -45,6 +46,7 @@ object GeneratedJsonConverters {
       local.canBeWireLaunched = remote.canBeWireLaunched
       local.defaultEngineDurationToDuration = remote.defaultEngineDurationToDuration
       local.disabled = remote.disabled
+      local.deleted = remote.deleted
       local.seatCount = remote.seatCount
       local.legalPlaneClass = remote.legalPlaneClass
       local.group = remote.group
@@ -64,6 +66,7 @@ object GeneratedJsonConverters {
       res.canBeWireLaunched = (value \ "can_be_wire_launched").extract[Boolean]
       res.defaultEngineDurationToDuration = (value \ "default_engine_duration_to_duration").extract[Boolean]
       res.disabled = (value \ "disabled").extract[Boolean]
+      res.deleted = (value \ "deleted").extract[Boolean]
       res.seatCount = (value \ "seat_count").extract[Int]
       res.legalPlaneClass = AllLegalPlaneClasses.find((value \ "legal_plane_class_id").extract[Int])
       res.group = AllGroups.find((value \ "group_id").extract[Int])
@@ -77,6 +80,7 @@ object GeneratedJsonConverters {
         ("firstname" -> o.firstname) ~
         ("lastname" -> o.lastname) ~
         ("disabled" -> o.disabled) ~
+        ("deleted" -> o.deleted) ~
         ("group_id" -> o.group.id)
       )
     }
@@ -86,6 +90,7 @@ object GeneratedJsonConverters {
       local.firstname = remote.firstname
       local.lastname = remote.lastname
       local.disabled = remote.disabled
+      local.deleted = remote.deleted
       local.group = remote.group
       local.licenseLevels = remote.licenseLevels
     }
@@ -95,6 +100,7 @@ object GeneratedJsonConverters {
       res.firstname = (value \ "firstname").extract[String]
       res.lastname = (value \ "lastname").extract[String]
       res.disabled = (value \ "disabled").extract[Boolean]
+      res.deleted = (value \ "deleted").extract[Boolean]
       res.group = AllGroups.find((value \ "group_id").extract[Int])
  res.licenseLevels = Map[Int, Int]()
  (value \ "licenses").extract[List[JValue]].foreach((license) => {
@@ -193,7 +199,8 @@ object GeneratedJsonConverters {
         ("id" -> o.id) ~
         ("name" -> o.name) ~
         ("registration" -> o.registration) ~
-        ("disabled" -> o.disabled)
+        ("disabled" -> o.disabled) ~
+        ("deleted" -> o.deleted)
       )
     }
     def update(local : Airfield, remote : Airfield) {
@@ -202,6 +209,7 @@ object GeneratedJsonConverters {
       local.name = remote.name
       local.registration = remote.registration
       local.disabled = remote.disabled
+      local.deleted = remote.deleted
     }
     def unmarshalJson(value: JValue) = {
       val res = new Airfield()
@@ -209,6 +217,7 @@ object GeneratedJsonConverters {
       res.name = (value \ "name").extract[String]
       res.registration = (value \ "registration").extract[String]
       res.disabled = (value \ "disabled").extract[Boolean]
+      res.deleted = (value \ "deleted").extract[Boolean]
       res
     }
   }
