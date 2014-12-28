@@ -18,7 +18,11 @@ class MainPresenter extends AbstractPresenter {
       view.setStatus(s"${I18n("main.status.summary")}: ${planeStrings.mkString(", ")}")
     }
   }
-  summary.get
+  new Thread(new Runnable() {
+    def run() {
+      summary.get
+    }
+  }).start
 
   val defaultsPresenter = new DefaultsPresenter(view.defaultsPanel)
   val syncPresenter = new SyncPresenter(view.syncPanel, this)
