@@ -3,6 +3,8 @@ package fmclient.models
 object I18n {
   def t(s:String, interpolation : Array[{ def toString : String }]) : String = {
     var res = s match {
+      case "really_quit" => "Wirklich beenden?"
+      case "confirm" => "Bestätigen"
       case "main.title" => "FoxtrotMike Flugeingabe"
       case "main.actions_menu.title" => "Aktionen"
       case "main.sync" => "Synchronisation"

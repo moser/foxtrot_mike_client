@@ -108,8 +108,13 @@ class MainView(val flightPanel : FlightView) extends MainFrame {
 
   val exitAction = new AbstractAction {
     def actionPerformed(evt : ActionEvent) {
-      close
-      sys.exit(0)
+      Dialog.showConfirmation(null, I18n("really_quit"), I18n("confirm")) match {
+        case Dialog.Result.Yes => {
+          close
+          sys.exit(0)
+        }
+        case _ => {}
+      }
     }
   }
   split.peer.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control Q"), "quit")
