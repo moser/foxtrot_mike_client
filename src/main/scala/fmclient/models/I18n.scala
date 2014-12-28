@@ -50,6 +50,9 @@ object I18n {
       case "can_be_wire_launched" => "Kann an der Winde starten"
       case "default_engine_duration_to_duration" => "Motorlaufzeit normalerweise gleich Flugzeit (z.B. Reisemotorsegler)"
 
+      case "problem.launch_type" => "Startart und Flugzeug passen nicht zueinander."
+      case "problem.departure_date" => "Liegt in der Zukunft oder länger als 10 Tage zurück."
+
       case "defaults" => "Standardwerte"
 
       case "wire_launch.short" => "W"

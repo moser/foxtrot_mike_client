@@ -1,7 +1,7 @@
 package fmclient.presenters
 
 import fmclient.views.{ FlightView, MigPanel, MyFormattedTextField, AutoCompleter, Colors }
-import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel, Airfield, Liability, ProportionItem, Plane }
+import fmclient.models.{ Flight, WireLaunch, TowLaunch, LaunchItem, Seat1ACModel, Person, Seat2ACModel, Airfield, Liability, ProportionItem, Plane, I18n }
 import fmclient.models.repos.AllPeople
 import fmclient.views.AutoCompleter._
 import org.joda.time.DateTime
@@ -79,6 +79,18 @@ class FlightPresenter extends BasePresenter[Flight, FlightView] {
 
   mapViewOnly((m,v) => markIfHasProblems(v.launchType, m.launchTypeHasProblems))
   mapViewOnly((m,v) => markIfHasProblems(v.departureDate, m.departureDateHasProblems))
+  mapViewOnly((m,v) => {
+    if(m.launchTypeHasProblems)
+      v.launchType.tooltip = I18n("problem.launch_type")
+    else
+      v.launchType.tooltip = null
+  })
+  mapViewOnly((m,v) => {
+    if(m.departureDateHasProblems)
+      v.departureDate.tooltip = I18n("problem.departure_date")
+    else
+      v.departureDate.tooltip = null
+  })
 
   mapViewOnly((m,v) => v.engineDuration.enabled = m.engineDurationPossible)
   map((m,v) => { //to model
