@@ -1,7 +1,11 @@
 package fmclient.views
 
+import javax.swing.{KeyStroke, AbstractAction, JComponent}
+import java.awt.event.ActionEvent
+
 import swing._
 import swing.event._
+
 import fmclient.models.I18n
 import fmclient.models.FlightsTableModel
 
@@ -76,12 +80,13 @@ class MainView(val flightPanel : FlightView) extends MainFrame {
   tabs.pages += new TabbedPane.Page(I18n("defaults"), defaultsPanel)
   tabs.pages += new TabbedPane.Page(I18n("sync"), syncPanel)
 
-  contents = new SplitPane {
+  val split = new SplitPane {
     dividerSize = 12
     orientation = Orientation.Horizontal
     rightComponent = flightsPanel
     leftComponent = tabs
   }
+  contents = split
 
   private var _enabled = true
   def enabled = _enabled
@@ -95,4 +100,13 @@ class MainView(val flightPanel : FlightView) extends MainFrame {
     flightsTable.enabled = b
     tabs.enabled = b
   }
+
+  val exitAction = new AbstractAction {
+    def actionPerformed(evt : ActionEvent) {
+      close
+      sys.exit(0)
+    }
+  }
+  split.peer.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control Q"), "quit")
+  split.peer.getActionMap().put("quit", exitAction);
 }
