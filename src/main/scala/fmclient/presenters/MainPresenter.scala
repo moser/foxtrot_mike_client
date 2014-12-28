@@ -15,7 +15,8 @@ class MainPresenter extends AbstractPresenter {
       val planeStrings = counts.toSeq.sortBy(_._2).map {
         case (registration, count) => s"${registration} (${count})"
       }
-      view.setStatus(s"${I18n("main.status.summary")}: ${planeStrings.mkString(", ")}")
+      if(!planeStrings.isEmpty)
+        view.setStatus(s"${I18n("main.status.summary")}: ${planeStrings.mkString(", ")}")
     }
   }
   new Thread(new Runnable() {
