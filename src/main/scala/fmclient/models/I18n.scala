@@ -6,6 +6,7 @@ object I18n {
       case "main.title" => "FoxtrotMike Flugeingabe"
       case "main.actions_menu.title" => "Aktionen"
       case "main.sync" => "Synchronisation"
+      case "main.status.summary" => "Für heute bereits eingegeben"
       case "flight" => "Flug"
       case "departure_date" => "Datum"
       case "plane" => "Flugzeug"

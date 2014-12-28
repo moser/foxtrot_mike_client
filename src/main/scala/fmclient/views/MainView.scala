@@ -64,6 +64,10 @@ class MainView(val flightPanel : FlightView) extends MainFrame {
   val btCopy = new Button(I18n("copy")) {
     enabled = false
   }
+  val lbStatus = new Label()
+  def setStatus(str : String) {
+    lbStatus.text = str
+  }
   val flightsPanel = new MigPanel("ins 0, fill", "", "[grow 0][fill]") {
     add(btNew)
     add(btCopy)
@@ -71,6 +75,7 @@ class MainView(val flightPanel : FlightView) extends MainFrame {
     add(problemsOnly)
     add(colored, "wrap")
     add(new ScrollPane(flightsTable), "gap 0, span, w 100%")
+    add(lbStatus, "gap 0, span, w 100%")
   }
 
   val defaultsPanel = new DefaultsView

@@ -2,13 +2,23 @@ package fmclient.presenters
 
 import fmclient.views.MainView
 import scala.swing.event._
-import fmclient.models.{DefaultsSingleton, Flight, EntityMgr}
+import fmclient.models.{DefaultsSingleton, Flight, EntityMgr, Summary, SummaryReceived, I18n}
 
 class MainPresenter extends AbstractPresenter {
   private var updating = false
   val flightPresenter = new FlightPresenter()
 
   val view = new MainView(flightPresenter.view)
+  val summary = new Summary()
+  summary.reactions += {
+    case SummaryReceived(counts) => {
+      val planeStrings = counts.toSeq.sortBy(_._2).map {
+        case (registration, count) => s"${registration} (${count})"
+      }
+      view.setStatus(s"${I18n("main.status.summary")}: ${planeStrings.mkString(", ")}")
+    }
+  }
+  summary.get
 
   val defaultsPresenter = new DefaultsPresenter(view.defaultsPanel)
   val syncPresenter = new SyncPresenter(view.syncPanel, this)
